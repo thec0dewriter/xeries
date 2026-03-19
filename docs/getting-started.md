@@ -1,0 +1,137 @@
+# Getting Started
+
+This guide will help you install tcpfi and understand the core concepts.
+
+## Installation
+
+### Using pip
+
+```bash
+pip install tcpfi
+```
+
+### Using UV
+
+```bash
+uv add tcpfi
+```
+
+### Optional Dependencies
+
+For skforecast integration:
+
+```bash
+pip install tcpfi[skforecast]
+```
+
+For development:
+
+```bash
+pip install tcpfi[dev]
+```
+
+## Core Concepts
+
+### Partitioners
+
+Partitioners define how data is grouped for conditional permutation. tcpfi provides two main approaches:
+
+#### Manual Partitioner
+
+Use when you have domain knowledge about how series should be grouped:
+
+```python
+from tcpfi import ManualPartitioner
+
+mapping = {
+    'store_001': 'urban',
+    'store_002': 'suburban',
+    'store_003': 'urban',
+}
+partitioner = ManualPartitioner(mapping, series_col='store_id')
+```
+
+#### Tree Partitioner
+
+Automatically learns subgroups using a decision tree:
+
+```python
+from tcpfi import TreePartitioner
+
+partitioner = TreePartitioner(
+    max_depth=4,
+    min_samples_leaf=0.05,
+    series_col='level'
+)
+```
+
+### Importance Methods
+
+#### Conditional Permutation Importance
+
+```python
+from tcpfi import ConditionalPermutationImportance
+
+explainer = ConditionalPermutationImportance(
+    model=model,
+    metric='mse',
+    strategy='auto',  # or 'manual'
+    n_repeats=5,
+)
+
+result = explainer.compute(X, y, features=['lag_1', 'lag_2'])
+df = result.to_dataframe()
+```
+
+#### Conditional SHAP
+
+```python
+from tcpfi import ConditionalSHAP
+
+explainer = ConditionalSHAP(
+    predict_fn=model.predict,
+    background_data=X_train,
+    series_col='level',
+)
+
+result = explainer.explain(X_test)
+```
+
+## Working with skforecast
+
+tcpfi integrates seamlessly with skforecast:
+
+```python
+from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+from tcpfi.adapters.skforecast import SkforecastAdapter, from_skforecast
+from tcpfi import ConditionalPermutationImportance
+
+# Train your forecaster
+forecaster = ForecasterMultiSeries(regressor=model, lags=24)
+forecaster.fit(series=data)
+
+# Create adapter
+adapter = from_skforecast(forecaster)
+
+# Get training data
+X, y = adapter.get_training_data()
+
+# Compute importance
+explainer = ConditionalPermutationImportance(model=adapter, metric='mse')
+result = explainer.compute(X, y)
+```
+
+## Visualization
+
+tcpfi includes plotting utilities:
+
+```python
+from tcpfi.visualization import plot_importance_bar
+
+fig, ax = plot_importance_bar(result, max_features=10)
+```
+
+## Next Steps
+
+- Follow the [Quickstart Tutorial](tutorials/quickstart.md) for a complete example
+- Explore the [API Reference](api/reference.md) for detailed documentation
