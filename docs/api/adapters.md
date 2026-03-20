@@ -4,7 +4,7 @@ Adapters provide integration with forecasting frameworks.
 
 ## SkforecastAdapter
 
-Integration with skforecast's ForecasterMultiSeries.
+Integration with skforecast's ``ForecasterRecursiveMultiSeries`` (0.21+).
 
 ::: tcpfi.adapters.skforecast.SkforecastAdapter
     options:

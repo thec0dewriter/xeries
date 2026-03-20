@@ -81,6 +81,10 @@ class ConditionalSHAP:
         if self.series_col in X.columns:
             return X[self.series_col]
 
+        # skforecast 0.21+ uses ordinal codes in _level_skforecast when level is not present
+        if self.series_col == "level" and "_level_skforecast" in X.columns:
+            return X["_level_skforecast"]
+
         raise KeyError(
             f"Series column '{self.series_col}' not found in DataFrame columns or index"
         )

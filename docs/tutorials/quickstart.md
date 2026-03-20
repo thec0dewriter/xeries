@@ -18,7 +18,7 @@ We'll use a sample multi-series dataset:
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+from skforecast.recursive import ForecasterRecursiveMultiSeries
 
 # Create sample multi-series data
 np.random.seed(42)
@@ -41,8 +41,8 @@ print(series_data.head())
 
 ```python
 # Create and train the forecaster
-forecaster = ForecasterMultiSeries(
-    regressor=RandomForestRegressor(
+forecaster = ForecasterRecursiveMultiSeries(
+    estimator=RandomForestRegressor(
         n_estimators=100,
         max_depth=10,
         random_state=42
@@ -58,8 +58,8 @@ forecaster.fit(series=series_data)
 ```python
 from tcpfi.adapters.skforecast import from_skforecast
 
-# Create adapter
-adapter = from_skforecast(forecaster)
+# Create adapter (same series as fit — required by skforecast.create_train_X_y)
+adapter = from_skforecast(forecaster, series=series_data)
 
 # Get the training matrix
 X, y = adapter.get_training_data()
@@ -96,15 +96,15 @@ print(result.to_dataframe())
 ```python
 from tcpfi import ManualPartitioner
 
-# Define groups based on domain knowledge
-# E.g., group stores by region
+# Domain groups: with wide-format skforecast data, X uses ordinal series codes.
+# Keys 0,1,... match forecaster.series_names_in_ column order.
 mapping = {
-    'store_001': 'region_A',
-    'store_002': 'region_B',
-    'store_003': 'region_A',
+    0: 'region_A',
+    1: 'region_B',
+    2: 'region_A',
 }
 
-partitioner = ManualPartitioner(mapping, series_col='level')
+partitioner = ManualPartitioner(mapping, series_col=adapter.get_series_column())
 
 explainer_manual = ConditionalPermutationImportance(
     model=adapter,
@@ -147,7 +147,7 @@ from tcpfi import ConditionalSHAP
 shap_explainer = ConditionalSHAP(
     predict_fn=adapter.predict,
     background_data=X,
-    series_col='level',
+    series_col=adapter.get_series_column(),
     n_background_samples=50,
     random_state=42,
 )
@@ -168,7 +168,7 @@ Here's the complete example in one script:
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestRegressor
-from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+from skforecast.recursive import ForecasterRecursiveMultiSeries
 
 from tcpfi import ConditionalPermutationImportance, ManualPartitioner
 from tcpfi.adapters.skforecast import from_skforecast
@@ -184,14 +184,14 @@ series_data = pd.DataFrame({
 }, index=dates)
 
 # Train forecaster
-forecaster = ForecasterMultiSeries(
-    regressor=RandomForestRegressor(n_estimators=50, random_state=42),
+forecaster = ForecasterRecursiveMultiSeries(
+    estimator=RandomForestRegressor(n_estimators=50, random_state=42),
     lags=12
 )
 forecaster.fit(series=series_data)
 
 # Create adapter and get data
-adapter = from_skforecast(forecaster)
+adapter = from_skforecast(forecaster, series=series_data)
 X, y = adapter.get_training_data()
 
 # Compute conditional importance

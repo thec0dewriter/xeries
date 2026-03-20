@@ -21,18 +21,20 @@ dependencies = [
     "scikit-learn>=1.3",
     "shap>=0.44",
     "joblib>=1.3",
+    "skforecast>=0.21.0",
+
 ]
 
 [project.optional-dependencies]
-skforecast = ["skforecast>=0.13"]
+skforecast = ["skforecast>=0.21.0"]
 all = ["tcpfi[skforecast]"]
 dev = [
     "pytest>=8.0",
     "pytest-cov>=4.0",
-    "ruff>=0.4",
     "mypy>=1.10",
     "pre-commit>=3.7",
     "pandas-stubs",
+    "ruff>=0.15.6",
 ]
 docs = [
     "mkdocs>=1.6",

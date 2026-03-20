@@ -19,8 +19,11 @@ class BaseAdapter(ABC):
     """
 
     @abstractmethod
-    def get_training_data(self) -> tuple[pd.DataFrame, pd.Series]:
+    def get_training_data(self, *args: Any, **kwargs: Any) -> tuple[pd.DataFrame, pd.Series]:
         """Extract training features (X) and target (y) from the forecaster.
+
+        Framework-specific adapters may require extra arguments (e.g. skforecast
+        needs the same ``series`` passed to ``fit``).
 
         Returns:
             Tuple of (X, y) where X is a DataFrame with features and y is the target.

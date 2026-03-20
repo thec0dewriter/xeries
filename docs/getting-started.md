@@ -51,6 +51,8 @@ mapping = {
 partitioner = ManualPartitioner(mapping, series_col='store_id')
 ```
 
+With **skforecast** (0.21+), pass `series_col=adapter.get_series_column()`. If that resolves to `_level_skforecast`, use integer keys `0, 1, …` in `mapping` in the same order as `forecaster.series_names_in_`.
+
 #### Tree Partitioner
 
 Automatically learns subgroups using a decision tree:
@@ -61,7 +63,7 @@ from tcpfi import TreePartitioner
 partitioner = TreePartitioner(
     max_depth=4,
     min_samples_leaf=0.05,
-    series_col='level'
+    series_col=None,  # auto: "_level_skforecast" (skforecast 0.21+) or "level"
 )
 ```
 
@@ -102,16 +104,16 @@ result = explainer.explain(X_test)
 tcpfi integrates seamlessly with skforecast:
 
 ```python
-from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+from skforecast.recursive import ForecasterRecursiveMultiSeries
 from tcpfi.adapters.skforecast import SkforecastAdapter, from_skforecast
 from tcpfi import ConditionalPermutationImportance
 
-# Train your forecaster
-forecaster = ForecasterMultiSeries(regressor=model, lags=24)
+# Train your forecaster (skforecast 0.21+)
+forecaster = ForecasterRecursiveMultiSeries(estimator=model, lags=24)
 forecaster.fit(series=data)
 
-# Create adapter
-adapter = from_skforecast(forecaster)
+# Pass the same `series` as fit(series=...) (required by skforecast.create_train_X_y)
+adapter = from_skforecast(forecaster, series=data)
 
 # Get training data
 X, y = adapter.get_training_data()

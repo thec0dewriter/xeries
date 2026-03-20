@@ -30,7 +30,7 @@ class TreePartitioner(BasePartitioner):
         self,
         max_depth: int | None = 4,
         min_samples_leaf: int | float = 0.05,
-        series_col: str | None = "level",
+        series_col: str | None = None,
         random_state: int | None = None,
     ) -> None:
         """Initialize the tree partitioner.
@@ -39,8 +39,10 @@ class TreePartitioner(BasePartitioner):
             max_depth: Maximum depth of the decision tree.
             min_samples_leaf: Minimum samples required in a leaf node.
                 Can be int (absolute) or float (fraction of total samples).
-            series_col: Column/index level containing series IDs to encode.
-                Set to None to skip series encoding.
+            series_col: Column with series identifiers to one-hot encode.
+                ``None`` (default) auto-detects ``_level_skforecast`` (skforecast 0.21+)
+                or ``level`` (MultiIndex / legacy). Set to ``None`` explicitly is the same
+                as omitting detection only when neither column exists.
             random_state: Random seed for reproducibility.
         """
         self.max_depth = max_depth
@@ -116,8 +118,9 @@ class TreePartitioner(BasePartitioner):
         if "date" in X_tree.columns:
             X_tree = X_tree.drop(columns=["date"])
 
-        if self.series_col and self.series_col in X_tree.columns:
-            series_data = X_tree[[self.series_col]]
+        resolved = self._resolve_series_col(X_tree)
+        if resolved is not None:
+            series_data = X_tree[[resolved]]
 
             if self._encoder is None:
                 self._encoder = OneHotEncoder(sparse_output=False, handle_unknown="ignore")
@@ -127,16 +130,26 @@ class TreePartitioner(BasePartitioner):
 
             encoded_df = pd.DataFrame(
                 encoded,
-                columns=self._encoder.get_feature_names_out([self.series_col]),
+                columns=self._encoder.get_feature_names_out([resolved]),
                 index=X_tree.index,
             )
             X_tree = pd.concat(
-                [X_tree.drop(columns=[self.series_col]), encoded_df],
+                [X_tree.drop(columns=[resolved]), encoded_df],
                 axis=1,
             )
 
         numeric_cols = X_tree.select_dtypes(include=[np.number]).columns
         return X_tree[numeric_cols].to_numpy()
+
+    def _resolve_series_col(self, X_tree: pd.DataFrame) -> str | None:
+        """Pick series identifier column for encoding."""
+        if self.series_col is not None:
+            return self.series_col if self.series_col in X_tree.columns else None
+        if "_level_skforecast" in X_tree.columns:
+            return "_level_skforecast"
+        if "level" in X_tree.columns:
+            return "level"
+        return None
 
     @property
     def n_groups(self) -> int:

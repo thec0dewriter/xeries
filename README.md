@@ -48,20 +48,20 @@ pip install tcpfi[skforecast]
 
 ```python
 from sklearn.ensemble import RandomForestRegressor
-from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+from skforecast.recursive import ForecasterRecursiveMultiSeries
 
 from tcpfi import ConditionalPermutationImportance
 from tcpfi.adapters.skforecast import from_skforecast
 
-# Train your multi-series forecaster
-forecaster = ForecasterMultiSeries(
-    regressor=RandomForestRegressor(n_estimators=100, random_state=42),
-    lags=24
+# Train your multi-series forecaster (skforecast 0.21+)
+forecaster = ForecasterRecursiveMultiSeries(
+    estimator=RandomForestRegressor(n_estimators=100, random_state=42),
+    lags=24,
 )
 forecaster.fit(series=your_data)
 
-# Create adapter and get training data
-adapter = from_skforecast(forecaster)
+# Same `series` as fit() is required for create_train_X_y (pass here or to get_training_data)
+adapter = from_skforecast(forecaster, series=your_data)
 X, y = adapter.get_training_data()
 
 # Compute conditional importance (automatic tree-based cs-PFI)
@@ -82,14 +82,15 @@ print(result.to_dataframe())
 ```python
 from tcpfi import ManualPartitioner, ConditionalPermutationImportance
 
-# Define groups based on domain knowledge
+# Domain groups: with skforecast 0.21+ wide data, series are ordinal-encoded in X.
+# Map integers 0,1,... in the same order as forecaster.series_names_in_ (see adapter.forecaster).
 mapping = {
-    'store_001': 'urban',
-    'store_002': 'suburban',
-    'store_003': 'urban',
+    0: 'urban',
+    1: 'suburban',
+    2: 'urban',
 }
 
-partitioner = ManualPartitioner(mapping, series_col='level')
+partitioner = ManualPartitioner(mapping, series_col=adapter.get_series_column())
 
 explainer = ConditionalPermutationImportance(
     model=adapter,
@@ -109,7 +110,8 @@ from tcpfi import ConditionalSHAP
 explainer = ConditionalSHAP(
     predict_fn=adapter.predict,
     background_data=X,
-    series_col='level',
+    # skforecast 0.21+: use adapter.get_series_column() (often "_level_skforecast")
+    series_col=adapter.get_series_column(),
     n_background_samples=100,
 )
 

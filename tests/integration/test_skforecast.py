@@ -32,28 +32,29 @@ class TestSkforecastIntegration:
         self,
         sample_series_data: pd.DataFrame,
     ) -> None:
-        """Test adapter with actual skforecast ForecasterMultiSeries."""
+        """Test adapter with skforecast ForecasterRecursiveMultiSeries (v0.21+)."""
         pytest.importorskip("skforecast")
 
         from sklearn.ensemble import RandomForestRegressor
 
-        from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+        from skforecast.recursive import ForecasterRecursiveMultiSeries
 
         from tcpfi.adapters.skforecast import SkforecastAdapter
 
-        forecaster = ForecasterMultiSeries(
-            regressor=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
+        forecaster = ForecasterRecursiveMultiSeries(
+            estimator=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
             lags=5,
         )
         forecaster.fit(series=sample_series_data)
 
-        adapter = SkforecastAdapter(forecaster)
+        adapter = SkforecastAdapter(forecaster, series=sample_series_data)
 
         X, y = adapter.get_training_data()
         assert isinstance(X, pd.DataFrame)
         assert isinstance(y, pd.Series)
         assert len(X) == len(y)
-        assert isinstance(X.index, pd.MultiIndex)
+        # skforecast 0.21+: wide/dict input uses DatetimeIndex + _level_skforecast column
+        assert isinstance(X.index, pd.MultiIndex) or "_level_skforecast" in X.columns
 
         feature_names = adapter.get_feature_names()
         assert len(feature_names) == 5
@@ -75,18 +76,18 @@ class TestSkforecastIntegration:
 
         from sklearn.ensemble import RandomForestRegressor
 
-        from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+        from skforecast.recursive import ForecasterRecursiveMultiSeries
 
         from tcpfi.adapters.skforecast import SkforecastAdapter
         from tcpfi.importance.permutation import ConditionalPermutationImportance
 
-        forecaster = ForecasterMultiSeries(
-            regressor=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
+        forecaster = ForecasterRecursiveMultiSeries(
+            estimator=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
             lags=3,
         )
         forecaster.fit(series=sample_series_data)
 
-        adapter = SkforecastAdapter(forecaster)
+        adapter = SkforecastAdapter(forecaster, series=sample_series_data)
         X, y = adapter.get_training_data()
 
         explainer = ConditionalPermutationImportance(
@@ -115,17 +116,41 @@ class TestSkforecastIntegration:
 
         from sklearn.ensemble import RandomForestRegressor
 
-        from skforecast.ForecasterMultiSeries import ForecasterMultiSeries
+        from skforecast.recursive import ForecasterRecursiveMultiSeries
 
         from tcpfi.adapters.skforecast import from_skforecast
 
-        forecaster = ForecasterMultiSeries(
-            regressor=RandomForestRegressor(n_estimators=5, random_state=42),
+        forecaster = ForecasterRecursiveMultiSeries(
+            estimator=RandomForestRegressor(n_estimators=5, random_state=42),
             lags=3,
         )
         forecaster.fit(series=sample_series_data)
 
-        adapter = from_skforecast(forecaster)
+        adapter = from_skforecast(forecaster, series=sample_series_data)
 
         assert adapter.n_lags == 3
-        assert adapter.get_series_column() == "level"
+        assert adapter.get_series_column() in ("level", "_level_skforecast")
+
+    @pytest.mark.slow
+    def test_get_training_data_passes_series_at_call_time(
+        self,
+        sample_series_data: pd.DataFrame,
+    ) -> None:
+        """Series may be omitted from adapter if supplied only to get_training_data."""
+        pytest.importorskip("skforecast")
+
+        from sklearn.ensemble import RandomForestRegressor
+
+        from skforecast.recursive import ForecasterRecursiveMultiSeries
+
+        from tcpfi.adapters.skforecast import SkforecastAdapter
+
+        forecaster = ForecasterRecursiveMultiSeries(
+            estimator=RandomForestRegressor(n_estimators=5, random_state=42),
+            lags=3,
+        )
+        forecaster.fit(series=sample_series_data)
+
+        adapter = SkforecastAdapter(forecaster)
+        X, y = adapter.get_training_data(series=sample_series_data)
+        assert len(X) == len(y)
