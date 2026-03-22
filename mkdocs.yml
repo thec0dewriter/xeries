@@ -1,0 +1,76 @@
+site_name: tcpfi
+site_description: Conditional Feature Importance for Multi-Time Series Forecasting
+site_url: https://thec0dewriter.github.io/time_conditional_pfi
+repo_url: https://github.com/thec0dewriter/time_conditional_pfi
+repo_name: thec0dewriter/time_conditional_pfi
+
+theme:
+  name: material
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.code.annotate
+    - search.highlight
+    - search.suggest
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: true
+            show_root_heading: true
+            show_root_full_path: false
+            show_symbol_type_heading: true
+            show_symbol_type_toc: true
+            docstring_style: google
+            merge_init_into_class: true
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences
+  - admonition
+  - pymdownx.details
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Getting Started: getting-started.md
+  - Tutorials:
+      - Quickstart: tutorials/quickstart.md
+  - API Reference:
+      - Overview: api/reference.md
+      - Importance: api/importance.md
+      - Partitioners: api/partitioners.md
+      - Adapters: api/adapters.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/thec0dewriter/time_conditional_pfi
