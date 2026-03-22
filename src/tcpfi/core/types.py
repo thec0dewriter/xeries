@@ -78,10 +78,12 @@ class SHAPResult:
     def mean_abs_shap(self) -> pd.DataFrame:
         """Compute mean absolute SHAP values per feature."""
         mean_abs = np.abs(self.shap_values).mean(axis=0)
-        return pd.DataFrame({
-            "feature": self.feature_names,
-            "mean_abs_shap": mean_abs,
-        }).sort_values("mean_abs_shap", ascending=False)
+        return pd.DataFrame(
+            {
+                "feature": self.feature_names,
+                "mean_abs_shap": mean_abs,
+            }
+        ).sort_values("mean_abs_shap", ascending=False)
 
 
 # Type alias for metric functions that take true and predicted values and return a score.

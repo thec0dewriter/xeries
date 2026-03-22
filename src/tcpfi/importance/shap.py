@@ -86,9 +86,7 @@ class ConditionalSHAP:
         if self.series_col == "level" and "_level_skforecast" in X.columns:
             return X["_level_skforecast"]
 
-        raise KeyError(
-            f"Series column '{self.series_col}' not found in DataFrame columns or index"
-        )
+        raise KeyError(f"Series column '{self.series_col}' not found in DataFrame columns or index")
 
     def explain(
         self,
@@ -110,8 +108,7 @@ class ConditionalSHAP:
             import shap
         except ImportError as e:
             raise ImportError(
-                "shap package is required for ConditionalSHAP. "
-                "Install it with: pip install shap"
+                "shap package is required for ConditionalSHAP. Install it with: pip install shap"
             ) from e
 
         feature_names = feature_names or list(X.columns)
@@ -175,9 +172,8 @@ class ConditionalSHAP:
         """
         if isinstance(instance, pd.Series):
             instance = instance.to_frame().T
-            if (
-                isinstance(instance.index[0], tuple)
-                and isinstance(self.background_data.index, pd.MultiIndex)
+            if isinstance(instance.index[0], tuple) and isinstance(
+                self.background_data.index, pd.MultiIndex
             ):
                 instance.index = pd.MultiIndex.from_tuples(
                     instance.index, names=self.background_data.index.names

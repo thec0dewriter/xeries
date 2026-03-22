@@ -47,10 +47,7 @@ class SkforecastAdapter(BaseAdapter):
         self,
         forecaster: Any,
         series: pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
-        exog: pd.Series
-        | pd.DataFrame
-        | dict[str, pd.Series | pd.DataFrame]
-        | None = None,
+        exog: pd.Series | pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
     ) -> None:
         """Initialize the skforecast adapter.
 
@@ -66,9 +63,7 @@ class SkforecastAdapter(BaseAdapter):
         self._validate_forecaster(forecaster)
         self.forecaster = forecaster
         self._series: pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = series
-        self._exog: (
-            pd.Series | pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None
-        ) = exog
+        self._exog: pd.Series | pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = exog
         self._X: pd.DataFrame | None = None
         self._y: pd.Series | None = None
         self._cache_key: tuple[int | None, int | None] | None = None
@@ -132,10 +127,7 @@ class SkforecastAdapter(BaseAdapter):
     def get_training_data(
         self,
         series: pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
-        exog: pd.Series
-        | pd.DataFrame
-        | dict[str, pd.Series | pd.DataFrame]
-        | None = None,
+        exog: pd.Series | pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
         *,
         suppress_warnings: bool = False,
     ) -> tuple[pd.DataFrame, pd.Series]:
@@ -215,10 +207,7 @@ class SkforecastAdapter(BaseAdapter):
 def from_skforecast(
     forecaster: Any,
     series: pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
-    exog: pd.Series
-    | pd.DataFrame
-    | dict[str, pd.Series | pd.DataFrame]
-    | None = None,
+    exog: pd.Series | pd.DataFrame | dict[str, pd.Series | pd.DataFrame] | None = None,
 ) -> SkforecastAdapter:
     """Create a :class:`SkforecastAdapter` from a fitted forecaster.
 

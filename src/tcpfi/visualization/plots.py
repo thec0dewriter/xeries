@@ -101,9 +101,7 @@ def plot_importance_heatmap(
 
     data_dict: dict[str, dict[str, float]] = {}
     for condition, result in results.items():
-        data_dict[condition] = dict(
-            zip(result.feature_names, result.importances, strict=True)
-        )
+        data_dict[condition] = dict(zip(result.feature_names, result.importances, strict=True))
 
     df = pd.DataFrame(data_dict)
 

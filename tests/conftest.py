@@ -43,7 +43,7 @@ def sample_multiindex_data() -> tuple[pd.DataFrame, pd.Series]:
 
     series_ids = []
     dates = []
-    lags_data = {f"lag_{i+1}": [] for i in range(n_lags)}
+    lags_data = {f"lag_{i + 1}": [] for i in range(n_lags)}
     targets = []
 
     base_date = pd.Timestamp("2023-01-01")
@@ -54,14 +54,11 @@ def sample_multiindex_data() -> tuple[pd.DataFrame, pd.Series]:
             dates.append(base_date + pd.Timedelta(hours=t))
 
             for lag in range(n_lags):
-                lags_data[f"lag_{lag+1}"].append(
+                lags_data[f"lag_{lag + 1}"].append(
                     np.random.randn() + (ord(series_id[-1]) - ord("0")) * 0.5
                 )
 
-            target = sum(
-                lags_data[f"lag_{lag+1}"][-1] * (0.5 ** lag)
-                for lag in range(n_lags)
-            )
+            target = sum(lags_data[f"lag_{lag + 1}"][-1] * (0.5**lag) for lag in range(n_lags))
             targets.append(target + np.random.randn() * 0.1)
 
     index = pd.MultiIndex.from_arrays(
@@ -88,7 +85,7 @@ def sample_flat_data() -> tuple[pd.DataFrame, pd.Series]:
     )
     X["series_id"] = np.repeat(["A", "B", "C"], n_samples // 3)
 
-    y = (X["feature_0"] * 0.5 + X["feature_1"] * 0.3 + np.random.randn(n_samples) * 0.1)
+    y = X["feature_0"] * 0.5 + X["feature_1"] * 0.3 + np.random.randn(n_samples) * 0.1
 
     return X, pd.Series(y, name="target")
 

@@ -94,9 +94,7 @@ class ConditionalPermutationImportance(BaseExplainer):
         baseline_score = self.metric(y_array, baseline_pred)
 
         results = Parallel(n_jobs=self.n_jobs)(
-            delayed(self._compute_feature_importance)(
-                X, y_array, feature, baseline_score, groups
-            )
+            delayed(self._compute_feature_importance)(X, y_array, feature, baseline_score, groups)
             for feature in features
         )
 
@@ -133,9 +131,7 @@ class ConditionalPermutationImportance(BaseExplainer):
 
         scores = []
         for repeat in range(self.n_repeats):
-            rng = np.random.default_rng(
-                self.random_state + repeat if self.random_state else None
-            )
+            rng = np.random.default_rng(self.random_state + repeat if self.random_state else None)
             X_permuted = self._conditional_permute(X, feature, group_labels, rng)
             permuted_pred = self.model.predict(X_permuted)
             score = self.metric(y, permuted_pred)
@@ -160,9 +156,7 @@ class ConditionalPermutationImportance(BaseExplainer):
             partitioner = TreePartitioner(random_state=self.random_state)
             return partitioner.fit_get_groups(X, feature)
 
-        raise ValueError(
-            "For strategy='manual', either provide 'groups' or a 'partitioner'"
-        )
+        raise ValueError("For strategy='manual', either provide 'groups' or a 'partitioner'")
 
     def _conditional_permute(
         self,

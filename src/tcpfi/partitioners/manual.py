@@ -89,9 +89,7 @@ class ManualPartitioner(BasePartitioner):
         if self.series_col in X.columns:
             return X[self.series_col]
 
-        raise KeyError(
-            f"Series column '{self.series_col}' not found in DataFrame columns or index"
-        )
+        raise KeyError(f"Series column '{self.series_col}' not found in DataFrame columns or index")
 
     @property
     def n_groups(self) -> int:
