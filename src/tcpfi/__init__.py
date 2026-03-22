@@ -11,9 +11,9 @@ from tcpfi.partitioners.manual import ManualPartitioner
 from tcpfi.partitioners.tree import TreePartitioner
 
 __all__ = [
-    "__version__",
     "ConditionalPermutationImportance",
     "ConditionalSHAP",
     "ManualPartitioner",
     "TreePartitioner",
+    "__version__",
 ]

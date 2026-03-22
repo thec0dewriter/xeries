@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import numpy as np
 import pandas as pd
@@ -89,7 +89,7 @@ class BaseExplainer(ABC):
     def _resolve_metric(self, metric: MetricFunction | str) -> MetricFunction:
         """Resolve metric string to callable."""
         if callable(metric):
-            return metric
+            return metric  # type: ignore[return-value]
 
         metrics: dict[str, MetricFunction] = {
             "mse": self._mse,

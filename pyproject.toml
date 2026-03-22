@@ -43,19 +43,7 @@ dependencies = [
 [project.optional-dependencies]
 skforecast = ["skforecast>=0.21.0"]
 all = ["tcpfi[skforecast]"]
-dev = [
-    "pytest>=8.0",
-    "pytest-cov>=4.0",
-    "mypy>=1.10",
-    "pre-commit>=3.7",
-    "pandas-stubs",
-    "ruff>=0.15.6",
-]
-docs = [
-    "mkdocs>=1.6",
-    "mkdocs-material>=9.5",
-    "mkdocstrings[python]>=0.25",
-]
+ 
 notebooks = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
@@ -91,16 +79,6 @@ select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 [tool.ruff.lint.isort]
 known-first-party = ["tcpfi"]
 
-[tool.mypy]
-python_version = "3.10"
-strict = true
-warn_return_any = true
-plugins = ["numpy.typing.mypy_plugin"]
-
-[[tool.mypy.overrides]]
-module = ["shap.*", "skforecast.*"]
-ignore_missing_imports = true
-
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-v --cov=tcpfi --cov-report=term-missing --cov-report=xml"
@@ -109,7 +87,7 @@ markers = [
     "integration: integration tests requiring external libs",
     "notebook: notebook tests",
 ]
-norecursedirs = [".ipynb_checkpoints"]
+norecursedirs = [".ipynb_checkpoints"] 
 
 [tool.coverage.run]
 source = ["src/tcpfi"]
@@ -126,5 +104,28 @@ exclude_lines = [
 dev = [
     "pytest>=9.0.2",
     "pytest-cov>=7.0.0",
+    "ty>=0.0.24",
+    "pre-commit>=3.7",
+    "pandas-stubs",
+    "ruff>=0.15.6",
     "skforecast>=0.21.0",
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+    "nbformat>=5.10",
+    "nbclient>=0.10",
+    "nbval>=0.11",
+    "matplotlib>=3.8",
+]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "mkdocstrings[python]>=0.25",
+]
+notebooks = [
+    "jupyter>=1.0",
+    "ipykernel>=6.29",
+    "nbformat>=5.10",
+    "nbclient>=0.10",
+    "nbval>=0.11",
+    "matplotlib>=3.8",
 ]

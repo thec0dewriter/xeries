@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import TYPE_CHECKING, Any, Callable, Protocol, Union
+from typing import TYPE_CHECKING, Any, Protocol, TypeAlias
 
 import numpy as np
 import pandas as pd
@@ -11,14 +12,16 @@ import pandas as pd
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-ArrayLike = Union[np.ndarray, pd.Series, pd.DataFrame]
-GroupLabels = Union[np.ndarray, pd.Series, list[Any]]
+ArrayLike = np.ndarray | pd.Series | pd.DataFrame
+GroupLabels = np.ndarray | pd.Series | list[Any]
 
 
 class ModelProtocol(Protocol):
     """Protocol for models that can be used with tcpfi explainers."""
 
-    def predict(self, X: ArrayLike) -> NDArray[np.floating[Any]]:
+    def predict(
+        self, X: ArrayLike | pd.DataFrame
+    ) -> NDArray[np.floating[Any]] | np.ndarray | pd.Series:
         """Make predictions on input data."""
         ...
 
@@ -81,4 +84,5 @@ class SHAPResult:
         }).sort_values("mean_abs_shap", ascending=False)
 
 
-MetricFunction = Callable[[ArrayLike, ArrayLike], float]
+# Type alias for metric functions that take true and predicted values and return a score.
+MetricFunction: TypeAlias = Callable[[ArrayLike, ArrayLike], float | int]

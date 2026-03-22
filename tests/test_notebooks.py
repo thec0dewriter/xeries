@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import subprocess
-import sys
+import traceback
 from pathlib import Path
 
+import nbformat
 import pytest
+from nbclient import NotebookClient
 
 EXAMPLES_DIR = Path(__file__).parent.parent / "examples"
 
@@ -24,20 +25,15 @@ def notebook_executor():
 
     def _execute(notebook_path: Path, timeout: int = 300) -> tuple[bool, str]:
         """Execute a notebook and return success status and output."""
-        cmd = [
-            sys.executable,
-            "-m",
-            "nbclient",
-            str(notebook_path),
-            "--execute",
-            "--timeout",
-            str(timeout),
-            "--allow-errors",
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True, timeout=timeout + 30)
-        success = result.returncode == 0
-        output = result.stdout + result.stderr
-        return success, output
+        try:
+            with notebook_path.open(encoding="utf-8") as f:
+                notebook = nbformat.read(f, as_version=4)
+
+            client = NotebookClient(notebook, timeout=timeout, allow_errors=True)
+            client.execute()
+            return True, ""
+        except Exception:
+            return False, traceback.format_exc()
 
     return _execute
 

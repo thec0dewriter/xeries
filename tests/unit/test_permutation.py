@@ -173,6 +173,7 @@ class TestConditionalPermutationImportance:
         X, y = sample_multiindex_data
 
         def custom_metric(y_true: np.ndarray, y_pred: np.ndarray) -> float:
+            """Custom metric function matching MetricFunction protocol."""
             return float(np.mean((y_true - y_pred) ** 2))
 
         explainer = ConditionalPermutationImportance(

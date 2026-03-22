@@ -170,7 +170,7 @@ uv run ruff format src tests
 Type checking:
 
 ```bash
-uv run mypy src
+uv run ty check src
 ```
 
 Build documentation:

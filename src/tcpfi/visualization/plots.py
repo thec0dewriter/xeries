@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
 import pandas as pd
@@ -51,15 +51,12 @@ def plot_importance_bar(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = ax.get_figure()
+        fig = cast("Figure", ax.get_figure())
 
     y_pos = np.arange(len(df))
     importances = df["importance"].values
 
-    if show_std and "std" in df.columns:
-        xerr = df["std"].values
-    else:
-        xerr = None
+    xerr = df["std"].values if show_std and "std" in df.columns else None
 
     ax.barh(y_pos, importances, xerr=xerr, color=color, alpha=0.8, capsize=3)
     ax.set_yticks(y_pos)
@@ -104,7 +101,9 @@ def plot_importance_heatmap(
 
     data_dict: dict[str, dict[str, float]] = {}
     for condition, result in results.items():
-        data_dict[condition] = dict(zip(result.feature_names, result.importances))
+        data_dict[condition] = dict(
+            zip(result.feature_names, result.importances, strict=True)
+        )
 
     df = pd.DataFrame(data_dict)
 
@@ -116,7 +115,7 @@ def plot_importance_heatmap(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = ax.get_figure()
+        fig = cast("Figure", ax.get_figure())
 
     im = ax.imshow(df.values, cmap=cmap, aspect="auto")
     ax.set_xticks(np.arange(len(df.columns)))
@@ -210,14 +209,14 @@ def plot_shap_bar(
             "matplotlib is required for plotting. Install it with: pip install matplotlib"
         ) from e
 
-    df = result.mean_abs_shap()
+    df: pd.DataFrame = result.mean_abs_shap()
     if max_features is not None:
         df = df.head(max_features)
 
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = ax.get_figure()
+        fig = cast("Figure", ax.get_figure())
 
     y_pos = np.arange(len(df))
     ax.barh(y_pos, df["mean_abs_shap"].values, color=color, alpha=0.8)

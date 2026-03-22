@@ -27,7 +27,7 @@ pip install tcpfi[skforecast]
 For development:
 
 ```bash
-pip install tcpfi[dev]
+uv sync --dev
 ```
 
 ## Core Concepts

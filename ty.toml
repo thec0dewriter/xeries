@@ -1,0 +1,17 @@
+[environment]
+python-version = "3.10"
+
+[rules]
+invalid-return-type = "warn"
+invalid-argument-type = "warn"
+unresolved-attribute = "warn"
+unresolved-reference = "warn"
+
+[analysis]
+allowed-unresolved-imports = ["shap", "skforecast"]
+# Replace all pandas and numpy imports with Any
+replace-imports-with-any = ["pandas.**", "numpy.**"]
+
+
+[src]
+exclude = ["*.ipynb", "data/**", "notebooks/**", "examples/**" ]

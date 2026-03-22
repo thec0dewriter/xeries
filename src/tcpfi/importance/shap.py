@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Callable
+from collections.abc import Callable
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
@@ -119,7 +120,7 @@ class ConditionalSHAP:
         all_shap_values = []
         all_base_values = []
 
-        for idx, (i, row) in enumerate(X.iterrows()):
+        for idx, (_i, row) in enumerate(X.iterrows()):
             series_id = series_ids.iloc[idx]
             background = self._get_background_for_series(series_id)
 

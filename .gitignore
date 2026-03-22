@@ -63,11 +63,6 @@ venv.bak/
 .uv/
 uv.lock
 
-# Mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
 # Ruff
 .ruff_cache/
 

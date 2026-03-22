@@ -9,9 +9,9 @@ from tcpfi.core.types import (
 )
 
 __all__ = [
+    "ArrayLike",
     "BaseExplainer",
     "BasePartitioner",
-    "ArrayLike",
     "FeatureImportanceResult",
     "GroupLabels",
     "ModelProtocol",

@@ -104,7 +104,7 @@ class ConditionalPermutationImportance(BaseExplainer):
         stds = []
         permuted_scores: dict[str, list[float]] = {}
 
-        for feature, scores in zip(features, results):
+        for feature, scores in zip(features, results, strict=True):
             importance_values = [score - baseline_score for score in scores]
             importances.append(np.mean(importance_values))
             stds.append(np.std(importance_values))

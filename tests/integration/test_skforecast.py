@@ -35,9 +35,8 @@ class TestSkforecastIntegration:
         """Test adapter with skforecast ForecasterRecursiveMultiSeries (v0.21+)."""
         pytest.importorskip("skforecast")
 
-        from sklearn.ensemble import RandomForestRegressor
-
         from skforecast.recursive import ForecasterRecursiveMultiSeries
+        from sklearn.ensemble import RandomForestRegressor
 
         from tcpfi.adapters.skforecast import SkforecastAdapter
 
@@ -74,9 +73,8 @@ class TestSkforecastIntegration:
         """Test full pipeline: skforecast -> adapter -> explainer."""
         pytest.importorskip("skforecast")
 
-        from sklearn.ensemble import RandomForestRegressor
-
         from skforecast.recursive import ForecasterRecursiveMultiSeries
+        from sklearn.ensemble import RandomForestRegressor
 
         from tcpfi.adapters.skforecast import SkforecastAdapter
         from tcpfi.importance.permutation import ConditionalPermutationImportance
@@ -114,9 +112,8 @@ class TestSkforecastIntegration:
         """Test from_skforecast helper function."""
         pytest.importorskip("skforecast")
 
-        from sklearn.ensemble import RandomForestRegressor
-
         from skforecast.recursive import ForecasterRecursiveMultiSeries
+        from sklearn.ensemble import RandomForestRegressor
 
         from tcpfi.adapters.skforecast import from_skforecast
 
@@ -139,9 +136,8 @@ class TestSkforecastIntegration:
         """Series may be omitted from adapter if supplied only to get_training_data."""
         pytest.importorskip("skforecast")
 
-        from sklearn.ensemble import RandomForestRegressor
-
         from skforecast.recursive import ForecasterRecursiveMultiSeries
+        from sklearn.ensemble import RandomForestRegressor
 
         from tcpfi.adapters.skforecast import SkforecastAdapter
 
