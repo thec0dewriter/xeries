@@ -8,6 +8,7 @@ This directory contains Jupyter notebooks demonstrating how to use tcpfi.
 |----------|-------------|--------------|
 | [01_quickstart.ipynb](01_quickstart.ipynb) | Basic usage with synthetic data | Core tcpfi |
 | [02_skforecast_integration.ipynb](02_skforecast_integration.ipynb) | Integration with skforecast | `tcpfi[skforecast]` |
+| [03_experiment_validation.ipynb](03_experiment_validation.ipynb) | Validation experiments comparing PFI vs cs-PFI methods | `tcpfi[skforecast]`, `lightgbm` |
 
 ## Running the Notebooks
 
