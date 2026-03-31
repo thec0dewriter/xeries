@@ -1,53 +1,55 @@
-# tcpfi
+# timelens
 
-**Time-Conditional Permutation Feature Importance**
+**Time Series Explainability & Conditional Permutation Feature Importance**
 
-A Python library for conditional feature importance in multi-time series forecasting.
+A Python library for generalized time series explainability in multi-time series forecasting, supporting feature importance, SHAP, and causal methods.
 
 ## Overview
 
 When using global models for multi-time series forecasting, standard feature importance methods can produce misleading results because they fail to respect the conditional nature of series-dependent features (like lags and series identifiers). This leads to unrealistic data permutations and unreliable insights.
 
-**tcpfi** addresses this challenge by providing:
+**timelens** addresses this challenge by providing a generalized approach:
 
+- **Generic Explainability Architecture**: A unified foundation for multiple interpretation methodologies
 - **Conditional Permutation Importance**: Permutes features only within meaningful subgroups
 - **Tree-Based cs-PFI**: Automatically learns homogeneous subgroups using decision trees
 - **Manual Grouping**: Use domain knowledge to define custom permutation groups
-- **Conditional SHAP**: Series-specific background data for accurate SHAP values
+- **Conditional SHAP & SHAP-IQ**: Series-specific background data for accurate SHAP values
+- **Causal Methods**: Foundation for structural causal model explainability
 - **Framework Integration**: Works with skforecast, and extensible to other frameworks
 
 ## Installation
 
 ```bash
-pip install tcpfi
+pip install timelens
 ```
 
 Or with UV:
 
 ```bash
-uv add tcpfi
+uv add timelens
 ```
 
 For skforecast integration:
 
 ```bash
-pip install tcpfi[skforecast]
+pip install timelens[skforecast]
 ```
 
 ## Quick Example
 
 ```python
-import tcpfi
+import timelens
 from sklearn.ensemble import RandomForestRegressor
 
 # Assume you have a trained model and data
-explainer = tcpfi.ConditionalPermutationImportance(
+explainer = timelens.ConditionalPermutationImportance(
     model=model,
     metric='mse',
     strategy='auto'  # Uses tree-based cs-PFI
 )
 
-result = explainer.compute(X, y, features=['lag_1', 'lag_2', 'day_of_week'])
+result = explainer.explain(X, y, features=['lag_1', 'lag_2', 'day_of_week'])
 print(result.to_dataframe())
 ```
 

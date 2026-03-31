@@ -9,21 +9,21 @@ import pandas as pd
 from joblib import Parallel, delayed
 from numpy.typing import NDArray
 
-from tcpfi.core.base import BaseExplainer, BasePartitioner
-from tcpfi.core.types import (
+from timelens.core.base import BasePartitioner, MetricBasedExplainer
+from timelens.core.types import (
     ArrayLike,
     FeatureImportanceResult,
     GroupLabels,
     MetricFunction,
     ModelProtocol,
 )
-from tcpfi.partitioners.tree import TreePartitioner
+from timelens.partitioners.tree import TreePartitioner
 
 if TYPE_CHECKING:
     pass
 
 
-class ConditionalPermutationImportance(BaseExplainer):
+class ConditionalPermutationImportance(MetricBasedExplainer):
     """Conditional Permutation Feature Importance calculator.
 
     This implements conditional permutation importance where feature values
@@ -36,7 +36,7 @@ class ConditionalPermutationImportance(BaseExplainer):
 
     Example:
         >>> explainer = ConditionalPermutationImportance(model, metric='mse')
-        >>> result = explainer.compute(X, y, features=['lag_1', 'lag_2'])
+        >>> result = explainer.explain(X, y, features=['lag_1', 'lag_2'])
         >>> print(result.to_dataframe())
     """
 
@@ -67,13 +67,15 @@ class ConditionalPermutationImportance(BaseExplainer):
         self.n_repeats = n_repeats
         self.n_jobs = n_jobs
 
-    def compute(
+    def explain(
         self,
         X: pd.DataFrame,
         y: ArrayLike,
         features: list[str] | None = None,
         groups: GroupLabels | None = None,
-    ) -> FeatureImportanceResult:
+        *args: Any,
+        **kwargs: Any,
+    ) -> FeatureImportanceResult:  # type: ignore[override]
         """Compute conditional permutation importance for features.
 
         Args:

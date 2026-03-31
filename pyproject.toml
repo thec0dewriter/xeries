@@ -1,5 +1,5 @@
 [project]
-name = "tcpfi"
+name = "timelens"
 dynamic = ["version"]
 description = "Conditional Feature Importance for Multi-Time Series Forecasting"
 readme = "README.md"
@@ -42,8 +42,8 @@ dependencies = [
 
 [project.optional-dependencies]
 skforecast = ["skforecast>=0.21.0"]
-all = ["tcpfi[skforecast]"]
- 
+all = ["timelens[skforecast]"]
+
 notebooks = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
@@ -54,19 +54,19 @@ notebooks = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/thec0dewriter/time_conditional_pfi"
-Documentation = "https://thec0dewriter.github.io/time_conditional_pfi"
-Repository = "https://github.com/thec0dewriter/time_conditional_pfi"
+Homepage = "https://github.com/thec0dewriter/timelens"
+Documentation = "https://thec0dewriter.github.io/timelens"
+Repository = "https://github.com/thec0dewriter/timelens"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/tcpfi/_version.py"
+path = "src/timelens/_version.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tcpfi"]
+packages = ["src/timelens"]
 
 [tool.ruff]
 line-length = 100
@@ -77,20 +77,20 @@ src = ["src", "tests"]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["tcpfi"]
+known-first-party = ["timelens"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=tcpfi --cov-report=term-missing --cov-report=xml"
+addopts = "-v --cov=timelens --cov-report=term-missing --cov-report=xml"
 markers = [
     "slow: marks tests as slow",
     "integration: integration tests requiring external libs",
     "notebook: notebook tests",
 ]
-norecursedirs = [".ipynb_checkpoints"] 
+norecursedirs = [".ipynb_checkpoints"]
 
 [tool.coverage.run]
-source = ["src/tcpfi"]
+source = ["src/timelens"]
 branch = true
 
 [tool.coverage.report]
@@ -120,6 +120,7 @@ dev = [
 docs = [
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
+    "mkdocs-mermaid2-plugin>=1.2.3",
     "mkdocstrings[python]>=0.25",
 ]
 notebooks = [

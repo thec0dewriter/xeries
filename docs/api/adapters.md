@@ -6,18 +6,18 @@ Adapters provide integration with forecasting frameworks.
 
 Integration with skforecast's ``ForecasterRecursiveMultiSeries`` (0.21+).
 
-::: tcpfi.adapters.skforecast.SkforecastAdapter
+::: timelens.adapters.skforecast.SkforecastAdapter
     options:
       show_root_heading: true
       show_source: true
 
 ### Helper Function
 
-::: tcpfi.adapters.skforecast.from_skforecast
+::: timelens.adapters.skforecast.from_skforecast
 
 ## Base Adapter
 
-::: tcpfi.adapters.base.BaseAdapter
+::: timelens.adapters.base.BaseAdapter
     options:
       show_root_heading: true
       show_source: true

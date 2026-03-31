@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from matplotlib.axes import Axes
     from matplotlib.figure import Figure
 
-    from tcpfi.core.types import FeatureImportanceResult, SHAPResult
+    from timelens.core.types import FeatureImportanceResult, SHAPResult
 
 
 def plot_importance_bar(

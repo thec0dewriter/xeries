@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
 
-from tcpfi.core.base import BasePartitioner
+from timelens.core.base import BasePartitioner
 
 
 class ManualPartitioner(BasePartitioner):

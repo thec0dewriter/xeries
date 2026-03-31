@@ -1,4 +1,4 @@
-"""Type definitions for tcpfi."""
+"""Type definitions for timelens."""
 
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ GroupLabels = np.ndarray | pd.Series | list[Any]
 
 
 class ModelProtocol(Protocol):
-    """Protocol for models that can be used with tcpfi explainers."""
+    """Protocol for models that can be used with timelens explainers."""
 
     def predict(
         self, X: ArrayLike | pd.DataFrame
@@ -27,7 +27,13 @@ class ModelProtocol(Protocol):
 
 
 @dataclass
-class FeatureImportanceResult:
+class BaseResult:
+    """Base class for all explainability results."""
+    pass
+
+
+@dataclass
+class FeatureImportanceResult(BaseResult):
     """Container for feature importance results.
 
     Attributes:
@@ -60,7 +66,7 @@ class FeatureImportanceResult:
 
 
 @dataclass
-class SHAPResult:
+class SHAPResult(BaseResult):
     """Container for SHAP explanation results.
 
     Attributes:

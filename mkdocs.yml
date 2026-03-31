@@ -1,8 +1,8 @@
-site_name: tcpfi
+site_name: timelens
 site_description: Conditional Feature Importance for Multi-Time Series Forecasting
-site_url: https://thec0dewriter.github.io/time_conditional_pfi
-repo_url: https://github.com/thec0dewriter/time_conditional_pfi
-repo_name: thec0dewriter/time_conditional_pfi
+site_url: https://thec0dewriter.github.io/timelens
+repo_url: https://github.com/thec0dewriter/timelens
+repo_name: thec0dewriter/timelens
 
 theme:
   name: material
@@ -32,6 +32,7 @@ theme:
 
 plugins:
   - search
+  - mermaid2
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -52,7 +53,11 @@ markdown_extensions:
       pygments_lang_class: true
   - pymdownx.inlinehilite
   - pymdownx.snippets
-  - pymdownx.superfences
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid_custom
   - admonition
   - pymdownx.details
   - tables
@@ -62,6 +67,10 @@ markdown_extensions:
 nav:
   - Home: index.md
   - Getting Started: getting-started.md
+  - Architecture:
+      - Overview: architecture/structure.md
+      - API Structure: architecture/api_structure.md
+      - Inheritance Diagrams: architecture/inheritance_diagrams.md
   - Tutorials:
       - Quickstart: tutorials/quickstart.md
   - API Reference:
@@ -73,4 +82,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/thec0dewriter/time_conditional_pfi
+      link: https://github.com/thec0dewriter/timelens

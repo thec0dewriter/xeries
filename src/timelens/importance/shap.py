@@ -2,20 +2,19 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable
 from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
-from numpy.typing import NDArray
 
-from tcpfi.core.types import ArrayLike, SHAPResult
+from timelens.core.base import AttributionExplainer
+from timelens.core.types import ModelProtocol, SHAPResult
 
 if TYPE_CHECKING:
     pass
 
 
-class ConditionalSHAP:
+class ConditionalSHAP(AttributionExplainer):
     """Conditional SHAP explainer for multi-series forecasting models.
 
     This explainer computes SHAP values using series-specific background
@@ -23,14 +22,14 @@ class ConditionalSHAP:
     data belonging to the same series as the instance being explained.
 
     Example:
-        >>> explainer = ConditionalSHAP(model.predict, X, series_col='level')
+        >>> explainer = ConditionalSHAP(model, X, series_col='level')
         >>> result = explainer.explain(X.iloc[:10])
         >>> print(result.mean_abs_shap())
     """
 
     def __init__(
         self,
-        predict_fn: Callable[[ArrayLike], NDArray[np.floating[Any]]],
+        model: ModelProtocol,
         background_data: pd.DataFrame,
         series_col: str = "level",
         n_background_samples: int = 100,
@@ -39,17 +38,15 @@ class ConditionalSHAP:
         """Initialize the conditional SHAP explainer.
 
         Args:
-            predict_fn: Model prediction function.
+            model: A model with a predict method.
             background_data: Full dataset to sample background from.
             series_col: Column or index level containing series identifiers.
             n_background_samples: Number of background samples per series.
             random_state: Random seed for reproducibility.
         """
-        self.predict_fn = predict_fn
-        self.background_data = background_data
+        super().__init__(model, background_data, random_state)
         self.series_col = series_col
         self.n_background_samples = n_background_samples
-        self.random_state = random_state
 
         self._rng = np.random.default_rng(random_state)
         self._series_backgrounds: dict[Any, pd.DataFrame] = {}
@@ -92,7 +89,9 @@ class ConditionalSHAP:
         self,
         X: pd.DataFrame,
         feature_names: list[str] | None = None,
-    ) -> SHAPResult:
+        *args: Any,
+        **kwargs: Any,
+    ) -> SHAPResult:  # type: ignore[override]
         """Compute SHAP values for the given instances.
 
         Uses KernelSHAP with series-specific background data.
@@ -123,7 +122,7 @@ class ConditionalSHAP:
 
             row_df = pd.DataFrame([row], columns=X.columns)
             explainer = shap.KernelExplainer(
-                self.predict_fn,
+                self.model.predict,
                 background[feature_names].values,
             )
 

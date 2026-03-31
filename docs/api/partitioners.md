@@ -6,7 +6,7 @@ Partitioners create groups/subsets of data for conditional permutation.
 
 Use when you have domain knowledge about how series should be grouped.
 
-::: tcpfi.partitioners.manual.ManualPartitioner
+::: timelens.partitioners.manual.ManualPartitioner
     options:
       show_root_heading: true
       show_source: true
@@ -15,14 +15,14 @@ Use when you have domain knowledge about how series should be grouped.
 
 Automatically learns subgroups using a decision tree (cs-PFI algorithm).
 
-::: tcpfi.partitioners.tree.TreePartitioner
+::: timelens.partitioners.tree.TreePartitioner
     options:
       show_root_heading: true
       show_source: true
 
 ## Base Class
 
-::: tcpfi.core.base.BasePartitioner
+::: timelens.core.base.BasePartitioner
     options:
       show_root_heading: true
       show_source: true

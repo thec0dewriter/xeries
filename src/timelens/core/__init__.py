@@ -1,7 +1,7 @@
 """Core module containing base classes and type definitions."""
 
-from tcpfi.core.base import BaseExplainer, BasePartitioner
-from tcpfi.core.types import (
+from timelens.core.base import BaseExplainer, BasePartitioner
+from timelens.core.types import (
     ArrayLike,
     FeatureImportanceResult,
     GroupLabels,

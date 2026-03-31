@@ -1,9 +1,9 @@
-"""Base classes for tcpfi components."""
+"""Base classes for timelens components."""
 
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
@@ -11,10 +11,9 @@ import pandas as pd
 if TYPE_CHECKING:
     from numpy.typing import NDArray
 
-    from tcpfi.core.types import (
+    from timelens.core.types import (
         ArrayLike,
-        FeatureImportanceResult,
-        GroupLabels,
+        BaseResult,
         MetricFunction,
         ModelProtocol,
     )
@@ -66,7 +65,33 @@ class BasePartitioner(ABC):
 
 
 class BaseExplainer(ABC):
-    """Abstract base class for feature importance explainers."""
+    """Abstract base class for all feature explainers."""
+
+    @abstractmethod
+    def explain(
+        self,
+        X: pd.DataFrame,
+        *args: Any,
+        **kwargs: Any,
+    ) -> BaseResult:
+        """Compute the explanation.
+
+        Args:
+            X: Input features DataFrame.
+            *args: Additional arguments required by specific explainers.
+            **kwargs: Additional keyword arguments required by specific explainers.
+
+        Returns:
+            The explanation result.
+        """
+        ...
+
+
+class MetricBasedExplainer(BaseExplainer):
+    """Base class for explainers that rely on predictive performance metrics.
+    
+    This includes permutation feature importance and other dropping methods.
+    """
 
     def __init__(
         self,
@@ -74,7 +99,7 @@ class BaseExplainer(ABC):
         metric: MetricFunction | str = "mse",
         random_state: int | None = None,
     ) -> None:
-        """Initialize the explainer.
+        """Initialize the metric-based explainer.
 
         Args:
             model: A model with a predict method.
@@ -88,8 +113,8 @@ class BaseExplainer(ABC):
 
     def _resolve_metric(self, metric: MetricFunction | str) -> MetricFunction:
         """Resolve metric string to callable."""
-        if callable(metric):
-            return metric  # type: ignore[return-value]
+        if not isinstance(metric, str):
+            return metric
 
         metrics: dict[str, MetricFunction] = {
             "mse": self._mse,
@@ -115,23 +140,36 @@ class BaseExplainer(ABC):
         """Root mean squared error."""
         return float(np.sqrt(np.mean((np.asarray(y_true) - np.asarray(y_pred)) ** 2)))
 
-    @abstractmethod
-    def compute(
+
+class AttributionExplainer(BaseExplainer):
+    """Base class for explainers that attribute predictions directly to features.
+    
+    This includes SHAP, SHAP-IQ, and other local attribution methods.
+    """
+
+    def __init__(
         self,
-        X: pd.DataFrame,
-        y: ArrayLike,
-        features: list[str] | None = None,
-        groups: GroupLabels | None = None,
-    ) -> FeatureImportanceResult:
-        """Compute feature importance.
+        model: ModelProtocol,
+        background_data: pd.DataFrame,
+        random_state: int | None = None,
+    ) -> None:
+        """Initialize the attribution explainer.
 
         Args:
-            X: Input features DataFrame.
-            y: Target values.
-            features: List of features to compute importance for.
-            groups: Pre-defined group labels for conditional permutation.
-
-        Returns:
-            FeatureImportanceResult containing importance scores.
+            model: A model with a predict method.
+            background_data: Dataset to draw background samples from.
+            random_state: Random seed for reproducibility.
         """
-        ...
+        self.model = model
+        self.background_data = background_data
+        self.random_state = random_state
+        self._rng = np.random.default_rng(random_state)
+
+
+class CausalExplainer(BaseExplainer):
+    """Base class for causal inference based explainers.
+    
+    This serves as an integration point for structural causal models
+    and DAG-based conditional feature importance.
+    """
+    pass

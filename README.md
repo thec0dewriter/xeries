@@ -1,47 +1,48 @@
-# tcpfi
+# timelens
 
-[![CI](https://github.com/thec0dewriter/time_conditional_pfi/actions/workflows/ci.yml/badge.svg)](https://github.com/thec0dewriter/time_conditional_pfi/actions/workflows/ci.yml)
-[![PyPI version](https://badge.fury.io/py/tcpfi.svg)](https://badge.fury.io/py/tcpfi)
-[![Python versions](https://img.shields.io/pypi/pyversions/tcpfi.svg)](https://pypi.org/project/tcpfi/)
+[![CI](https://github.com/thec0dewriter/timelens/actions/workflows/ci.yml/badge.svg)](https://github.com/thec0dewriter/timelens/actions/workflows/ci.yml)
+[![PyPI version](https://badge.fury.io/py/timelens.svg)](https://badge.fury.io/py/timelens)
+[![Python versions](https://img.shields.io/pypi/pyversions/timelens.svg)](https://pypi.org/project/timelens/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-**Time-Conditional Permutation Feature Importance**
+**Time Series Explainability & Conditional Permutation Feature Importance**
 
-A Python library for conditional feature importance in multi-time series forecasting.
+A Python library for generalized time series explainability in multi-time series forecasting, supporting Conditional Feature Importance, SHAP, and future Causal Methods.
 
-## Why tcpfi?
+## Why timelens?
 
-When using global models for multi-time series forecasting, standard feature importance methods can produce **misleading results**. They fail to respect the conditional nature of series-dependent features like lags, rolling statistics, and series identifiers.
+When using global models for multi-time series forecasting, standard explainability and feature importance methods can produce **misleading results**. They fail to respect the conditional nature of series-dependent features like lags, rolling statistics, and series identifiers.
 
 For example, standard permutation importance might pair a lag value from "Product A" with a target from "Product B" - creating nonsensical data and invalid importance scores.
 
-**tcpfi** solves this by constraining permutations within meaningful subgroups, preserving the data's structural integrity.
+**timelens** solves this by constraining permutations within meaningful subgroups, preserving the data's structural integrity.
 
 ## Features
 
-- **Conditional Permutation Importance**: Permute features only within defined subgroups
-- **Tree-Based cs-PFI**: Automatically learn homogeneous subgroups using decision trees
-- **Manual Grouping**: Define custom permutation groups based on domain knowledge
-- **Conditional SHAP**: Series-specific background data for accurate SHAP explanations
-- **skforecast Integration**: Seamless integration with skforecast's multi-series forecasters
-- **Visualization**: Built-in plotting utilities for importance results
+- **Generic Explainability Interface**: Unified architecture extending beyond permutation importance.
+- **Conditional Permutation Importance**: Permute features only within defined subgroups.
+- **Tree-Based cs-PFI**: Automatically learn homogeneous subgroups using decision trees.
+- **Manual Grouping**: Define custom permutation groups based on domain knowledge.
+- **Conditional SHAP & SHAP-IQ**: Series-specific background data for accurate SHAP and interaction explanations.
+- **skforecast Integration**: Seamless integration with skforecast's multi-series forecasters.
+- **Visualization**: Built-in plotting utilities for importance results.
 
 ## Installation
 
 ```bash
-pip install tcpfi
+pip install timelens
 ```
 
 With UV:
 
 ```bash
-uv add tcpfi
+uv add timelens
 ```
 
 For skforecast integration:
 
 ```bash
-pip install tcpfi[skforecast]
+pip install timelens[skforecast]
 ```
 
 ## Quick Start
@@ -50,8 +51,8 @@ pip install tcpfi[skforecast]
 from sklearn.ensemble import RandomForestRegressor
 from skforecast.recursive import ForecasterRecursiveMultiSeries
 
-from tcpfi import ConditionalPermutationImportance
-from tcpfi.adapters.skforecast import from_skforecast
+from timelens import ConditionalPermutationImportance
+from timelens.adapters.skforecast import from_skforecast
 
 # Train your multi-series forecaster (skforecast 0.21+)
 forecaster = ForecasterRecursiveMultiSeries(
@@ -73,14 +74,14 @@ explainer = ConditionalPermutationImportance(
     random_state=42,
 )
 
-result = explainer.compute(X, y, features=['lag_1', 'lag_2', 'lag_3'])
+result = explainer.explain(X, y, features=['lag_1', 'lag_2', 'lag_3'])
 print(result.to_dataframe())
 ```
 
 ### Using Manual Groups
 
 ```python
-from tcpfi import ManualPartitioner, ConditionalPermutationImportance
+from timelens import ManualPartitioner, ConditionalPermutationImportance
 
 # Domain groups: with skforecast 0.21+ wide data, series are ordinal-encoded in X.
 # Map integers 0,1,... in the same order as forecaster.series_names_in_ (see adapter.forecaster).
@@ -99,16 +100,16 @@ explainer = ConditionalPermutationImportance(
     partitioner=partitioner,
 )
 
-result = explainer.compute(X, y)
+result = explainer.explain(X, y)
 ```
 
 ### Conditional SHAP
 
 ```python
-from tcpfi import ConditionalSHAP
+from timelens import ConditionalSHAP
 
 explainer = ConditionalSHAP(
-    predict_fn=adapter.predict,
+    model=adapter,
     background_data=X,
     # skforecast 0.21+: use adapter.get_series_column() (often "_level_skforecast")
     series_col=adapter.get_series_column(),
@@ -125,7 +126,7 @@ global_importance = explainer.global_importance(X, n_samples=100)
 ### Visualization
 
 ```python
-from tcpfi.visualization import plot_importance_bar, plot_importance_heatmap
+from timelens.visualization import plot_importance_bar, plot_importance_heatmap
 
 # Bar chart
 fig, ax = plot_importance_bar(result, max_features=10)
@@ -137,15 +138,15 @@ fig, ax = plot_importance_heatmap(results)
 
 ## Documentation
 
-Full documentation is available at [https://thec0dewriter.github.io/time_conditional_pfi](https://thec0dewriter.github.io/time_conditional_pfi)
+Full documentation is available at [https://thec0dewriter.github.io/timelens](https://thec0dewriter.github.io/timelens)
 
 ## Development
 
 Clone the repository:
 
 ```bash
-git clone https://github.com/thec0dewriter/time_conditional_pfi.git
-cd time_conditional_pfi
+git clone https://github.com/thec0dewriter/timelens.git
+cd timelens
 ```
 
 Install with development dependencies:
@@ -199,11 +200,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 If you use this library in your research, please cite:
 
 ```bibtex
-@software{tcpfi,
-  title = {tcpfi: Time-Conditional Permutation Feature Importance},
+@software{timelens,
+  title = {timelens: Time-Conditional Permutation Feature Importance},
   author = {thec0dewriter},
   year = {2026},
-  url = {https://github.com/thec0dewriter/time_conditional_pfi}
+  url = {https://github.com/thec0dewriter/timelens}
 }
 ```
 

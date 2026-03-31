@@ -1,41 +1,41 @@
 # API Reference
 
-This page provides an overview of the tcpfi API.
+This page provides an overview of the timelens API.
 
 ## Main Classes
 
 ### ConditionalPermutationImportance
 
-::: tcpfi.importance.permutation.ConditionalPermutationImportance
+::: timelens.importance.permutation.ConditionalPermutationImportance
 
 ### ConditionalSHAP
 
-::: tcpfi.importance.shap.ConditionalSHAP
+::: timelens.importance.shap.ConditionalSHAP
 
 ### ManualPartitioner
 
-::: tcpfi.partitioners.manual.ManualPartitioner
+::: timelens.partitioners.manual.ManualPartitioner
 
 ### TreePartitioner
 
-::: tcpfi.partitioners.tree.TreePartitioner
+::: timelens.partitioners.tree.TreePartitioner
 
 ## Result Types
 
 ### FeatureImportanceResult
 
-::: tcpfi.core.types.FeatureImportanceResult
+::: timelens.core.types.FeatureImportanceResult
 
 ### SHAPResult
 
-::: tcpfi.core.types.SHAPResult
+::: timelens.core.types.SHAPResult
 
 ## Visualization
 
 ### plot_importance_bar
 
-::: tcpfi.visualization.plots.plot_importance_bar
+::: timelens.visualization.plots.plot_importance_bar
 
 ### plot_importance_heatmap
 
-::: tcpfi.visualization.plots.plot_importance_heatmap
+::: timelens.visualization.plots.plot_importance_heatmap

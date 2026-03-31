@@ -10,7 +10,7 @@ from numpy.typing import NDArray
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.tree import DecisionTreeRegressor
 
-from tcpfi.core.base import BasePartitioner
+from timelens.core.base import BasePartitioner
 
 
 class TreePartitioner(BasePartitioner):

@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 from numpy.typing import NDArray
 
-from tcpfi.adapters.base import BaseAdapter
+from timelens.adapters.base import BaseAdapter
 
 
 class SkforecastAdapter(BaseAdapter):
@@ -21,7 +21,7 @@ class SkforecastAdapter(BaseAdapter):
 
     Provides integration with skforecast's multi-series forecasting models,
     extracting the training matrix and providing prediction capabilities
-    for use with tcpfi explainers.
+    for use with timelens explainers.
 
     Example:
         >>> from skforecast.recursive import ForecasterRecursiveMultiSeries

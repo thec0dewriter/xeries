@@ -1,19 +1,19 @@
 # Getting Started
 
-This guide will help you install tcpfi and understand the core concepts.
+This guide will help you install timelens and understand the core concepts.
 
 ## Installation
 
 ### Using pip
 
 ```bash
-pip install tcpfi
+pip install timelens
 ```
 
 ### Using UV
 
 ```bash
-uv add tcpfi
+uv add timelens
 ```
 
 ### Optional Dependencies
@@ -21,7 +21,7 @@ uv add tcpfi
 For skforecast integration:
 
 ```bash
-pip install tcpfi[skforecast]
+pip install timelens[skforecast]
 ```
 
 For development:
@@ -34,14 +34,14 @@ uv sync --dev
 
 ### Partitioners
 
-Partitioners define how data is grouped for conditional permutation. tcpfi provides two main approaches:
+Partitioners define how data is grouped for conditional permutation. timelens provides two main approaches:
 
 #### Manual Partitioner
 
 Use when you have domain knowledge about how series should be grouped:
 
 ```python
-from tcpfi import ManualPartitioner
+from timelens import ManualPartitioner
 
 mapping = {
     'store_001': 'urban',
@@ -58,7 +58,7 @@ With **skforecast** (0.21+), pass `series_col=adapter.get_series_column()`. If t
 Automatically learns subgroups using a decision tree:
 
 ```python
-from tcpfi import TreePartitioner
+from timelens import TreePartitioner
 
 partitioner = TreePartitioner(
     max_depth=4,
@@ -72,7 +72,7 @@ partitioner = TreePartitioner(
 #### Conditional Permutation Importance
 
 ```python
-from tcpfi import ConditionalPermutationImportance
+from timelens import ConditionalPermutationImportance
 
 explainer = ConditionalPermutationImportance(
     model=model,
@@ -88,7 +88,7 @@ df = result.to_dataframe()
 #### Conditional SHAP
 
 ```python
-from tcpfi import ConditionalSHAP
+from timelens import ConditionalSHAP
 
 explainer = ConditionalSHAP(
     predict_fn=model.predict,
@@ -101,12 +101,12 @@ result = explainer.explain(X_test)
 
 ## Working with skforecast
 
-tcpfi integrates seamlessly with skforecast:
+timelens integrates seamlessly with skforecast:
 
 ```python
 from skforecast.recursive import ForecasterRecursiveMultiSeries
-from tcpfi.adapters.skforecast import SkforecastAdapter, from_skforecast
-from tcpfi import ConditionalPermutationImportance
+from timelens.adapters.skforecast import SkforecastAdapter, from_skforecast
+from timelens import ConditionalPermutationImportance
 
 # Train your forecaster (skforecast 0.21+)
 forecaster = ForecasterRecursiveMultiSeries(estimator=model, lags=24)
@@ -125,10 +125,10 @@ result = explainer.compute(X, y)
 
 ## Visualization
 
-tcpfi includes plotting utilities:
+timelens includes plotting utilities:
 
 ```python
-from tcpfi.visualization import plot_importance_bar
+from timelens.visualization import plot_importance_bar
 
 fig, ax = plot_importance_bar(result, max_features=10)
 ```

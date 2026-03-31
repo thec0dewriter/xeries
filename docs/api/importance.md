@@ -4,7 +4,7 @@ This module contains the feature importance calculation methods.
 
 ## ConditionalPermutationImportance
 
-::: tcpfi.importance.permutation.ConditionalPermutationImportance
+::: timelens.importance.permutation.ConditionalPermutationImportance
     options:
       show_root_heading: true
       show_source: true
@@ -14,7 +14,7 @@ This module contains the feature importance calculation methods.
 
 ## ConditionalSHAP
 
-::: tcpfi.importance.shap.ConditionalSHAP
+::: timelens.importance.shap.ConditionalSHAP
     options:
       show_root_heading: true
       show_source: true

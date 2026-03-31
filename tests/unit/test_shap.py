@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 from sklearn.ensemble import RandomForestRegressor
 
-from tcpfi.core.types import SHAPResult
+from timelens.core.types import SHAPResult
 
 
 class TestConditionalSHAP:
@@ -59,11 +59,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test explainer initialization."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=10,
@@ -81,11 +81,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing SHAP values."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,
@@ -106,11 +106,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test explaining a single instance."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,
@@ -128,11 +128,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing mean absolute SHAP values."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,
@@ -154,11 +154,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing global importance."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,
@@ -176,11 +176,11 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test that series-specific backgrounds are prepared."""
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,
@@ -203,12 +203,12 @@ class TestConditionalSHAP:
         This test verifies the fix for the issue where shap_values[0] was
         incorrectly extracting single elements instead of feature arrays.
         """
-        from tcpfi.importance.shap import ConditionalSHAP
+        from timelens.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         n_features = X.shape[1]
         explainer = ConditionalSHAP(
-            predict_fn=fitted_model_small.predict,
+            model=fitted_model_small,
             background_data=X,
             series_col="level",
             n_background_samples=5,

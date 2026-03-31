@@ -1,6 +1,6 @@
 """Visualization utilities for feature importance."""
 
-from tcpfi.visualization.plots import (
+from timelens.visualization.plots import (
     plot_importance_bar,
     plot_importance_heatmap,
 )
