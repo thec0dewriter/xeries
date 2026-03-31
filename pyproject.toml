@@ -43,7 +43,6 @@ dependencies = [
 [project.optional-dependencies]
 skforecast = ["skforecast>=0.21.0"]
 all = ["timelens[skforecast]"]
-
 notebooks = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
@@ -109,13 +108,8 @@ dev = [
     "pandas-stubs",
     "ruff>=0.15.6",
     "skforecast>=0.21.0",
-    "jupyter>=1.0",
-    "ipykernel>=6.29",
-    "nbformat>=5.10",
-    "nbclient>=0.10",
-    "nbval>=0.11",
-    "matplotlib>=3.8",
     "lightgbm>=4.6.0",
+    {include-group = "notebooks"},
 ]
 docs = [
     "mkdocs>=1.6",
