@@ -9,6 +9,10 @@ on:
 env:
   UV_SYSTEM_PYTHON: 1
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   lint:
     runs-on: ubuntu-latest
@@ -19,6 +23,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -43,6 +48,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -53,7 +59,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run ty
-        run: uv run ty check src
+        run: uv run ty check src tests
 
   test:
     runs-on: ubuntu-latest
@@ -69,6 +75,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -79,7 +86,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run tests
-        run: uv run pytest tests -v --cov=tcpfi --cov-report=xml -m "not slow and not integration"
+        run: uv run pytest tests -v --cov=xeries --cov-report=xml -m "not slow and not integration"
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'
@@ -97,6 +104,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -104,9 +112,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies with optional deps
-        run: |
-          uv sync --dev
-          uv pip install skforecast
+        run: uv sync --dev --extra skforecast
 
       - name: Run integration tests
         run: uv run pytest tests -v -m "integration" --tb=short
@@ -120,6 +126,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -133,4 +140,4 @@ jobs:
         run: uv run pytest tests/test_notebooks.py -v -m "notebook and not slow" --tb=short
 
       - name: Run notebook execution tests
-        run: uv run pytest tests/test_notebooks.py -v -m "notebook and slow" --tb=short 
+        run: uv run pytest tests/test_notebooks.py -v -m "notebook and slow" --tb=short

@@ -8,7 +8,7 @@ unresolved-attribute = "warn"
 unresolved-reference = "warn"
 
 [analysis]
-allowed-unresolved-imports = ["shap", "skforecast"]
+allowed-unresolved-imports = ["shap", "skforecast", "shapiq", "econml.**", "dowhy.**", "causallearn.**", "networkx"]
 # Replace all pandas and numpy imports with Any
 replace-imports-with-any = ["pandas.**", "numpy.**"]
 

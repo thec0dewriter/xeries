@@ -1,1 +1,1 @@
-"""Test suite for tcpfi."""
+"""Test suite for xeries."""

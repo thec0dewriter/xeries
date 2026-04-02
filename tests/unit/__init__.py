@@ -1,1 +1,1 @@
-"""Unit tests for tcpfi."""
+"""Unit tests for xeries."""

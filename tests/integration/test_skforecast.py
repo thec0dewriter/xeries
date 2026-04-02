@@ -38,7 +38,7 @@ class TestSkforecastIntegration:
         from skforecast.recursive import ForecasterRecursiveMultiSeries
         from sklearn.ensemble import RandomForestRegressor
 
-        from tcpfi.adapters.skforecast import SkforecastAdapter
+        from xeries.adapters.skforecast import SkforecastAdapter
 
         forecaster = ForecasterRecursiveMultiSeries(
             estimator=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
@@ -76,8 +76,8 @@ class TestSkforecastIntegration:
         from skforecast.recursive import ForecasterRecursiveMultiSeries
         from sklearn.ensemble import RandomForestRegressor
 
-        from tcpfi.adapters.skforecast import SkforecastAdapter
-        from tcpfi.importance.permutation import ConditionalPermutationImportance
+        from xeries.adapters.skforecast import SkforecastAdapter
+        from xeries.importance.permutation import ConditionalPermutationImportance
 
         forecaster = ForecasterRecursiveMultiSeries(
             estimator=RandomForestRegressor(n_estimators=10, max_depth=5, random_state=42),
@@ -97,7 +97,7 @@ class TestSkforecastIntegration:
             random_state=42,
         )
 
-        result = explainer.compute(X, y, features=["lag_1", "lag_2"])
+        result = explainer.explain(X, y, features=["lag_1", "lag_2"])
 
         assert len(result.feature_names) == 2
         assert len(result.importances) == 2
@@ -115,7 +115,7 @@ class TestSkforecastIntegration:
         from skforecast.recursive import ForecasterRecursiveMultiSeries
         from sklearn.ensemble import RandomForestRegressor
 
-        from tcpfi.adapters.skforecast import from_skforecast
+        from xeries.adapters.skforecast import from_skforecast
 
         forecaster = ForecasterRecursiveMultiSeries(
             estimator=RandomForestRegressor(n_estimators=5, random_state=42),
@@ -139,7 +139,7 @@ class TestSkforecastIntegration:
         from skforecast.recursive import ForecasterRecursiveMultiSeries
         from sklearn.ensemble import RandomForestRegressor
 
-        from tcpfi.adapters.skforecast import SkforecastAdapter
+        from xeries.adapters.skforecast import SkforecastAdapter
 
         forecaster = ForecasterRecursiveMultiSeries(
             estimator=RandomForestRegressor(n_estimators=5, random_state=42),

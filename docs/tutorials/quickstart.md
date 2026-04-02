@@ -1,13 +1,13 @@
 # Quickstart Tutorial
 
-This tutorial demonstrates a complete workflow using tcpfi with skforecast.
+This tutorial demonstrates a complete workflow using xeries with skforecast.
 
 ## Setup
 
 First, install the required packages:
 
 ```bash
-pip install tcpfi[skforecast]
+pip install xeries[skforecast]
 ```
 
 ## Load Data
@@ -56,7 +56,7 @@ forecaster.fit(series=series_data)
 ## Extract Training Data
 
 ```python
-from tcpfi.adapters.skforecast import from_skforecast
+from xeries.adapters.skforecast import from_skforecast
 
 # Create adapter (same series as fit — required by skforecast.create_train_X_y)
 adapter = from_skforecast(forecaster, series=series_data)
@@ -73,7 +73,7 @@ print(f"Series IDs: {adapter.get_series_ids()}")
 ### Automatic Strategy (cs-PFI)
 
 ```python
-from tcpfi import ConditionalPermutationImportance
+from xeries import ConditionalPermutationImportance
 
 # Create explainer with automatic tree-based partitioning
 explainer = ConditionalPermutationImportance(
@@ -94,7 +94,7 @@ print(result.to_dataframe())
 ### Manual Strategy with Domain Knowledge
 
 ```python
-from tcpfi import ManualPartitioner
+from xeries import ManualPartitioner
 
 # Domain groups: with wide-format skforecast data, X uses ordinal series codes.
 # Keys 0,1,... match forecaster.series_names_in_ column order.
@@ -122,7 +122,7 @@ print(result_manual.to_dataframe())
 ## Visualize Results
 
 ```python
-from tcpfi.visualization import plot_importance_bar, plot_importance_heatmap
+from xeries.visualization import plot_importance_bar, plot_importance_heatmap
 
 # Bar plot
 fig, ax = plot_importance_bar(result, max_features=10)
@@ -142,7 +142,7 @@ fig.savefig('importance_comparison.png')
 For more detailed explanations:
 
 ```python
-from tcpfi import ConditionalSHAP
+from xeries import ConditionalSHAP
 
 shap_explainer = ConditionalSHAP(
     predict_fn=adapter.predict,
@@ -170,9 +170,9 @@ import numpy as np
 from sklearn.ensemble import RandomForestRegressor
 from skforecast.recursive import ForecasterRecursiveMultiSeries
 
-from tcpfi import ConditionalPermutationImportance, ManualPartitioner
-from tcpfi.adapters.skforecast import from_skforecast
-from tcpfi.visualization import plot_importance_bar
+from xeries import ConditionalPermutationImportance, ManualPartitioner
+from xeries.adapters.skforecast import from_skforecast
+from xeries.visualization import plot_importance_bar
 
 # Generate data
 np.random.seed(42)
