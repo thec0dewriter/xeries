@@ -226,3 +226,79 @@ def plot_shap_bar(
 
     plt.tight_layout()
     return fig, ax
+
+
+def plot_importance_comparison(
+    results: dict[str, FeatureImportanceResult],
+    top_n: int = 10,
+    ax: Axes | None = None,
+    figsize: tuple[int, int] = (12, 6),
+    title: str | None = None,
+) -> tuple[Figure, Axes]:
+    """Plot grouped bars comparing top features across methods.
+
+    Args:
+        results: Mapping from method/label to FeatureImportanceResult.
+        top_n: Number of top features (by mean absolute importance) to show.
+        ax: Optional axes object.
+        figsize: Figure size.
+        title: Custom title.
+
+    Returns:
+        Tuple of (Figure, Axes).
+    """
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError as e:
+        raise ImportError(
+            "matplotlib is required for plotting. Install it with: pip install matplotlib"
+        ) from e
+
+    all_features: set[str] = set()
+    for result in results.values():
+        all_features.update(result.feature_names)
+
+    feature_scores: dict[str, float] = {}
+    for feature in all_features:
+        vals: list[float] = []
+        for result in results.values():
+            if feature in result.feature_names:
+                idx = result.feature_names.index(feature)
+                vals.append(float(abs(result.importances[idx])))
+        feature_scores[feature] = float(np.mean(vals)) if vals else 0.0
+
+    ranked_features = [
+        f for f, _ in sorted(feature_scores.items(), key=lambda kv: kv[1], reverse=True)
+    ][:top_n]
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=figsize)
+    else:
+        fig = cast("Figure", ax.get_figure())
+
+    method_names = list(results.keys())
+    n_methods = len(method_names)
+    x = np.arange(len(ranked_features))
+    bar_width = 0.8 / max(n_methods, 1)
+
+    for method_idx, method_name in enumerate(method_names):
+        result = results[method_name]
+        values: list[float] = []
+        for feature in ranked_features:
+            if feature in result.feature_names:
+                idx = result.feature_names.index(feature)
+                values.append(float(result.importances[idx]))
+            else:
+                values.append(0.0)
+
+        offset = (method_idx - (n_methods - 1) / 2) * bar_width
+        ax.bar(x + offset, values, width=bar_width, label=method_name, alpha=0.85)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels(ranked_features, rotation=35, ha="right")
+    ax.set_ylabel("Importance")
+    ax.set_title(title or "Feature Importance Comparison")
+    ax.legend()
+
+    plt.tight_layout()
+    return fig, ax

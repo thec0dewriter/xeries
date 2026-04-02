@@ -29,6 +29,7 @@ class ModelProtocol(Protocol):
 @dataclass
 class BaseResult:
     """Base class for all explainability results."""
+
     pass
 
 
@@ -90,6 +91,69 @@ class SHAPResult(BaseResult):
                 "mean_abs_shap": mean_abs,
             }
         ).sort_values("mean_abs_shap", ascending=False)
+
+
+@dataclass
+class RefutationResult(BaseResult):
+    """Container for causal refutation test results.
+
+    Attributes:
+        method: The refutation method used (e.g. 'placebo_treatment').
+        original_effect: The original estimated causal effect.
+        refuted_effect: The effect estimated under the refutation.
+        p_value: Statistical significance of the refutation test.
+        passed: True if the refutation confirms the original estimate.
+    """
+
+    method: str = ""
+    original_effect: float = 0.0
+    refuted_effect: float = 0.0
+    p_value: float | None = None
+    passed: bool = True
+
+
+@dataclass
+class CausalResult(BaseResult):
+    """Container for causal feature importance results.
+
+    Attributes:
+        feature_names: List of treatment feature names.
+        treatment_effects: Average Treatment Effect per feature.
+        confidence_intervals: (n_features, 2) array of (lower, upper) bounds.
+        p_values: Statistical significance per feature.
+        causal_graph: The causal DAG used (networkx DiGraph or similar).
+        estimator_name: Name of the causal estimator used.
+        refutation: Optional refutation result for robustness check.
+    """
+
+    feature_names: list[str] = field(default_factory=list)
+    treatment_effects: NDArray[np.floating[Any]] = field(default_factory=lambda: np.array([]))
+    confidence_intervals: NDArray[np.floating[Any]] | None = None
+    p_values: NDArray[np.floating[Any]] | None = None
+    causal_graph: Any = None
+    estimator_name: str = "causal_forest"
+    refutation: RefutationResult | None = None
+
+    def to_dataframe(self) -> pd.DataFrame:
+        """Convert results to a pandas DataFrame."""
+        data: dict[str, Any] = {
+            "feature": self.feature_names,
+            "treatment_effect": self.treatment_effects,
+        }
+        if self.confidence_intervals is not None:
+            data["ci_lower"] = self.confidence_intervals[:, 0]
+            data["ci_upper"] = self.confidence_intervals[:, 1]
+        if self.p_values is not None:
+            data["p_value"] = self.p_values
+        return pd.DataFrame(data).sort_values("treatment_effect", ascending=False, key=abs)
+
+    def significant_features(self, alpha: float = 0.05) -> list[str]:
+        """Return features with statistically significant causal effects."""
+        if self.p_values is None:
+            return list(self.feature_names)
+        return [
+            name for name, p in zip(self.feature_names, self.p_values, strict=True) if p < alpha
+        ]
 
 
 # Type alias for metric functions that take true and predicted values and return a score.

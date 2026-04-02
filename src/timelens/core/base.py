@@ -89,7 +89,7 @@ class BaseExplainer(ABC):
 
 class MetricBasedExplainer(BaseExplainer):
     """Base class for explainers that rely on predictive performance metrics.
-    
+
     This includes permutation feature importance and other dropping methods.
     """
 
@@ -143,7 +143,7 @@ class MetricBasedExplainer(BaseExplainer):
 
 class AttributionExplainer(BaseExplainer):
     """Base class for explainers that attribute predictions directly to features.
-    
+
     This includes SHAP, SHAP-IQ, and other local attribution methods.
     """
 
@@ -168,8 +168,32 @@ class AttributionExplainer(BaseExplainer):
 
 class CausalExplainer(BaseExplainer):
     """Base class for causal inference based explainers.
-    
+
     This serves as an integration point for structural causal models
-    and DAG-based conditional feature importance.
+    and DAG-based conditional feature importance. Subclasses implement
+    the explain() method using causal estimators (e.g. DoWhy/EconML).
     """
-    pass
+
+    def __init__(
+        self,
+        model: ModelProtocol,
+        treatment_features: list[str],
+        causal_graph: Any | None = None,
+        series_col: str = "level",
+        random_state: int | None = None,
+    ) -> None:
+        """Initialize the causal explainer.
+
+        Args:
+            model: A model with a predict method.
+            treatment_features: Features to estimate causal effects for.
+            causal_graph: Optional DAG (networkx DiGraph or DoWhy graph string).
+            series_col: Column or index level containing series identifiers.
+            random_state: Random seed for reproducibility.
+        """
+        self.model = model
+        self.treatment_features = treatment_features
+        self.causal_graph = causal_graph
+        self.series_col = series_col
+        self.random_state = random_state
+        self._rng = np.random.default_rng(random_state)

@@ -1,144 +1,149 @@
 # Architecture Overview
 
-The Time-Conditional Permutation Feature Importance (timelens) library is designed with a modular, extensible architecture specifically for time series explainability methods. This section describes the high-level structure and organization.
+timelens is organized as a layered explainability toolkit for multi-series forecasting. The architecture now includes feature importance methods, causal analysis, temporal/error analysis, and a unified dashboard orchestration API.
 
 ## Quick Navigation
 
-- **[API Structure & Inheritance](api_structure.md)** - Detailed documentation of all classes, inheritance patterns, and design patterns
-- **[Mermaid Diagrams](inheritance_diagrams.md)** - Visual representations of class hierarchies and data flow
+- [API Structure & Inheritance](api_structure.md)
+- [Mermaid Diagrams](inheritance_diagrams.md)
 
 ## Architecture at a Glance
 
-The library consists of **4 core architectural layers**:
+### 1. Foundation Layer
 
-### 1. **Foundation Layer: Core Base Classes**
-- `BasePartitioner` - Contract for data partitioning strategies
-- `BaseExplainer` - Base for all feature importance calculators
-  - `MetricBasedExplainer` - For performance-drop strategies (PFI)
-  - `AttributionExplainer` - For direct feature attribution (SHAP, SHAP-IQ)
-  - `CausalExplainer` - Integration point for causal models (Future)
-- `BaseAdapter` - Interface for framework integration
+- `BasePartitioner`
+- `BaseExplainer` and specialized bases:
+  - `MetricBasedExplainer`
+  - `AttributionExplainer`
+  - `CausalExplainer`
+- `BaseAdapter`
+- typed result objects in `core/types.py`
 
-**Location**: `src/timelens/core/base.py`
+Primary files:
 
-### 2. **Strategy Layer: Implementations**
+- `src/timelens/core/base.py`
+- `src/timelens/core/types.py`
+- `src/timelens/adapters/base.py`
 
-**Partitioners** (`src/timelens/partitioners/`):
-- `ManualPartitioner` - User-defined group mappings
-- `TreePartitioner` - Automated tree-based subgroup discovery
+### 2. Explainer Layer
 
-**Explainers** (`src/timelens/importance/`):
-- `ConditionalPermutationImportance` - Main algorithm with flexible partitioning
-- `ConditionalSHAP` - Series-aware SHAP values for multi-series models
+Implemented explainers:
 
-**Adapters** (`src/timelens/adapters/`):
-- `SkforecastAdapter` - Integration with skforecast forecasting models
+- `ConditionalPermutationImportance`
+- `ConditionalDropImportance`
+- `ConditionalSHAP`
+- `ConditionalSHAPIQ`
+- `CausalFeatureImportance`
 
-### 3. **Visualization Layer**
-- `plot_importance_bar()` - Horizontal bar chart of feature importance
-- `plot_importance_heatmap()` - Multi-condition heatmap comparison
+Primary files:
 
-**Location**: `src/timelens/visualization/plots.py`
+- `src/timelens/importance/permutation.py`
+- `src/timelens/importance/dropping.py`
+- `src/timelens/importance/shap.py`
+- `src/timelens/importance/shapiq.py`
+- `src/timelens/importance/causal.py`
 
-### 4. **Type System**
-- `BaseResult` - Base protocol for output results
-- `FeatureImportanceResult` - Container for PFI scores
-- `SHAPResult` - Container for SHAP values
-- Protocol types for model contracts
+### 3. Adapter Layer
 
-**Location**: `src/timelens/core/types.py`
+Implemented adapters:
 
----
+- `SkforecastAdapter`
+- `SklearnAdapter`
+- `DartsAdapter`
 
-## Key Design Principles
+Primary files:
 
-### Composition Over Inheritance
-Explainers *compose* partitioners rather than inheriting from them:
-```python
-explainer = ConditionalPermutationImportance(partitioner=TreePartitioner(...))
-```
+- `src/timelens/adapters/skforecast.py`
+- `src/timelens/adapters/sklearn.py`
+- `src/timelens/adapters/darts.py`
 
-### Strategy Pattern
-Interchangeable partitioning strategies (auto vs. manual) provide runtime flexibility:
-```python
-# Strategy 1: Automatic
-ConditionalPermutationImportance(strategy='auto')
+### 4. Analysis Layer
 
-# Strategy 2: Manual
-ConditionalPermutationImportance(strategy='manual', partitioner=manual_partitioner)
-```
+Reusable analysis utilities that are independent from any single explainer:
 
-### Adapter Pattern
-Framework-specific adapters provide a unified interface:
-```python
-adapter = SkforecastAdapter(forecaster, series=data)
-X, y = adapter.get_training_data()
-```
+- `ErrorAnalyzer` (global/per-series/per-window errors)
+- `TemporalImportance` (windowed importance execution)
+- ranking comparison utilities
+- bootstrap significance utilities
 
----
+Primary files:
 
-## Typical Workflow
+- `src/timelens/analysis/error.py`
+- `src/timelens/analysis/temporal.py`
+- `src/timelens/analysis/comparison.py`
+- `src/timelens/analysis/significance.py`
 
-```
-1. Load/Train Model
-   └─ Forecaster, classifier, or any model with predict()
+### 5. Dashboard Layer
 
-2. Extract Training Data (Adapter)
-   └─ SkforecastAdapter.get_training_data()
-   └─ Output: X (features), y (target)
+Builder-style orchestration API:
 
-3. Create Importance Explainer
-   └─ ConditionalPermutationImportance / ConditionalSHAP
-   └─ Specify: strategy, metric, partitioner, etc.
+- `Dashboard`
+- components: interpretability, error analysis, causal, interactions
+- `DashboardResult`
+- HTML report generation and browser rendering
 
-4. Compute Importance
-   └─ explainer.explain(X, y, ...)
-   └─ Output: Explanation Result (e.g., FeatureImportanceResult)
+Primary files:
 
-5. Visualize Results
-   └─ plot_importance_bar(result)
-   └─ plot_importance_heatmap(results_dict)
-```
+- `src/timelens/dashboard/core.py`
+- `src/timelens/dashboard/components/`
+- `src/timelens/dashboard/results.py`
+- `src/timelens/dashboard/report.py`
 
----
+### 6. Visualization Layer
 
-## Module Dependencies
+- `plot_importance_bar`
+- `plot_importance_heatmap`
+- `plot_shap_summary`
+- `plot_shap_bar`
+- `plot_importance_comparison`
 
-```
+Primary file:
+
+- `src/timelens/visualization/plots.py`
+
+## Design Principles
+
+### Composition over inheritance
+
+Explainers compose partitioners and models rather than inheriting implementation behavior from them.
+
+### Strategy-driven execution
+
+Users can switch partitioning and method choices with runtime parameters (`strategy`, `methods`, estimator selections).
+
+### Adapter abstraction
+
+Framework-specific model interfaces are wrapped into a common contract (`get_training_data`, `predict`, metadata helpers).
+
+### Orchestration isolation
+
+`Dashboard` orchestrates existing explainers and analysis helpers instead of re-implementing ML logic.
+
+## Typical Workflows
+
+### Direct explainer workflow
+
+1. Build adapter for your model/framework.
+2. Extract `X`, `y`.
+3. Run one explainer.
+4. Visualize or export result tables.
+
+### Unified dashboard workflow
+
+1. Create `Dashboard(model, X, y, series_col=...)`.
+2. Add components with `add_*` builder methods.
+3. Execute `compute()`.
+4. Inspect `DashboardResult`, compare rankings, and generate HTML reports.
+
+## Module Map
+
+```text
 timelens/
-├── core/
-│   ├── base.py          → Abstract base classes (BaseExplainer, MetricBasedExplainer, AttributionExplainer)
-│   └── types.py         → Type definitions, protocols
-│
-├── partitioners/
-│   ├── base.py (none)   → Inherits from core.base
-│   ├── manual.py        → ManualPartitioner → BasePartitioner
-│   └── tree.py          → TreePartitioner → BasePartitioner (+ sklearn)
-│
-├── importance/
-│   ├── permutation.py   → ConditionalPermutationImportance → MetricBasedExplainer
-│   └── shap.py          → ConditionalSHAP → AttributionExplainer
-│
-├── adapters/
-│   ├── base.py          → BaseAdapter
-│   └── skforecast.py    → SkforecastAdapter → BaseAdapter
-│
-└── visualization/
-    └── plots.py         → Utility functions (no classes)
+├── core/            # base abstractions and result types
+├── partitioners/    # grouping strategies for conditional methods
+├── adapters/        # framework adapters (skforecast, sklearn, darts)
+├── importance/      # explainers (permutation, dropping, SHAP, SHAP-IQ, causal)
+├── analysis/        # error/temporal/comparison/significance utilities
+├── dashboard/       # orchestration API + components + report rendering
+└── visualization/   # plotting helpers
 ```
-
----
-
-## For More Details
-
-See [API Structure & Inheritance](api_structure.md) for:
-- Complete class descriptions
-- Method signatures and responsibilities
-- Integration examples
-- Pattern explanations
-
-See [Mermaid Diagrams](inheritance_diagrams.md) for:
-- Visual class hierarchies
-- Data flow diagrams
-- Module organization
-- Composition relationships

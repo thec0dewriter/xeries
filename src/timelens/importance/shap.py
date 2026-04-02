@@ -142,7 +142,7 @@ class ConditionalSHAP(AttributionExplainer):
             all_shap_values.append(instance_shap)
             all_base_values.append(
                 explainer.expected_value[0]
-                if isinstance(explainer.expected_value, (list, np.ndarray))
+                if isinstance(explainer.expected_value, list | np.ndarray)
                 and np.asarray(explainer.expected_value).ndim > 0
                 and len(explainer.expected_value) == 1
                 else explainer.expected_value

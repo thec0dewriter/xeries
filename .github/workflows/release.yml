@@ -19,6 +19,9 @@ permissions:
   contents: read
   id-token: write
 
+env:
+  UV_SYSTEM_PYTHON: 1
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,6 +34,7 @@ jobs:
         uses: astral-sh/setup-uv@v4
         with:
           version: "latest"
+          enable-cache: true
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -40,7 +44,7 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION=$(grep -Po '(?<=__version__ = ")[^"]*' src/tcpfi/_version.py)
+          VERSION=$(grep -Po '(?<=__version__ = ")[^"]*' src/timelens/_version.py)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Package version: $VERSION"
 
@@ -77,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/project/tcpfi/
+      url: https://test.pypi.org/project/timelens/
 
     steps:
       - name: Download artifacts
@@ -100,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/tcpfi/
+      url: https://pypi.org/project/timelens/
 
     steps:
       - name: Download artifacts
@@ -113,12 +117,12 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           # Uses trusted publishing (OIDC) - no API token needed
-          # Configure at: https://pypi.org/manage/project/tcpfi/settings/publishing/
+          # Configure at: https://pypi.org/manage/project/timelens/settings/publishing/
           skip-existing: true
 
   github-release:
     needs: [build, publish-pypi]
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: startsWith(github.ref, 'refs/tags/v') && needs.publish-pypi.result == 'success'
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -137,4 +141,4 @@ jobs:
         with:
           files: dist/*
           generate_release_notes: true
-          name: "tcpfi v${{ needs.build.outputs.version }}"
+          name: "timelens v${{ needs.build.outputs.version }}"
