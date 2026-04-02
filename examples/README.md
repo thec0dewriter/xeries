@@ -25,7 +25,7 @@ uv add xeries --extra notebooks
 For skforecast integration:
 
 ```bash
-pip install timelens[skforecast,notebooks]
+pip install xeries[skforecast,notebooks]
 ```
 
 ### Launch Jupyter

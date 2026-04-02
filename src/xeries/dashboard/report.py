@@ -8,7 +8,7 @@ from typing import Any
 from xeries.dashboard.results import DashboardResult
 
 
-def render_html_report(results: DashboardResult, title: str = "TimeLens Dashboard Report") -> str:
+def render_html_report(results: DashboardResult, title: str = "Xeries Dashboard Report") -> str:
     """Render a dashboard report to HTML using Jinja2."""
     try:
         from jinja2 import Template
@@ -68,12 +68,12 @@ def write_html_report(path: str | Path, results: DashboardResult, title: str) ->
     return output_path
 
 
-def show_html_report(results: DashboardResult, title: str = "TimeLens Dashboard Report") -> Path:
+def show_html_report(results: DashboardResult, title: str = "Xeries Dashboard Report") -> Path:
     """Write and open a temporary report in the default browser."""
     import tempfile
     import webbrowser
 
-    temp_path = Path(tempfile.gettempdir()) / "timelens_dashboard_report.html"
+    temp_path = Path(tempfile.gettempdir()) / "xeries_dashboard_report.html"
     write_html_report(temp_path, results, title=title)
     webbrowser.open(temp_path.as_uri())
     return temp_path
