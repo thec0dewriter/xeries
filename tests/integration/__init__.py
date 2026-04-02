@@ -1,1 +1,1 @@
-"""Integration tests for timelens."""
+"""Integration tests for xeries."""

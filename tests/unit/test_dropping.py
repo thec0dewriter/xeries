@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from timelens.importance.dropping import ConditionalDropImportance
+from xeries.importance.dropping import ConditionalDropImportance
 
 if TYPE_CHECKING:
     from tests.conftest import MockModel

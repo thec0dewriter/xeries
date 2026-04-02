@@ -9,7 +9,7 @@ import pandas as pd
 import pytest
 from numpy.typing import NDArray
 
-from timelens.adapters.base import BaseAdapter
+from xeries.adapters.base import BaseAdapter
 
 
 class IncompleteAdapter(BaseAdapter):

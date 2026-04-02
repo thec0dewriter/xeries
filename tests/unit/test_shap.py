@@ -7,7 +7,7 @@ import pandas as pd
 import pytest
 from sklearn.ensemble import RandomForestRegressor
 
-from timelens.core.types import SHAPResult
+from xeries.core.types import SHAPResult
 
 
 class TestConditionalSHAP:
@@ -59,7 +59,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test explainer initialization."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -81,7 +81,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing SHAP values."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -106,7 +106,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test explaining a single instance."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -128,7 +128,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing mean absolute SHAP values."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -154,7 +154,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test computing global importance."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -176,7 +176,7 @@ class TestConditionalSHAP:
         fitted_model_small: RandomForestRegressor,
     ) -> None:
         """Test that series-specific backgrounds are prepared."""
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         explainer = ConditionalSHAP(
@@ -203,7 +203,7 @@ class TestConditionalSHAP:
         This test verifies the fix for the issue where shap_values[0] was
         incorrectly extracting single elements instead of feature arrays.
         """
-        from timelens.importance.shap import ConditionalSHAP
+        from xeries.importance.shap import ConditionalSHAP
 
         X, _ = small_data
         n_features = X.shape[1]

@@ -86,7 +86,7 @@ jobs:
         run: uv sync --dev
 
       - name: Run tests
-        run: uv run pytest tests -v --cov=timelens --cov-report=xml -m "not slow and not integration"
+        run: uv run pytest tests -v --cov=xeries --cov-report=xml -m "not slow and not integration"
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.11'

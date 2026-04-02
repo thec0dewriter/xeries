@@ -44,7 +44,7 @@ jobs:
       - name: Extract version
         id: version
         run: |
-          VERSION=$(grep -Po '(?<=__version__ = ")[^"]*' src/timelens/_version.py)
+          VERSION=$(grep -Po '(?<=__version__ = ")[^"]*' src/xeries/_version.py)
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Package version: $VERSION"
 
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: testpypi
-      url: https://test.pypi.org/project/timelens/
+      url: https://test.pypi.org/project/xeries/
 
     steps:
       - name: Download artifacts
@@ -104,7 +104,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: pypi
-      url: https://pypi.org/project/timelens/
+      url: https://pypi.org/project/xeries/
 
     steps:
       - name: Download artifacts
@@ -117,7 +117,7 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           # Uses trusted publishing (OIDC) - no API token needed
-          # Configure at: https://pypi.org/manage/project/timelens/settings/publishing/
+          # Configure at: https://pypi.org/manage/project/xeries/settings/publishing/
           skip-existing: true
 
   github-release:
@@ -141,4 +141,4 @@ jobs:
         with:
           files: dist/*
           generate_release_notes: true
-          name: "timelens v${{ needs.build.outputs.version }}"
+          name: "xeries v${{ needs.build.outputs.version }}"

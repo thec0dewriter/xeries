@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from timelens.partitioners.manual import ManualPartitioner
-from timelens.partitioners.tree import TreePartitioner
+from xeries.partitioners.manual import ManualPartitioner
+from xeries.partitioners.tree import TreePartitioner
 
 
 class TestManualPartitioner:

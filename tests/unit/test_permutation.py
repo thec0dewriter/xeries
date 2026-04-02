@@ -7,9 +7,9 @@ import pandas as pd
 import pytest
 from sklearn.ensemble import RandomForestRegressor
 
-from timelens.core.types import FeatureImportanceResult
-from timelens.importance.permutation import ConditionalPermutationImportance
-from timelens.partitioners.manual import ManualPartitioner
+from xeries.core.types import FeatureImportanceResult
+from xeries.importance.permutation import ConditionalPermutationImportance
+from xeries.partitioners.manual import ManualPartitioner
 
 
 class TestConditionalPermutationImportance:

@@ -1,41 +1,41 @@
 # API Reference
 
-This page provides an overview of the timelens API.
+This page provides an overview of the xeries API.
 
 ## Main Classes
 
 ### ConditionalPermutationImportance
 
-::: timelens.importance.permutation.ConditionalPermutationImportance
+::: xeries.importance.permutation.ConditionalPermutationImportance
 
 ### ConditionalSHAP
 
-::: timelens.importance.shap.ConditionalSHAP
+::: xeries.importance.shap.ConditionalSHAP
 
 ### ManualPartitioner
 
-::: timelens.partitioners.manual.ManualPartitioner
+::: xeries.partitioners.manual.ManualPartitioner
 
 ### TreePartitioner
 
-::: timelens.partitioners.tree.TreePartitioner
+::: xeries.partitioners.tree.TreePartitioner
 
 ## Result Types
 
 ### FeatureImportanceResult
 
-::: timelens.core.types.FeatureImportanceResult
+::: xeries.core.types.FeatureImportanceResult
 
 ### SHAPResult
 
-::: timelens.core.types.SHAPResult
+::: xeries.core.types.SHAPResult
 
 ## Visualization
 
 ### plot_importance_bar
 
-::: timelens.visualization.plots.plot_importance_bar
+::: xeries.visualization.plots.plot_importance_bar
 
 ### plot_importance_heatmap
 
-::: timelens.visualization.plots.plot_importance_heatmap
+::: xeries.visualization.plots.plot_importance_heatmap

@@ -1,4 +1,4 @@
-# TimeLens Extension — Task Tracker
+# Xeries Extension — Task Tracker
 
 ## Phase 1: Housekeeping & Quality ✅
 

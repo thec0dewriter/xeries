@@ -1,8 +1,8 @@
-site_name: timelens
+site_name: xeries
 site_description: Conditional Feature Importance for Multi-Time Series Forecasting
-site_url: https://thec0dewriter.github.io/timelens
-repo_url: https://github.com/thec0dewriter/timelens
-repo_name: thec0dewriter/timelens
+site_url: https://thec0dewriter.github.io/xeries
+repo_url: https://github.com/thec0dewriter/time_conditional_pfi
+repo_name: thec0dewriter/time_conditional_pfi
 
 theme:
   name: material
@@ -82,4 +82,4 @@ nav:
 extra:
   social:
     - icon: fontawesome/brands/github
-      link: https://github.com/thec0dewriter/timelens
+      link: https://github.com/thec0dewriter/time_conditional_pfi

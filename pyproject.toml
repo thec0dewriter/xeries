@@ -1,5 +1,5 @@
 [project]
-name = "timelens"
+name = "xeries"
 dynamic = ["version"]
 description = "Conditional Feature Importance for Multi-Time Series Forecasting"
 readme = "README.md"
@@ -49,7 +49,7 @@ dashboard = ["jinja2>=3.1"]
 # Note: causal deps (dowhy, econml) are not listed here because econml
 # requires shap<0.49.0, conflicting with shap>=0.49.1 in core deps.
 # Users should install them manually in a compatible environment.
-all = ["timelens[skforecast,shapiq,causal-discovery,darts,dashboard]"]
+all = ["xeries[skforecast,shapiq,causal-discovery,darts,dashboard]"]
 notebooks = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
@@ -60,19 +60,19 @@ notebooks = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/thec0dewriter/timelens"
-Documentation = "https://thec0dewriter.github.io/timelens"
-Repository = "https://github.com/thec0dewriter/timelens"
+Homepage = "https://github.com/thec0dewriter/xeries"
+Documentation = "https://thec0dewriter.github.io/xeries"
+Repository = "https://github.com/thec0dewriter/xeries"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/timelens/_version.py"
+path = "src/xeries/_version.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/timelens"]
+packages = ["src/xeries"]
 
 [tool.ruff]
 line-length = 100
@@ -83,11 +83,11 @@ src = ["src", "tests"]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["timelens"]
+known-first-party = ["xeries"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=timelens --cov-report=term-missing --cov-report=xml"
+addopts = "-v --cov=xeries --cov-report=term-missing --cov-report=xml"
 markers = [
     "slow: marks tests as slow",
     "integration: integration tests requiring external libs",
@@ -96,7 +96,7 @@ markers = [
 norecursedirs = [".ipynb_checkpoints"]
 
 [tool.coverage.run]
-source = ["src/timelens"]
+source = ["src/xeries"]
 branch = true
 
 [tool.coverage.report]
@@ -107,7 +107,7 @@ exclude_lines = [
 ]
 
 [tool.semantic_release]
-version_variable = "src/timelens/_version.py:__version__"
+version_variable = "src/xeries/_version.py:__version__"
 version_pattern = '^__version__ = "{version}"'
 version_source = "tag"
 branch = "main"

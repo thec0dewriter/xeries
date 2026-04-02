@@ -5,10 +5,10 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from timelens.analysis.comparison import compare_rankings
-from timelens.analysis.error import ErrorAnalyzer
-from timelens.analysis.significance import bootstrap_interval, estimate_significance
-from timelens.core.types import FeatureImportanceResult
+from xeries.analysis.comparison import compare_rankings
+from xeries.analysis.error import ErrorAnalyzer
+from xeries.analysis.significance import bootstrap_interval, estimate_significance
+from xeries.core.types import FeatureImportanceResult
 
 
 def test_error_analyzer_outputs() -> None:

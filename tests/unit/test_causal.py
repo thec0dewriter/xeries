@@ -8,8 +8,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from timelens.core.types import CausalResult, RefutationResult
-from timelens.importance.causal import CausalFeatureImportance
+from xeries.core.types import CausalResult, RefutationResult
+from xeries.importance.causal import CausalFeatureImportance
 
 
 class TestCausalResult:

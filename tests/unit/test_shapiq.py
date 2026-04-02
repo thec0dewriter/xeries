@@ -8,7 +8,7 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from timelens.importance.shapiq import ConditionalSHAPIQ, SHAPIQResult
+from xeries.importance.shapiq import ConditionalSHAPIQ, SHAPIQResult
 
 
 def _make_mock_interaction_values(

@@ -1,6 +1,6 @@
 # Architecture Overview
 
-timelens is organized as a layered explainability toolkit for multi-series forecasting. The architecture now includes feature importance methods, causal analysis, temporal/error analysis, and a unified dashboard orchestration API.
+xeries is organized as a layered explainability toolkit for multi-series forecasting. The architecture now includes feature importance methods, causal analysis, temporal/error analysis, and a unified dashboard orchestration API.
 
 ## Quick Navigation
 
@@ -21,9 +21,9 @@ timelens is organized as a layered explainability toolkit for multi-series forec
 
 Primary files:
 
-- `src/timelens/core/base.py`
-- `src/timelens/core/types.py`
-- `src/timelens/adapters/base.py`
+- `src/xeries/core/base.py`
+- `src/xeries/core/types.py`
+- `src/xeries/adapters/base.py`
 
 ### 2. Explainer Layer
 
@@ -37,11 +37,11 @@ Implemented explainers:
 
 Primary files:
 
-- `src/timelens/importance/permutation.py`
-- `src/timelens/importance/dropping.py`
-- `src/timelens/importance/shap.py`
-- `src/timelens/importance/shapiq.py`
-- `src/timelens/importance/causal.py`
+- `src/xeries/importance/permutation.py`
+- `src/xeries/importance/dropping.py`
+- `src/xeries/importance/shap.py`
+- `src/xeries/importance/shapiq.py`
+- `src/xeries/importance/causal.py`
 
 ### 3. Adapter Layer
 
@@ -53,9 +53,9 @@ Implemented adapters:
 
 Primary files:
 
-- `src/timelens/adapters/skforecast.py`
-- `src/timelens/adapters/sklearn.py`
-- `src/timelens/adapters/darts.py`
+- `src/xeries/adapters/skforecast.py`
+- `src/xeries/adapters/sklearn.py`
+- `src/xeries/adapters/darts.py`
 
 ### 4. Analysis Layer
 
@@ -68,10 +68,10 @@ Reusable analysis utilities that are independent from any single explainer:
 
 Primary files:
 
-- `src/timelens/analysis/error.py`
-- `src/timelens/analysis/temporal.py`
-- `src/timelens/analysis/comparison.py`
-- `src/timelens/analysis/significance.py`
+- `src/xeries/analysis/error.py`
+- `src/xeries/analysis/temporal.py`
+- `src/xeries/analysis/comparison.py`
+- `src/xeries/analysis/significance.py`
 
 ### 5. Dashboard Layer
 
@@ -84,10 +84,10 @@ Builder-style orchestration API:
 
 Primary files:
 
-- `src/timelens/dashboard/core.py`
-- `src/timelens/dashboard/components/`
-- `src/timelens/dashboard/results.py`
-- `src/timelens/dashboard/report.py`
+- `src/xeries/dashboard/core.py`
+- `src/xeries/dashboard/components/`
+- `src/xeries/dashboard/results.py`
+- `src/xeries/dashboard/report.py`
 
 ### 6. Visualization Layer
 
@@ -99,7 +99,7 @@ Primary files:
 
 Primary file:
 
-- `src/timelens/visualization/plots.py`
+- `src/xeries/visualization/plots.py`
 
 ## Design Principles
 
@@ -138,7 +138,7 @@ Framework-specific model interfaces are wrapped into a common contract (`get_tra
 ## Module Map
 
 ```text
-timelens/
+xeries/
 ├── core/            # base abstractions and result types
 ├── partitioners/    # grouping strategies for conditional methods
 ├── adapters/        # framework adapters (skforecast, sklearn, darts)

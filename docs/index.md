@@ -1,4 +1,4 @@
-# timelens
+# xeries
 
 **Time Series Explainability & Conditional Permutation Feature Importance**
 
@@ -8,7 +8,7 @@ A Python library for generalized time series explainability in multi-time series
 
 When using global models for multi-time series forecasting, standard feature importance methods can produce misleading results because they fail to respect the conditional nature of series-dependent features (like lags and series identifiers). This leads to unrealistic data permutations and unreliable insights.
 
-**timelens** addresses this challenge by providing a generalized approach:
+**xeries** addresses this challenge by providing a generalized approach:
 
 - **Generic Explainability Architecture**: A unified foundation for multiple interpretation methodologies
 - **Conditional Permutation Importance**: Permutes features only within meaningful subgroups
@@ -21,29 +21,29 @@ When using global models for multi-time series forecasting, standard feature imp
 ## Installation
 
 ```bash
-pip install timelens
+pip install xeries
 ```
 
 Or with UV:
 
 ```bash
-uv add timelens
+uv add xeries
 ```
 
 For skforecast integration:
 
 ```bash
-pip install timelens[skforecast]
+pip install xeries[skforecast]
 ```
 
 ## Quick Example
 
 ```python
-import timelens
+import xeries
 from sklearn.ensemble import RandomForestRegressor
 
 # Assume you have a trained model and data
-explainer = timelens.ConditionalPermutationImportance(
+explainer = xeries.ConditionalPermutationImportance(
     model=model,
     metric='mse',
     strategy='auto'  # Uses tree-based cs-PFI

@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING
 import numpy as np
 import pytest
 
-from timelens.core.types import FeatureImportanceResult, SHAPResult
+from xeries.core.types import FeatureImportanceResult, SHAPResult
 
 if TYPE_CHECKING:
     pass
@@ -88,7 +88,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result)
         assert fig is not None
@@ -102,7 +102,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result, max_features=2)
         # Should only show top 2 features
@@ -116,7 +116,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result, title="Custom Title")
         assert ax.get_title() == "Custom Title"
@@ -129,7 +129,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result_no_std, show_std=True)
         # Should not error even though std is None
@@ -143,7 +143,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result, show_std=False)
         # No error bars when show_std=False
@@ -157,7 +157,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig_ext, ax_ext = plt.subplots()
         fig, ax = plot_importance_bar(sample_importance_result, ax=ax_ext)
@@ -171,7 +171,7 @@ class TestPlotImportanceBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_bar
+        from xeries.visualization.plots import plot_importance_bar
 
         fig, ax = plot_importance_bar(sample_importance_result, max_features=None)
         assert len(ax.patches) == 4
@@ -188,7 +188,7 @@ class TestPlotImportanceHeatmap:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_heatmap
+        from xeries.visualization.plots import plot_importance_heatmap
 
         fig, ax = plot_importance_heatmap(multiple_importance_results)
         assert fig is not None
@@ -202,7 +202,7 @@ class TestPlotImportanceHeatmap:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_heatmap
+        from xeries.visualization.plots import plot_importance_heatmap
 
         fig, ax = plot_importance_heatmap(
             multiple_importance_results, title="Heatmap Title"
@@ -217,7 +217,7 @@ class TestPlotImportanceHeatmap:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_heatmap
+        from xeries.visualization.plots import plot_importance_heatmap
 
         fig, ax = plot_importance_heatmap(
             multiple_importance_results, features=["lag_1", "lag_2"]
@@ -233,7 +233,7 @@ class TestPlotImportanceHeatmap:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_heatmap
+        from xeries.visualization.plots import plot_importance_heatmap
 
         fig, ax = plot_importance_heatmap(
             multiple_importance_results, annot=False
@@ -251,7 +251,7 @@ class TestPlotShapBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_shap_bar
+        from xeries.visualization.plots import plot_shap_bar
 
         fig, ax = plot_shap_bar(sample_shap_result)
         assert fig is not None
@@ -263,7 +263,7 @@ class TestPlotShapBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_shap_bar
+        from xeries.visualization.plots import plot_shap_bar
 
         fig, ax = plot_shap_bar(sample_shap_result, max_features=2)
         assert len(ax.patches) == 2
@@ -274,7 +274,7 @@ class TestPlotShapBar:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_shap_bar
+        from xeries.visualization.plots import plot_shap_bar
 
         fig, ax = plot_shap_bar(sample_shap_result, title="SHAP Title")
         assert ax.get_title() == "SHAP Title"
@@ -293,7 +293,7 @@ class TestPlotImportanceComparison:
         matplotlib.use("Agg")
         import matplotlib.pyplot as plt
 
-        from timelens.visualization.plots import plot_importance_comparison
+        from xeries.visualization.plots import plot_importance_comparison
 
         fig, ax = plot_importance_comparison(multiple_importance_results, top_n=3)
         assert fig is not None

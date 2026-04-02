@@ -1,10 +1,10 @@
 # API Structure & Inheritance
 
-This document describes the current API surface and inheritance relationships in timelens.
+This document describes the current API surface and inheritance relationships in xeries.
 
 ## Core Abstractions
 
-### timelens.core.base
+### xeries.core.base
 
 - `BasePartitioner`: contract for subgroup generation (`fit`, `get_groups`, `fit_get_groups`).
 - `BaseExplainer`: common `explain(...)` contract.
@@ -12,7 +12,7 @@ This document describes the current API surface and inheritance relationships in
 - `AttributionExplainer`: attribution explainers with background data support.
 - `CausalExplainer`: causal explainers with treatment features, graph metadata, and series context.
 
-### timelens.core.types
+### xeries.core.types
 
 - `BaseResult`
 - `FeatureImportanceResult`
@@ -23,11 +23,11 @@ This document describes the current API surface and inheritance relationships in
 
 ## Partitioners
 
-### timelens.partitioners.manual.ManualPartitioner
+### xeries.partitioners.manual.ManualPartitioner
 
 - manual mapping from series/category values to groups.
 
-### timelens.partitioners.tree.TreePartitioner
+### xeries.partitioners.tree.TreePartitioner
 
 - cs-PFI style automatic grouping using tree-based structure.
 
@@ -67,28 +67,28 @@ Required methods:
 
 ## Analysis Utilities
 
-### timelens.analysis.error.ErrorAnalyzer
+### xeries.analysis.error.ErrorAnalyzer
 
 - global metrics
 - per-series metrics
 - fixed-window temporal metrics
 
-### timelens.analysis.temporal.TemporalImportance
+### xeries.analysis.temporal.TemporalImportance
 
 - run an explainer across windows and return window-feature importance frames.
 
-### timelens.analysis.comparison.compare_rankings
+### xeries.analysis.comparison.compare_rankings
 
 - pairwise ranking agreement matrix (Kendall-style agreement).
 
-### timelens.analysis.significance
+### xeries.analysis.significance
 
 - `bootstrap_interval`
 - `estimate_significance`
 
 ## Dashboard API
 
-### timelens.dashboard.core.Dashboard
+### xeries.dashboard.core.Dashboard
 
 Builder methods:
 
@@ -119,7 +119,7 @@ Execution/output methods:
 
 ## Visualization API
 
-### timelens.visualization.plots
+### xeries.visualization.plots
 
 - `plot_importance_bar`
 - `plot_importance_heatmap`

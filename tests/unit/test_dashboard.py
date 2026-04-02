@@ -5,7 +5,7 @@ from __future__ import annotations
 import numpy as np
 import pandas as pd
 
-from timelens.dashboard.core import Dashboard
+from xeries.dashboard.core import Dashboard
 
 
 class _DummyModel:

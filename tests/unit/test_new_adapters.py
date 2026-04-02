@@ -6,8 +6,8 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from timelens.adapters.darts import DartsAdapter
-from timelens.adapters.sklearn import SklearnAdapter
+from xeries.adapters.darts import DartsAdapter
+from xeries.adapters.sklearn import SklearnAdapter
 
 
 class _DummyModel:

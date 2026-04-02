@@ -1,4 +1,4 @@
-# TimeLens Extension Plan (Updated)
+# Xeries Extension Plan (Updated)
 
 ## Completed Work
 
@@ -61,7 +61,7 @@ graph LR
 ### Proposed API
 
 ```python
-from timelens.importance.causal import CausalFeatureImportance
+from xeries.importance.causal import CausalFeatureImportance
 
 # Option A: User provides a causal graph
 import networkx as nx
@@ -102,7 +102,7 @@ print(refutation)  # Should show ~0 effect
 
 ### Files
 
-#### [NEW] [causal.py](file:///e:/repos/time_conditional_pfi/src/timelens/importance/causal.py)
+#### [NEW] [causal.py](file:///e:/repos/time_conditional_pfi/src/xeries/importance/causal.py)
 ```
 CausalFeatureImportance(CausalExplainer)
 ├── __init__(model, causal_graph=None, treatment_features=None,
@@ -115,7 +115,7 @@ CausalFeatureImportance(CausalExplainer)
 └── _series_conditional_effects(X, y) → dict[str, float]
 ```
 
-#### [MODIFY] [types.py](file:///e:/repos/time_conditional_pfi/src/timelens/core/types.py)
+#### [MODIFY] [types.py](file:///e:/repos/time_conditional_pfi/src/xeries/core/types.py)
 ```python
 @dataclass
 class CausalResult(BaseResult):
@@ -139,7 +139,7 @@ class RefutationResult(BaseResult):
     passed: bool                      # True if refutation confirms estimate
 ```
 
-#### [MODIFY] [base.py](file:///e:/repos/time_conditional_pfi/src/timelens/core/base.py)
+#### [MODIFY] [base.py](file:///e:/repos/time_conditional_pfi/src/xeries/core/base.py)
 - Flesh out `CausalExplainer` with proper `__init__` and abstract interface
 
 #### [MODIFY] [pyproject.toml](file:///e:/repos/time_conditional_pfi/pyproject.toml)
@@ -147,7 +147,7 @@ class RefutationResult(BaseResult):
 [project.optional-dependencies]
 causal = ["dowhy>=0.11", "econml>=0.15"]
 causal-discovery = ["causal-learn>=0.1.3"]
-all = ["timelens[skforecast,shapiq,causal]"]
+all = ["xeries[skforecast,shapiq,causal]"]
 ```
 
 #### [NEW] [test_causal.py](file:///e:/repos/time_conditional_pfi/tests/unit/test_causal.py)
@@ -172,11 +172,11 @@ all = ["timelens[skforecast,shapiq,causal]"]
 **Estimated effort**: Large
 
 > [!IMPORTANT]
-> This is the **top-level user-facing API** that ties everything together. Just as Azure RAI provides a unified dashboard for model debugging + decision-making, TimeLens Dashboard provides a unified dashboard for **time-series explainability**.
+> This is the **top-level user-facing API** that ties everything together. Just as Azure RAI provides a unified dashboard for model debugging + decision-making, Xeries Dashboard provides a unified dashboard for **time-series explainability**.
 
-### Azure RAI → TimeLens Mapping
+### Azure RAI → Xeries Mapping
 
-| Azure RAI Component | TimeLens Equivalent | Status |
+| Azure RAI Component | Xeries Equivalent | Status |
 |---------------------|---------------------|--------|
 | Model interpretability | `ConditionalPFI`, `ConditionalSHAP`, `ConditionalSHAPIQ`, `ConditionalDrop` | ✅ |
 | Error analysis | `ErrorAnalysis` (per-series, per-window performance) | 🆕 |
@@ -189,10 +189,10 @@ all = ["timelens[skforecast,shapiq,causal]"]
 ### Proposed Dashboard API
 
 ```python
-import timelens
+import xeries
 
 # ─── 1. Create Dashboard ───
-dashboard = timelens.Dashboard(
+dashboard = xeries.Dashboard(
     model=adapter,           # Any model with .predict()
     X=X_train,
     y=y_train,
@@ -258,7 +258,7 @@ dashboard.generate_scorecard("scorecard.pdf")  # PDF scorecard
 
 ```mermaid
 graph TB
-    subgraph Dashboard["timelens.Dashboard"]
+    subgraph Dashboard["xeries.Dashboard"]
         DC["DashboardConfig"]
         DC --> IC["InterpretabilityComponent"]
         DC --> EC["ErrorAnalysisComponent"]
@@ -309,7 +309,7 @@ graph TB
 ### Module Structure
 
 ```
-timelens/
+xeries/
 ├── dashboard/                    # [NEW MODULE]
 │   ├── __init__.py
 │   ├── core.py                   # Dashboard class (builder + orchestrator)

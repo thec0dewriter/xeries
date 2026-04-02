@@ -1,1 +1,1 @@
-"""Unit tests for timelens."""
+"""Unit tests for xeries."""

@@ -1,1 +1,1 @@
-"""Test suite for timelens."""
+"""Test suite for xeries."""

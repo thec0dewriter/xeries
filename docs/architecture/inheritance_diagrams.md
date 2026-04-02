@@ -91,11 +91,11 @@ graph LR
 
 ```mermaid
 graph TD
-    timelens --> core
-    timelens --> adapters
-    timelens --> partitioners
-    timelens --> importance
-    timelens --> analysis
-    timelens --> dashboard
-    timelens --> visualization
+    xeries --> core
+    xeries --> adapters
+    xeries --> partitioners
+    xeries --> importance
+    xeries --> analysis
+    xeries --> dashboard
+    xeries --> visualization
 ```
