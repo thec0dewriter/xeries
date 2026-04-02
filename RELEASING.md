@@ -8,7 +8,7 @@ This guide describes how to release a new version of xeries to PyPI.
    - Go to https://pypi.org/manage/project/xeries/settings/publishing/
    - Add a new publisher:
      - Owner: `thec0dewriter`
-     - Repository: `time_conditional_pfi`
+     - Repository: `xeries`
      - Workflow name: `release.yml`
      - Environment name: `pypi`
 
