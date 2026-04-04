@@ -1,6 +1,5 @@
 """Feature importance calculation methods."""
 
-
 from xeries.importance.permutation import ConditionalPermutationImportance
 from xeries.importance.shap import ConditionalSHAP
 
