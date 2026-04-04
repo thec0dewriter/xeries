@@ -17,6 +17,7 @@ class TestManualPartitioner:
         """Placeholder test to ensure test discovery works."""
         assert True
 
+
 #     def test_init(self, series_mapping: dict[str, str]) -> None:
 #         """Test partitioner initialization."""
 #         partitioner = ManualPartitioner(series_mapping, series_col="level")
