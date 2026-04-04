@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
-import pytest
+# import numpy as np
+# import pandas as pd
+# import pytest
 
 
 @pytest.mark.integration
@@ -14,7 +14,7 @@ class TestSkforecastIntegration:
     def first(self) -> None:
         """Placeholder test to ensure test discovery works."""
         assert True
-        
+
     # @pytest.fixture
     # def sample_series_data(self) -> pd.DataFrame:
     #     """Create sample multi-series data in skforecast format."""

@@ -1,13 +1,13 @@
 """Unit tests for partitioners."""
 
-from __future__ import annotations
+# from __future__ import annotations
 
-import numpy as np
-import pandas as pd
-import pytest
+# import numpy as np
+# import pandas as pd
+# import pytest
 
-from xeries.partitioners.manual import ManualPartitioner
-from xeries.partitioners.tree import TreePartitioner
+# from xeries.partitioners.manual import ManualPartitioner
+# from xeries.partitioners.tree import TreePartitioner
 
 
 class TestManualPartitioner:
@@ -16,7 +16,7 @@ class TestManualPartitioner:
     def first(self) -> None:
         """Placeholder test to ensure test discovery works."""
         assert True
-        
+
 #     def test_init(self, series_mapping: dict[str, str]) -> None:
 #         """Test partitioner initialization."""
 #         partitioner = ManualPartitioner(series_mapping, series_col="level")

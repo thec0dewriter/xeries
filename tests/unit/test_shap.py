@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-import numpy as np
-import pandas as pd
-import pytest
-from sklearn.ensemble import RandomForestRegressor
+# import numpy as np
+# import pandas as pd
+# import pytest
+# from sklearn.ensemble import RandomForestRegressor
 
-from xeries.core.types import SHAPResult
+# from xeries.core.types import SHAPResult
 
 
 class TestConditionalSHAP:
