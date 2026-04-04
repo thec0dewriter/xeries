@@ -85,7 +85,7 @@ explainer = ConditionalPermutationImportance(
 )
 
 # Compute importance for lag features
-result = explainer.compute(X, y, features=['lag_1', 'lag_2', 'lag_3'])
+result = explainer.explain(X, y, features=['lag_1', 'lag_2', 'lag_3'])
 
 # View results
 print(result.to_dataframe())
