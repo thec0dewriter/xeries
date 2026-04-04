@@ -1,41 +1,41 @@
 # API Reference
 
-This page provides an overview of the tcpfi API.
+This page provides an overview of the xeries API.
 
 ## Main Classes
 
 ### ConditionalPermutationImportance
 
-::: tcpfi.importance.permutation.ConditionalPermutationImportance
+::: xeries.importance.permutation.ConditionalPermutationImportance
 
 ### ConditionalSHAP
 
-::: tcpfi.importance.shap.ConditionalSHAP
+::: xeries.importance.shap.ConditionalSHAP
 
 ### ManualPartitioner
 
-::: tcpfi.partitioners.manual.ManualPartitioner
+::: xeries.partitioners.manual.ManualPartitioner
 
 ### TreePartitioner
 
-::: tcpfi.partitioners.tree.TreePartitioner
+::: xeries.partitioners.tree.TreePartitioner
 
 ## Result Types
 
 ### FeatureImportanceResult
 
-::: tcpfi.core.types.FeatureImportanceResult
+::: xeries.core.types.FeatureImportanceResult
 
 ### SHAPResult
 
-::: tcpfi.core.types.SHAPResult
+::: xeries.core.types.SHAPResult
 
 ## Visualization
 
 ### plot_importance_bar
 
-::: tcpfi.visualization.plots.plot_importance_bar
+::: xeries.visualization.plots.plot_importance_bar
 
 ### plot_importance_heatmap
 
-::: tcpfi.visualization.plots.plot_importance_heatmap
+::: xeries.visualization.plots.plot_importance_heatmap
