@@ -1,1 +1,1 @@
-"""Integration tests for tcpfi."""
+"""Integration tests for xeries."""
