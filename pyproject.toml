@@ -1,5 +1,5 @@
 [project]
-name = "tcpfi"
+name = "xeries"
 dynamic = ["version"]
 description = "Conditional Feature Importance for Multi-Time Series Forecasting"
 readme = "README.md"
@@ -33,17 +33,23 @@ classifiers = [
     "Typing :: Typed",
 ]
 dependencies = [
-    "numpy>=1.24",
-    "pandas>=2.0",
-    "scikit-learn>=1.3",
-    "shap>=0.44",
-    "joblib>=1.3",
+    "scikit-learn>=1.7.2",
+    "pandas>=2.3.3",
+    "shap>=0.49.1",
+    "numpy>=2.2.6",
+    "joblib>=1.5.3",
 ]
 
 [project.optional-dependencies]
 skforecast = ["skforecast>=0.21.0"]
-all = ["tcpfi[skforecast]"]
- 
+shapiq = ["shapiq>=1.0"]
+causal-discovery = ["causal-learn>=0.1.3"]
+darts = ["u8darts>=0.34"]
+dashboard = ["jinja2>=3.1"]
+# Note: causal deps (dowhy, econml) are not listed here because econml
+# requires shap<0.49.0, conflicting with shap>=0.49.1 in core deps.
+# Users should install them manually in a compatible environment.
+all = ["xeries[skforecast,shapiq,causal-discovery,darts,dashboard]"]
 notebooks = [
     "jupyter>=1.0",
     "ipykernel>=6.29",
@@ -54,19 +60,19 @@ notebooks = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/thec0dewriter/time_conditional_pfi"
-Documentation = "https://thec0dewriter.github.io/time_conditional_pfi"
-Repository = "https://github.com/thec0dewriter/time_conditional_pfi"
+Homepage = "https://github.com/thec0dewriter/xeries"
+Documentation = "https://thec0dewriter.github.io/xeries"
+Repository = "https://github.com/thec0dewriter/xeries"
 
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [tool.hatch.version]
-path = "src/tcpfi/_version.py"
+path = "src/xeries/_version.py"
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/tcpfi"]
+packages = ["src/xeries"]
 
 [tool.ruff]
 line-length = 100
@@ -77,20 +83,20 @@ src = ["src", "tests"]
 select = ["E", "F", "I", "UP", "B", "SIM", "RUF"]
 
 [tool.ruff.lint.isort]
-known-first-party = ["tcpfi"]
+known-first-party = ["xeries"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-v --cov=tcpfi --cov-report=term-missing --cov-report=xml"
+addopts = "-v --cov=xeries --cov-report=term-missing --cov-report=xml"
 markers = [
     "slow: marks tests as slow",
     "integration: integration tests requiring external libs",
     "notebook: notebook tests",
 ]
-norecursedirs = [".ipynb_checkpoints"] 
+norecursedirs = [".ipynb_checkpoints"]
 
 [tool.coverage.run]
-source = ["src/tcpfi"]
+source = ["src/xeries"]
 branch = true
 
 [tool.coverage.report]
@@ -99,6 +105,17 @@ exclude_lines = [
     "if TYPE_CHECKING:",
     "raise NotImplementedError",
 ]
+
+[tool.semantic_release]
+version_variable = "src/xeries/_version.py:__version__"
+version_pattern = '^__version__ = "{version}"'
+version_source = "tag"
+branch = "main"
+commit_parser = "angular"
+prerelease = false
+upload_to_pypi = false
+allow_zero_version = true
+build_command = "pip install build && python -m build"
 
 [dependency-groups]
 dev = [
@@ -109,16 +126,14 @@ dev = [
     "pandas-stubs",
     "ruff>=0.15.6",
     "skforecast>=0.21.0",
-    "jupyter>=1.0",
-    "ipykernel>=6.29",
-    "nbformat>=5.10",
-    "nbclient>=0.10",
-    "nbval>=0.11",
-    "matplotlib>=3.8",
+    "lightgbm>=4.6.0",
+    "python-semantic-release>=9.8.0",
+    {include-group = "notebooks"},
 ]
 docs = [
     "mkdocs>=1.6",
     "mkdocs-material>=9.5",
+    "mkdocs-mermaid2-plugin>=1.2.3",
     "mkdocstrings[python]>=0.25",
 ]
 notebooks = [
