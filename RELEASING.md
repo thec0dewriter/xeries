@@ -1,11 +1,11 @@
-# Releasing tcpfi
+# Releasing xeries
 
-This guide describes how to release a new version of tcpfi to PyPI.
+This guide describes how to release a new version of xeries to PyPI.
 
 ## Prerequisites
 
 1. **PyPI Trusted Publishing configured**
-   - Go to https://pypi.org/manage/project/tcpfi/settings/publishing/
+   - Go to https://pypi.org/manage/project/xeries/settings/publishing/
    - Add a new publisher:
      - Owner: `thec0dewriter`
      - Repository: `time_conditional_pfi`
@@ -13,7 +13,7 @@ This guide describes how to release a new version of tcpfi to PyPI.
      - Environment name: `pypi`
 
 2. **TestPyPI Trusted Publishing configured** (optional, for testing)
-   - Go to https://test.pypi.org/manage/project/tcpfi/settings/publishing/
+   - Go to https://test.pypi.org/manage/project/xeries/settings/publishing/
    - Same settings but environment name: `testpypi`
 
 3. **GitHub Environments configured**
@@ -25,7 +25,7 @@ This guide describes how to release a new version of tcpfi to PyPI.
 
 ### 1. Update Version
 
-Edit `src/tcpfi/_version.py` and update the version:
+Edit `src/xeries/_version.py` and update the version:
 
 ```python
 __version__ = "0.2.0"  # New version
@@ -45,7 +45,7 @@ Document changes in a CHANGELOG.md or release notes.
 ### 3. Commit and Push
 
 ```bash
-git add src/tcpfi/_version.py
+git add src/xeries/_version.py
 git commit -m "Bump version to 0.2.0"
 git push origin main
 ```
@@ -59,11 +59,11 @@ Test the release on TestPyPI first:
 3. Select `testpypi` as target
 4. Click "Run workflow"
 
-Verify at https://test.pypi.org/project/tcpfi/
+Verify at https://test.pypi.org/project/xeries/
 
 Test installation:
 ```bash
-pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ tcpfi
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/xeries
 ```
 
 ### 5. Create Release Tag
@@ -81,9 +81,9 @@ This automatically triggers:
 
 ### 6. Verify Release
 
-- Check https://pypi.org/project/tcpfi/
+- Check https://pypi.org/project/xeries/
 - Check GitHub Releases page
-- Test installation: `pip install tcpfi==0.2.0`
+- Test installation: `pip install xeries==0.2.0`
 
 ## Manual Release (Emergency)
 
@@ -100,7 +100,7 @@ If you need to publish without creating a tag:
 
 ### "Tag version does not match package version"
 
-The git tag (e.g., `v0.2.0`) must match the version in `src/tcpfi/_version.py` (e.g., `0.2.0`).
+The git tag (e.g., `v0.2.0`) must match the version in `src/xeries/_version.py` (e.g., `0.2.0`).
 
 Fix:
 ```bash
@@ -108,7 +108,7 @@ Fix:
 git tag -d v0.2.0
 git push origin :refs/tags/v0.2.0
 
-# Fix version in src/tcpfi/_version.py, commit, then re-tag
+# Fix version in src/xeries/_version.py, commit, then re-tag
 git tag v0.2.0
 git push origin v0.2.0
 ```
@@ -128,4 +128,4 @@ uv build
 python -m zipfile -l dist/*.whl
 ```
 
-Check that `src/tcpfi/` is included in the wheel.
+Check that `src/xeries/` is included in the wheel.
