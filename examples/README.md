@@ -1,5 +1,6 @@
 # Examples
 
+<<<<<<< HEAD
 This directory contains Jupyter notebooks demonstrating how to use xeries, organized by method type.
 
 ## Folder Structure
@@ -10,6 +11,9 @@ examples/
 ├── conditional_permutation/  # Conditional permutation importance
 └── integrations/         # Framework integrations
 ```
+=======
+This directory contains Jupyter notebooks demonstrating how to use xeries.
+>>>>>>> 916bf7e (Conditional pimportance (#6))
 
 ## Notebooks
 
@@ -17,6 +21,7 @@ examples/
 
 | Notebook | Description | Dependencies |
 |----------|-------------|--------------|
+<<<<<<< HEAD
 | [01_basic_usage.ipynb](quickstart/01_basic_usage.ipynb) | Basic usage with synthetic data | Core xeries |
 
 ### Conditional Permutation Importance
@@ -32,6 +37,10 @@ examples/
 | Notebook | Description | Dependencies |
 |----------|-------------|--------------|
 | [01_skforecast.ipynb](integrations/01_skforecast.ipynb) | Integration with skforecast | `xeries[skforecast]` |
+=======
+| [01_quickstart.ipynb](01_quickstart.ipynb) | Basic usage with synthetic data | Core xeries |
+| [02_skforecast_integration.ipynb](02_skforecast_integration.ipynb) | Integration with skforecast | `xeries[skforecast]` |
+>>>>>>> 916bf7e (Conditional pimportance (#6))
 
 ## Running the Notebooks
 
@@ -49,12 +58,15 @@ For skforecast integration:
 
 ```bash
 pip install xeries[skforecast,notebooks]
+<<<<<<< HEAD
 ```
 
 For LightGBM examples:
 
 ```bash
 pip install lightgbm
+=======
+>>>>>>> 916bf7e (Conditional pimportance (#6))
 ```
 
 ### Launch Jupyter
