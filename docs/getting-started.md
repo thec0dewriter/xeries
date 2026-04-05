@@ -85,6 +85,20 @@ result = explainer.compute(X, y, features=['lag_1', 'lag_2'])
 df = result.to_dataframe()
 ```
 
+#### Conditional SHAP
+
+```python
+from xeries import ConditionalSHAP
+
+explainer = ConditionalSHAP(
+    predict_fn=model.predict,
+    background_data=X_train,
+    series_col='level',
+)
+
+result = explainer.explain(X_test)
+```
+
 ## Working with skforecast
 
 xeries integrates seamlessly with skforecast:
