@@ -1,12 +1,12 @@
 [project]
 name = "xeries"
 dynamic = ["version"]
-description = "Conditional Feature Importance for Multi-Time Series Forecasting"
+description = "Forecasting explanations for global forecasters, with support for skforecast and more."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
-authors = [{ name = "thec0dewriter" }]
-maintainers = [{ name = "thec0dewriter" }]
+authors = [{ name = "Mátyás Kuti-Kreszács", email = "kutikmatyas@gmail.com" }]
+maintainers = [{ name = "Mátyás Kuti-Kreszács", email = "kutikmatyas@gmail.com" }]
 keywords = [
     "feature-importance",
     "time-series",
