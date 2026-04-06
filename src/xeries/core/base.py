@@ -4,6 +4,8 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
+ 
+from sklearn.metrics import r2_score
 
 import numpy as np
 import pandas as pd
@@ -120,6 +122,7 @@ class MetricBasedExplainer(BaseExplainer):
             "mse": self._mse,
             "mae": self._mae,
             "rmse": self._rmse,
+            "r2":  self._r2,
         }
         if metric not in metrics:
             raise ValueError(f"Unknown metric: {metric}. Choose from {list(metrics.keys())}")
@@ -139,6 +142,11 @@ class MetricBasedExplainer(BaseExplainer):
     def _rmse(y_true: ArrayLike, y_pred: ArrayLike) -> float:
         """Root mean squared error."""
         return float(np.sqrt(np.mean((np.asarray(y_true) - np.asarray(y_pred)) ** 2)))
+
+    @staticmethod
+    def _r2(y_true: ArrayLike, y_pred: ArrayLike) -> float:
+        """R-squared score."""
+        return float(r2_score(y_true, y_pred))
 
 
 class AttributionExplainer(BaseExplainer):

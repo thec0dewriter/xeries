@@ -228,6 +228,88 @@ def plot_shap_bar(
     return fig, ax
 
 
+def plot_importance_per_series(
+    results: dict[str, FeatureImportanceResult],
+    max_features: int | None = 10,
+    figsize: tuple[int, int] | None = None,
+    ncols: int = 2,
+    show_std: bool = True,
+    title: str | None = None,
+) -> tuple[Figure, Any]:
+    """Plot importance bar charts for each series in a grid layout.
+
+    Creates a subplot grid with one bar chart per series, allowing visual
+    comparison of feature importance across different time series.
+
+    Args:
+        results: Dictionary mapping series IDs to FeatureImportanceResult.
+        max_features: Maximum number of features to display per subplot.
+        figsize: Figure size (width, height). If None, auto-calculated based on grid.
+        ncols: Number of columns in the subplot grid.
+        show_std: Whether to show error bars for standard deviation.
+        title: Overall figure title.
+
+    Returns:
+        Tuple of (Figure, array of Axes).
+
+    Example:
+        >>> results = explainer.explain_per_series(X, y, series_col='level')
+        >>> fig, axes = plot_importance_per_series(results, ncols=3)
+    """
+    try:
+        import matplotlib.pyplot as plt
+    except ImportError as e:
+        raise ImportError(
+            "matplotlib is required for plotting. Install it with: pip install matplotlib"
+        ) from e
+
+    n_series = len(results)
+    if n_series == 0:
+        raise ValueError("No results to plot")
+
+    nrows = (n_series + ncols - 1) // ncols
+
+    if figsize is None:
+        figsize = (6 * ncols, 4 * nrows)
+
+    fig, axes = plt.subplots(nrows, ncols, figsize=figsize)
+
+    if n_series == 1:
+        axes = np.array([[axes]])
+    elif nrows == 1:
+        axes = axes.reshape(1, -1)
+    elif ncols == 1:
+        axes = axes.reshape(-1, 1)
+
+    axes_flat = axes.flatten()
+
+    for idx, (series_id, result) in enumerate(results.items()):
+        ax = axes_flat[idx]
+        df = result.to_dataframe()
+        if max_features is not None:
+            df = df.head(max_features)
+
+        y_pos = np.arange(len(df))
+        importances = df["importance"].values
+        xerr = df["std"].values if show_std and "std" in df.columns else None
+
+        ax.barh(y_pos, importances, xerr=xerr, alpha=0.8, capsize=3)
+        ax.set_yticks(y_pos)
+        ax.set_yticklabels(df["feature"].values)
+        ax.invert_yaxis()
+        ax.set_xlabel("Importance")
+        ax.set_title(f"Series: {series_id}")
+
+    for idx in range(n_series, len(axes_flat)):
+        axes_flat[idx].set_visible(False)
+
+    if title:
+        fig.suptitle(title, fontsize=14, fontweight="bold")
+
+    plt.tight_layout()
+    return fig, axes
+
+
 def plot_importance_comparison(
     results: dict[str, FeatureImportanceResult],
     top_n: int = 10,

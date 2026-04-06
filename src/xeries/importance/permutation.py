@@ -54,7 +54,7 @@ class ConditionalPermutationImportance(MetricBasedExplainer):
 
         Args:
             model: A model with a predict method.
-            metric: Scoring metric ('mse', 'mae', 'rmse') or callable.
+            metric: Scoring metric ('mse', 'mae', 'rmse', 'r2') or callable.
             strategy: Grouping strategy ('auto' for tree-based, 'manual' for user-defined).
             partitioner: Custom partitioner instance. If None, uses TreePartitioner for 'auto'.
             n_repeats: Number of times to repeat permutation for each feature.
@@ -159,6 +159,126 @@ class ConditionalPermutationImportance(MetricBasedExplainer):
             return partitioner.fit_get_groups(X, feature)
 
         raise ValueError("For strategy='manual', either provide 'groups' or a 'partitioner'")
+
+    def explain_per_series(
+        self,
+        X: pd.DataFrame,
+        y: ArrayLike,
+        series_col: str,
+        features: list[str] | None = None,
+        min_samples: int = 10,
+    ) -> dict[Any, FeatureImportanceResult]:
+        """Compute conditional permutation importance separately for each series.
+
+        This method filters the data by each unique series ID and computes
+        feature importance independently for each series. Permutation is
+        performed only within each individual series.
+
+        Args:
+            X: Input features DataFrame.
+            y: Target values.
+            series_col: Name of the column or MultiIndex level containing series IDs.
+            features: List of features to compute importance for.
+                If None, uses all columns except series_col.
+            min_samples: Minimum number of samples required per series.
+                Series with fewer samples are skipped.
+
+        Returns:
+            Dictionary mapping series IDs to FeatureImportanceResult objects.
+
+        Example:
+            >>> explainer = ConditionalPermutationImportance(model, metric='mse')
+            >>> results = explainer.explain_per_series(X, y, series_col='level')
+            >>> for series_id, result in results.items():
+            ...     print(f"{series_id}: {result.to_dataframe()}")
+        """
+        y_array = np.asarray(y)
+
+        series_ids = self._get_series_ids_from_data(X, series_col)
+        unique_series = series_ids.unique()
+
+        if features is None:
+            exclude_cols = {series_col}
+            features = [c for c in X.columns if c not in exclude_cols]
+
+        results: dict[Any, FeatureImportanceResult] = {}
+
+        for series_id in unique_series:
+            mask = series_ids == series_id
+            X_series = X.loc[mask]
+            y_series = y_array[mask]
+
+            if len(X_series) < min_samples:
+                continue
+
+            result = self._compute_series_importance(X_series, y_series, features)
+            results[series_id] = result
+
+        return results
+
+    def _get_series_ids_from_data(
+        self,
+        X: pd.DataFrame,
+        series_col: str,
+    ) -> pd.Series:
+        """Extract series identifiers from DataFrame."""
+        if isinstance(X.index, pd.MultiIndex) and series_col in X.index.names:
+            return X.index.get_level_values(series_col).to_series(index=X.index)
+
+        if series_col in X.columns:
+            return X[series_col]
+
+        raise KeyError(
+            f"Series column '{series_col}' not found in DataFrame columns or index"
+        )
+
+    def _compute_series_importance(
+        self,
+        X: pd.DataFrame,
+        y: NDArray[np.floating[Any]],
+        features: list[str],
+    ) -> FeatureImportanceResult:
+        """Compute importance for a single series (no conditional groups)."""
+        baseline_pred = self.model.predict(X)
+        baseline_score = self.metric(y, baseline_pred)
+
+        all_indices = np.arange(len(X))
+
+        importances = []
+        stds = []
+        permuted_scores: dict[str, list[float]] = {}
+
+        for feature in features:
+            if feature not in X.columns:
+                continue
+
+            scores = []
+            for repeat in range(self.n_repeats):
+                rng = np.random.default_rng(
+                    self.random_state + repeat if self.random_state else None
+                )
+                X_permuted = X.copy()
+                X_permuted[feature] = rng.permutation(X[feature].to_numpy())
+                permuted_pred = self.model.predict(X_permuted)
+                score = self.metric(y, permuted_pred)
+                scores.append(score)
+
+            importance_values = [score - baseline_score for score in scores]
+            importances.append(np.mean(importance_values))
+            stds.append(np.std(importance_values))
+            permuted_scores[feature] = scores
+
+        valid_features = [f for f in features if f in X.columns]
+
+        return FeatureImportanceResult(
+            feature_names=valid_features,
+            importances=np.array(importances),
+            std=np.array(stds),
+            baseline_score=baseline_score,
+            permuted_scores=permuted_scores,
+            method="per_series_permutation",
+            n_repeats=self.n_repeats,
+        )
 
     def _conditional_permute(
         self,
