@@ -8,10 +8,6 @@ This page provides an overview of the xeries API.
 
 ::: xeries.importance.permutation.ConditionalPermutationImportance
 
-### ConditionalSHAP
-
-::: xeries.importance.shap.ConditionalSHAP
-
 ### ManualPartitioner
 
 ::: xeries.partitioners.manual.ManualPartitioner
@@ -26,10 +22,6 @@ This page provides an overview of the xeries API.
 
 ::: xeries.core.types.FeatureImportanceResult
 
-### SHAPResult
-
-::: xeries.core.types.SHAPResult
-
 ## Visualization
 
 ### plot_importance_bar
@@ -39,3 +31,12 @@ This page provides an overview of the xeries API.
 ### plot_importance_heatmap
 
 ::: xeries.visualization.plots.plot_importance_heatmap
+
+## Planned APIs
+
+The following APIs are planned for future releases and are not part of the current release:
+
+- Conditional SHAP
+- SHAP-IQ
+- Feature Dropping
+- Causal Feature Importance
