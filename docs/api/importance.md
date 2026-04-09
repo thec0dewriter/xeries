@@ -12,14 +12,11 @@ This module contains the feature importance calculation methods.
         - __init__
         - compute
 
-## ConditionalSHAP
+## Planned Methods
 
-::: xeries.importance.shap.ConditionalSHAP
-    options:
-      show_root_heading: true
-      show_source: true
-      members:
-        - __init__
-        - explain
-        - explain_instance
-        - global_importance
+The following importance methods are planned for future releases and are not part of the current release:
+
+- Conditional SHAP
+- SHAP-IQ
+- Feature Dropping
+- Causal Feature Importance

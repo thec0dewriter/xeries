@@ -14,9 +14,8 @@ When using global models for multi-time series forecasting, standard feature imp
 - **Conditional Permutation Importance**: Permutes features only within meaningful subgroups
 - **Tree-Based cs-PFI**: Automatically learns homogeneous subgroups using decision trees
 - **Manual Grouping**: Use domain knowledge to define custom permutation groups
-- **Conditional SHAP & SHAP-IQ**: Series-specific background data for accurate SHAP values
-- **Causal Methods**: Foundation for structural causal model explainability
-- **Framework Integration**: Works with skforecast, and extensible to other frameworks
+- **Planned Methods**: Conditional SHAP, SHAP-IQ, feature dropping, and causal feature importance are planned for future releases
+- **Framework Integration**: Works with skforecast
 
 ## Installation
 
