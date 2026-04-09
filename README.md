@@ -3,6 +3,7 @@
 [![CI](https://github.com/thec0dewriter/xeries/actions/workflows/ci.yml/badge.svg)](https://github.com/thec0dewriter/xeries/actions/workflows/ci.yml)
 [![PyPI version](https://badge.fury.io/py/xeries.svg)](https://badge.fury.io/py/xeries)
 [![Python versions](https://img.shields.io/pypi/pyversions/xeries.svg)](https://pypi.org/project/xeries/)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.19482748.svg)](https://doi.org/10.5281/zenodo.19482748)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 **Time Series eXplainability (XAI) for Forecasting**
@@ -306,8 +307,10 @@ If you use this library in your research, please cite:
 ```bibtex
 @software{xeries,
   title = {xeries: Time Series eXplainability for Forecasting},
-  author = {thec0dewriter},
+  author = {Kuti-Kreszács, Mátyás},
   year = {2026},
+    doi = {10.5281/zenodo.19482748},
+  publisher = {Zenodo},
   url = {https://github.com/thec0dewriter/xeries},
 }
 ```
