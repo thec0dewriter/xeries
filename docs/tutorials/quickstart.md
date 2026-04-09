@@ -137,28 +137,14 @@ fig, ax = plot_importance_heatmap(results)
 fig.savefig('importance_comparison.png')
 ```
 
-## Conditional SHAP
+## Planned Methods
 
-For more detailed explanations:
+The following methods are planned for future releases and are not available in the current release:
 
-```python
-from xeries import ConditionalSHAP
-
-shap_explainer = ConditionalSHAP(
-    predict_fn=adapter.predict,
-    background_data=X,
-    series_col=adapter.get_series_column(),
-    n_background_samples=50,
-    random_state=42,
-)
-
-# Explain a sample of instances
-shap_result = shap_explainer.explain(X.iloc[:10])
-
-# Global importance from SHAP
-global_shap = shap_explainer.global_importance(X, n_samples=100)
-print(global_shap)
-```
+- Conditional SHAP
+- SHAP-IQ
+- Feature Dropping
+- Causal Feature Importance
 
 ## Complete Script
 

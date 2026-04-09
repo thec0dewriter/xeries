@@ -22,44 +22,40 @@ Explaining and interpreting multi-time series forecasts is challenging:
 
 **xeries** addresses these gaps with:
 - **Conditional explanations** that respect data structure
-- **Multiple methods** so you can triangulate insights
-- **Time-aware analytics** for temporal patterns
-- **Unified API** for seamless method switching
-- **Interactive dashboard** for exploratory analysis
+- **A focused CPI workflow** for current production use
+- **A roadmap for future explanation methods**
+- **A simple API** for current cs-PFI workflows
 
 ## Features
 
-### 📊 Explainability Methods
+### 📊 Current Capability
 
 - **Conditional Permutation Importance (cs-PFI)**: Permute features only within meaningful subgroups
   - Auto-discover groups using decision trees
   - Define custom groups based on domain knowledge
-- **Conditional SHAP**: Compute SHAP values with series-specific background data
-- **SHAP-IQ**: Analyze feature interactions and higher-order effects
-- **Feature Dropping**: Measure importance by removing features
-- **Causal Feature Importance**: Causal inference for treatment effects (DoWhy + EconML integration)
 
-### 🛠️ Advanced Analytics
+### 🛣️ Planned Roadmap
 
-- **Temporal Windowed Analysis**: Importance decomposed across time windows
-- **Statistical Significance Testing**: Bootstrap confidence intervals and hypothesis tests
-- **Method Comparison**: Side-by-side results from multiple explanation methods
-- **Error Analysis**: Per-series and per-window error metrics and attribution
-- **Feature Interaction Analysis**: Understand how features work together
+- **Conditional SHAP**: Planned for a future release
+- **SHAP-IQ**: Planned for a future release
+- **Feature Dropping**: Planned for a future release
+- **Causal Feature Importance**: Planned for a future release
 
 ### 📡 Framework Adapters
 
 - **scikit-learn**: Direct support for sklearn estimators
 - **skforecast**: Seamless integration with multi-series forecasters (0.21+)
-- **Darts (PyTorch)**: Support for Darts neural network forecasters
 - **Custom Models**: Wrap any forecaster with the BaseAdapter
 
-### 📈 Visualization & Reporting
+### 📈 Visualization
 
-- **Interactive Dashboard**: Unified interface for all explainability components
+Ready-to-use plotting utilities for feature importance and temporal analysis.
 - **Publication-Ready Plots**:
   - Feature importance bar charts
-  - Temporal heatmaps
+  - Heatmaps comparing multiple methods or conditions
+  
+Planned:
+- **Interactive Dashboard**: Unified interface for all explainability components
   - Method comparison visualizations
   - Interaction plots
 - **HTML Report Generation**: Auto-generate dashboards with Jinja2 templates
@@ -85,13 +81,13 @@ pip install xeries[skforecast]
 
 ## Supported Explanation Methods
 
-| Method | Type | Use Case | Features |
-|--------|------|----------|----------|
-| **Conditional Permutation Importance** | Model-Agnostic | Default choice; fast & interpretable | Auto/manual grouping, windowed analysis |
-| **Conditional SHAP** | Additive | Local & global explanations | Series-aware backgrounds, force plots |
-| **SHAP-IQ** | Interaction | Feature interactions | Shapley interaction values, comparative |
-| **Feature Dropping** | Model-Agnostic | Complementary to importance | Dependency analysis, isolation effects |
-| **Causal Feature Importance** | Causal | Treatment effects | DoWhy pipelines, EconML estimators |
+| Method | Status | Use Case | Notes |
+|--------|--------|----------|-------|
+| **Conditional Permutation Importance** | Available | Default choice; fast & interpretable | Auto/manual grouping with tree-based or manual partitioning |
+| **Conditional SHAP** | Planned | Local & global explanations | Future release |
+| **SHAP-IQ** | Planned | Feature interactions | Future release |
+| **Feature Dropping** | Planned | Complementary to importance | Future release |
+| **Causal Feature Importance** | Planned | Treatment effects | Future release |
 
 ## Quick Start
 
@@ -153,26 +149,6 @@ explainer = ConditionalPermutationImportance(
 result = explainer.explain(X, y)
 ```
 
-### Conditional SHAP
-
-```python
-from xeries import ConditionalSHAP
-
-explainer = ConditionalSHAP(
-    model=adapter,
-    background_data=X,
-    # skforecast 0.21+: use adapter.get_series_column() (often "_level_skforecast")
-    series_col=adapter.get_series_column(),
-    n_background_samples=100,
-)
-
-# Explain instances with series-specific backgrounds
-shap_result = explainer.explain(X.iloc[:10])
-
-# Global importance
-global_importance = explainer.global_importance(X, n_samples=100)
-```
-
 ### Visualization
 
 ```python
@@ -181,65 +157,19 @@ from xeries.visualization import plot_importance_bar, plot_importance_heatmap
 # Bar chart
 fig, ax = plot_importance_bar(result, max_features=10)
 
-# Heatmap comparing multiple results
+# Heatmap comparing multiple cs-PFI configurations
 results = {'Auto': result_auto, 'Manual': result_manual}
 fig, ax = plot_importance_heatmap(results)
 ```
 
-### Causal Feature Importance
+## Planned Methods
 
-```python
-from xeries import CausalFeatureImportance
+The following methods are planned for future releases and are not part of the current release:
 
-# Analyze causal treatment effects with DoWhy backend
-explainer = CausalFeatureImportance(
-    model=adapter,
-    treatment_features=['lag_1', 'lag_24'],  # Which features to treat
-)
-
-result = explainer.explain(X, y)
-print(result.estimates)  # Causal effect estimates
-print(result.refutations)  # Robustness checks
-```
-
-### Compare Multiple Methods
-
-```python
-from xeries import (
-    ConditionalPermutationImportance,
-    ConditionalSHAP,
-    ConditionalDropImportance,
-)
-from xeries.analysis import compare_rankings
-
-# Compute explanations with different methods
-pfi_result = ConditionalPermutationImportance(...).explain(X, y)
-shap_result = ConditionalSHAP(...).explain(X)
-drop_result = ConditionalDropImportance(...).explain(X, y)
-
-# Compare results
-comparison = compare_rankings(
-    {'PFI': pfi_result, 'SHAP': shap_result, 'Dropping': drop_result}
-)
-```
-
-### Unified Dashboard
-
-```python
-from xeries import Dashboard
-
-# Combine all explainability results into one interactive dashboard
-dashboard = Dashboard(forecaster=adapter)
-dashboard.add_permutation_importance(pfi_result)
-dashboard.add_causal_importance(causal_result)
-dashboard.add_error_analysis(X, y, predictions)
-
-# Generate HTML report
-dashboard.generate_report('forecast_analysis.html')
-
-# Or display in Jupyter
-dashboard.show()
-```
+- Conditional SHAP
+- SHAP-IQ
+- Feature Dropping
+- Causal Feature Importance
 
 ## Documentation
 
@@ -309,7 +239,7 @@ If you use this library in your research, please cite:
   title = {xeries: Time Series eXplainability for Forecasting},
   author = {Kuti-Kreszács, Mátyás},
   year = {2026},
-    doi = {10.5281/zenodo.19482748},
+  doi = {10.5281/zenodo.19482748},
   publisher = {Zenodo},
   url = {https://github.com/thec0dewriter/xeries},
 }
@@ -317,7 +247,7 @@ If you use this library in your research, please cite:
 
 ### Related Publications
 
-This library implements techniques from:
+This project is informed by the following techniques and references:
 
 - **Conditional Subgroup Permutation Feature Importance** (cs-PFI)
 - **SHAP** (SHapley Additive exPlanations) — [Lundberg & Lee, 2017](https://arxiv.org/abs/1705.07874)
