@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use xeries, please cite it using the metadata below."
+title: "xeries: Time Series eXplainability for Forecasting"
+type: software
+authors:
+  - family-names: "Kuti-Kreszács"
+    given-names: "Mátyás"
+    email: "kutikmatyas@gmail.com"
+    orcid: "https://orcid.org/0009-0004-4997-2000"
+repository-code: "https://github.com/thec0dewriter/xeries"
+url: "https://github.com/thec0dewriter/xeries"
+license: "MIT"
+doi: "10.5281/zenodo.19482748"
+keywords:
+  - feature-importance
+  - time-series
+  - forecasting
+  - permutation-importance
+  - shap
+  - explainability
+  - machine-learning
+  - multi-series
+  - skforecast

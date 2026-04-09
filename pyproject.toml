@@ -63,6 +63,7 @@ notebooks = [
 Homepage = "https://github.com/thec0dewriter/xeries"
 Documentation = "https://thec0dewriter.github.io/xeries"
 Repository = "https://github.com/thec0dewriter/xeries"
+DOI = "https://doi.org/10.5281/zenodo.19482748"
 
 [build-system]
 requires = ["hatchling"]

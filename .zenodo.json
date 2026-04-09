@@ -1,0 +1,37 @@
+{
+  "title": "xeries: Time Series eXplainability for Forecasting",
+  "description": "A comprehensive Python library for explainability and interpretability in multi-time series forecasting.",
+  "doi": "10.5281/zenodo.19482748",
+  "upload_type": "software",
+  "access_right": "open",
+  "license": "MIT",
+  "creators": [
+    {
+      "name": "Kuti-Kreszács, Mátyás",
+      "orcid": "https://orcid.org/0009-0004-4997-2000"
+    }
+  ],
+  "keywords": [
+    "feature-importance",
+    "time-series",
+    "forecasting",
+    "permutation-importance",
+    "shap",
+    "explainability",
+    "machine-learning",
+    "multi-series",
+    "skforecast"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/thec0dewriter/xeries",
+      "relation": "isSupplementTo",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "10.5281/zenodo.19482748",
+      "relation": "isIdenticalTo",
+      "resource_type": "software"
+    }
+  ]
+}

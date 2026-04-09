@@ -21,6 +21,12 @@ This guide describes how to release a new version of xeries to PyPI.
    - Create `testpypi` environment in repo Settings > Environments
    - Optionally add protection rules (require approval, etc.)
 
+4. **Zenodo GitHub integration configured**
+   - Connect repository in Zenodo: https://zenodo.org/account/settings/github/
+   - Enable archiving for `thec0dewriter/xeries`
+   - Ensure `.zenodo.json` is present and up to date
+   - Current DOI: https://doi.org/10.5281/zenodo.19482748
+
 ## Release Process
 
 ### 1. Update Version
@@ -66,23 +72,33 @@ Test installation:
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/xeries
 ```
 
-### 5. Create Release Tag
+### 5. Create GitHub Release (Recommended)
+
+Create the release in GitHub UI (this will create and push the `v0.2.0` tag automatically):
+
+1. Go to GitHub > Releases > Draft a new release
+2. Choose tag `v0.2.0` (or create a new tag with that name)
+3. Set release title (for example, `xeries v0.2.0`)
+4. Publish release
+
+Publishing the release automatically triggers:
+1. Package build
+2. Version validation (tag must match pyproject.toml)
+3. PyPI publication
+4. Release artifact upload/update
+
+Alternative (CLI tag flow):
 
 ```bash
 git tag v0.2.0
 git push origin v0.2.0
 ```
 
-This automatically triggers:
-1. Package build
-2. Version validation (tag must match pyproject.toml)
-3. PyPI publication
-4. GitHub Release creation
-
 ### 6. Verify Release
 
 - Check https://pypi.org/project/xeries/
 - Check GitHub Releases page
+- Check Zenodo record/DOI (new version should be archived automatically)
 - Test installation: `pip install xeries==0.2.0`
 
 ## Manual Release (Emergency)
