@@ -242,7 +242,6 @@ class ConditionalPermutationImportance(MetricBasedExplainer):
         baseline_pred = self.model.predict(X)
         baseline_score = self.metric(y, baseline_pred)
 
-        all_indices = np.arange(len(X))
 
         importances = []
         stds = []

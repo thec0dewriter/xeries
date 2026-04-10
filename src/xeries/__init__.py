@@ -49,25 +49,25 @@ from xeries.visualization import (
 )
 
 __all__ = [
-    # Version
-    "__version__",
     # Core types and base classes
     "ArrayLike",
     "BaseAdapter",
     "BaseExplainer",
     "BasePartitioner",
-    "FeatureImportanceResult",
-    "GroupLabels",
-    "ModelProtocol",
     # Importance methods
     "ConditionalPermutationImportance",
     "ConditionalSHAP",
+    "FeatureImportanceResult",
+    "GroupLabels",
     # Partitioners
     "ManualPartitioner",
-    "TreePartitioner",
+    "ModelProtocol",
     # Adapters
     "SkforecastAdapter",
     "SklearnAdapter",
+    "TreePartitioner",
+    # Version
+    "__version__",
     "from_skforecast",
     # Visualization
     "plot_importance_bar",

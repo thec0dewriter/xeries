@@ -4,11 +4,10 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Any
- 
-from sklearn.metrics import r2_score
 
 import numpy as np
 import pandas as pd
+from sklearn.metrics import r2_score
 
 if TYPE_CHECKING:
     from numpy.typing import NDArray
