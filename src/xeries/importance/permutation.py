@@ -228,9 +228,7 @@ class ConditionalPermutationImportance(MetricBasedExplainer):
         if series_col in X.columns:
             return X[series_col]
 
-        raise KeyError(
-            f"Series column '{series_col}' not found in DataFrame columns or index"
-        )
+        raise KeyError(f"Series column '{series_col}' not found in DataFrame columns or index")
 
     def _compute_series_importance(
         self,
@@ -241,7 +239,6 @@ class ConditionalPermutationImportance(MetricBasedExplainer):
         """Compute importance for a single series (no conditional groups)."""
         baseline_pred = self.model.predict(X)
         baseline_score = self.metric(y, baseline_pred)
-
 
         importances = []
         stds = []
