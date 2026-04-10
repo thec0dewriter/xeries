@@ -33,6 +33,9 @@ theme:
 plugins:
   - search
   - mermaid2
+  - mkdocs-jupyter:
+      include_source: true
+      execute: false
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -73,6 +76,15 @@ nav:
       - Inheritance Diagrams: architecture/inheritance_diagrams.md
   - Tutorials:
       - Quickstart: tutorials/quickstart.md
+  - Examples:
+      - Quickstart:
+          - Basic Usage: examples/quickstart/01_basic_usage.ipynb
+      - Conditional Permutation:
+          - Per-Series Importance: examples/conditional_permutation/01_per_series_importance.ipynb
+          - Exogenous Features: examples/conditional_permutation/02_exogenous_features.ipynb
+          - Per-Series with Exogenous: examples/conditional_permutation/03_per_series_exog.ipynb
+      - Integrations:
+          - Skforecast: examples/integrations/01_skforecast.ipynb
   - API Reference:
       - Overview: api/reference.md
       - Importance: api/importance.md

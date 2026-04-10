@@ -1,13 +1,39 @@
 # Examples
 
-This directory contains Jupyter notebooks demonstrating how to use xeries.
+This directory contains Jupyter notebooks demonstrating how to use xeries, organized by method type.
+
+## Folder Structure
+
+```
+examples/
+├── quickstart/           # Getting started examples
+├── conditional_permutation/  # Conditional permutation importance
+└── integrations/         # Framework integrations
+```
+
 
 ## Notebooks
 
+### Quickstart
+
 | Notebook | Description | Dependencies |
 |----------|-------------|--------------|
-| [01_quickstart.ipynb](01_quickstart.ipynb) | Basic usage with synthetic data | Core xeries |
-| [02_skforecast_integration.ipynb](02_skforecast_integration.ipynb) | Integration with skforecast | `xeries[skforecast]` |
+| [01_basic_usage.ipynb](quickstart/01_basic_usage.ipynb) | Basic usage with synthetic data | Core xeries |
+
+### Conditional Permutation Importance
+
+| Notebook | Description | Dependencies |
+|----------|-------------|--------------|
+| [01_per_series_importance.ipynb](conditional_permutation/01_per_series_importance.ipynb) | Per-series feature importance analysis | Core xeries |
+| [02_exogenous_features.ipynb](conditional_permutation/02_exogenous_features.ipynb) | Heterogeneous effects of exogenous variables | Core xeries |
+| [03_per_series_exog.ipynb](conditional_permutation/03_per_series_exog.ipynb) | Per-series importance with exogenous features | Core xeries, lightgbm |
+
+### Integrations
+
+| Notebook | Description | Dependencies |
+|----------|-------------|--------------|
+| [01_skforecast.ipynb](integrations/01_skforecast.ipynb) | Integration with skforecast | `xeries[skforecast]` |
+
 
 ## Running the Notebooks
 
@@ -25,6 +51,12 @@ For skforecast integration:
 
 ```bash
 pip install xeries[skforecast,notebooks]
+```
+
+For LightGBM examples:
+
+```bash
+pip install lightgbm
 ```
 
 ### Launch Jupyter
