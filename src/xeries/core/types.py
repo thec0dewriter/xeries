@@ -75,12 +75,14 @@ class SHAPResult(BaseResult):
         base_values: Base/expected values for each sample.
         feature_names: List of feature names.
         data: The input data used for explanation.
+        series_ids: Optional series identifiers for each sample (for hierarchical aggregation).
     """
 
     shap_values: NDArray[np.floating[Any]]
     base_values: NDArray[np.floating[Any]]
     feature_names: list[str]
     data: ArrayLike
+    series_ids: pd.Series | None = None
 
     def mean_abs_shap(self) -> pd.DataFrame:
         """Compute mean absolute SHAP values per feature."""
@@ -91,6 +93,27 @@ class SHAPResult(BaseResult):
                 "mean_abs_shap": mean_abs,
             }
         ).sort_values("mean_abs_shap", ascending=False)
+
+    def mean_abs_shap_by_series(self) -> pd.DataFrame:
+        """Compute mean absolute SHAP values per feature, grouped by series.
+
+        Returns:
+            DataFrame with series_id as index, features as columns, values are mean |SHAP|.
+
+        Raises:
+            ValueError: If series_ids is not set.
+        """
+        if self.series_ids is None:
+            raise ValueError("series_ids not set. Use BatchSHAP with series_col to track series.")
+
+        result_data = {}
+        for series_id in self.series_ids.unique():
+            mask = self.series_ids == series_id
+            series_shap = self.shap_values[mask]
+            mean_abs = np.abs(series_shap).mean(axis=0)
+            result_data[series_id] = dict(zip(self.feature_names, mean_abs, strict=True))
+
+        return pd.DataFrame(result_data).T
 
 
 @dataclass
