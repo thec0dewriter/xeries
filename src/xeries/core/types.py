@@ -84,6 +84,17 @@ class SHAPResult(BaseResult):
     data: ArrayLike
     series_ids: pd.Series | None = None
 
+    def to_dataframe(self) -> pd.DataFrame:
+        """Convert SHAP values to a pandas DataFrame.
+
+        Returns:
+            DataFrame with samples as rows, features as columns, values are SHAP values.
+        """
+        return pd.DataFrame(
+            self.shap_values,
+            columns=self.feature_names,
+        )
+
     def mean_abs_shap(self) -> pd.DataFrame:
         """Compute mean absolute SHAP values per feature."""
         mean_abs = np.abs(self.shap_values).mean(axis=0)
@@ -104,7 +115,9 @@ class SHAPResult(BaseResult):
             ValueError: If series_ids is not set.
         """
         if self.series_ids is None:
-            raise ValueError("series_ids not set. Use BatchSHAP with series_col to track series.")
+            raise ValueError(
+                "series_ids not set. Use ConditionalSHAP with series_col to track series."
+            )
 
         result_data = {}
         for series_id in self.series_ids.unique():
