@@ -43,6 +43,9 @@ xeries/
 │   ├── agents/               # Copilot agent definitions
 │   ├── copilot-instructions.md
 │   └── workflows/            # CI/CD (ci.yml, docs.yml, release.yml)
+├── .cursor/
+│   ├── rules/specify-rules.mdc  # Cursor always-on rule
+│   └── skills/speckit-*/SKILL.md # Cursor Agent slash-command skills (mirror governance)
 ├── specs/NNN-<slug>/         # per-feature SDD artefacts (Home repo: xeries)
 ├── src/xeries/               # the library (see public-surface map below)
 ├── tests/                    # unit + integration tests
@@ -69,10 +72,16 @@ spec; consult the spec before changing the public contracts.
 The full re-export list is in `src/xeries/__init__.py`. Anything not listed
 there is **internal** and may change without a spec.
 
-## Slash commands (Copilot)
+## Slash commands
 
-If you are running through GitHub Copilot, the `.github/prompts/` shims map
-the Spec Kit 0.8 slash commands onto this repo:
+The same Spec Kit 0.8 workflow is wired in for two agent back-ends. Pick
+whichever your IDE uses; both target the same governance content under
+`.specify/`.
+
+### GitHub Copilot — dotted invocation `/speckit.<cmd>`
+
+The `.github/prompts/*.prompt.md` + `.github/agents/*.agent.md` shims map
+the slash commands onto this repo:
 
 | Command | Purpose |
 | --- | --- |
@@ -85,8 +94,30 @@ the Spec Kit 0.8 slash commands onto this repo:
 | `/speckit.checklist` | Quality checklist for a spec / plan. |
 | `/speckit.analyze` | Cross-artefact consistency audit. |
 
-Other agents can simply read the corresponding `.github/agents/*.agent.md`
-files directly — they describe the same workflows in agent-agnostic Markdown.
+### Cursor Agent — hyphenated invocation `/speckit-<cmd>`
+
+The `.cursor/skills/speckit-<cmd>/SKILL.md` shims (Spec Kit 0.8.2
+`SkillsIntegration` layout) expose the same workflow with hyphen
+separators:
+
+| Command | Purpose |
+| --- | --- |
+| `/speckit-constitution` | View / discuss the program constitution. |
+| `/speckit-specify` | Author a new `spec.md`. |
+| `/speckit-clarify` | Resolve ambiguities in an existing spec. |
+| `/speckit-plan` | Produce `plan.md` — runs the Constitution Check gate. |
+| `/speckit-tasks` | Break a plan into actionable tasks. |
+| `/speckit-implement` | Execute the tasks. |
+| `/speckit-checklist` | Quality checklist for a spec / plan. |
+| `/speckit-analyze` | Cross-artefact consistency audit. |
+
+`.cursor/rules/specify-rules.mdc` is always-on and points the agent at the
+current plan as additional context.
+
+Other agents (Claude Code, Aider, Continue, …) can simply read the
+corresponding `.github/agents/*.agent.md` or `.cursor/skills/*/SKILL.md`
+files directly — both describe the same workflows in agent-agnostic
+Markdown.
 
 ## Repo-scope rules (binding — see constitution)
 
