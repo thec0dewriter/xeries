@@ -176,6 +176,13 @@ class SkforecastAdapter(BaseAdapter):
     def predict(self, X: pd.DataFrame) -> NDArray[Any]:
         """Make predictions using the underlying estimator.
 
+        The input ``X`` is forwarded to the underlying estimator unchanged when it
+        is a :class:`pandas.DataFrame` so that estimators which were fitted with
+        feature names (e.g. ``LGBMRegressor``, modern sklearn ``check_feature_names``
+        machinery) can match their training schema and avoid the
+        ``"X does not have valid feature names, but ... was fitted with feature names"``
+        warning. Non-DataFrame inputs are passed through untouched.
+
         Args:
             X: Input features DataFrame (same structure as training X).
 
@@ -185,8 +192,7 @@ class SkforecastAdapter(BaseAdapter):
         model = self._fitted_estimator
         if model is None:
             raise ValueError("No fitted estimator found on forecaster")
-        X_values = X.to_numpy() if isinstance(X, pd.DataFrame) else X
-        return np.asarray(model.predict(X_values))
+        return np.asarray(model.predict(X))
 
     def get_feature_names(self) -> list[str]:
         """Get predictor column names (lags, window features, etc.)."""
