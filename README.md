@@ -8,7 +8,7 @@
 
 **Time Series eXplainability (XAI) for Forecasting**
 
-A comprehensive Python library for explainability and interpretability in multi-time series forecasting. **xeries** provides multiple explanation methods—including conditional permutation importance, SHAP, feature dropping, and causal analysis—with a unified API and interactive dashboard for understanding forecast decisions.
+A comprehensive Python library for explainability and interpretability in multi-time series forecasting. **xeries** provides multiple explanation methods—including conditional permutation importance, SHAP, feature dropping, and causal analysis—through a unified API for understanding forecast decisions.
 
 ## Why xeries?
 
@@ -53,13 +53,12 @@ Ready-to-use plotting utilities for feature importance and temporal analysis.
 - **Publication-Ready Plots**:
   - Feature importance bar charts
   - Heatmaps comparing multiple methods or conditions
-  
-Planned:
-- **Interactive Dashboard**: Unified interface for all explainability components
-  - Method comparison visualizations
-  - Interaction plots
-- **HTML Report Generation**: Auto-generate dashboards with Jinja2 templates
+  - Per-series and method-comparison plots
 - **Jupyter Integration**: Works seamlessly in notebooks
+
+> **Dashboard / HTML reports** (Jinja2-templated reports, interactive widgets, method-comparison
+> dashboards) moved to the sibling `xeries-labs/xeries-dashboard` repo per governance v1.2.0.
+> See roadmap row `specs/013-dashboard`.
 
 ## Installation
 
