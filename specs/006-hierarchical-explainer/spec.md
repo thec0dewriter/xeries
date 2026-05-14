@@ -154,3 +154,9 @@ Source files:
   not on point forecasts.
 - A `HierarchicalCausalExplainer` is on the long-term roadmap but blocked
   by the absence of a `CausalFeatureImportance` base explainer.
+
+## See also
+
+- [plan.md](./plan.md) — implementation plan + Constitution Check (Backfilled).
+- [tasks.md](./tasks.md) — task-level evidence trace into the existing
+  `xeries.hierarchy` implementation.
