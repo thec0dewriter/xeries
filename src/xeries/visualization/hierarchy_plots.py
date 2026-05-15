@@ -14,6 +14,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import numpy as np
 import pandas as pd
+from matplotlib.cm import ScalarMappable
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
@@ -221,7 +222,7 @@ def plot_hierarchy_violin(
     else:
         fig = cast("Figure", ax.get_figure())
 
-    colormap = plt.cm.get_cmap(cmap)
+    colormap = plt.get_cmap(cmap)
     n_features = len(features)
 
     for i in range(n_features):
@@ -261,7 +262,7 @@ def plot_hierarchy_violin(
     ax.axvline(x=0, color="gray", linestyle="--", linewidth=0.8)
 
     if feature_data is not None:
-        sm = plt.cm.ScalarMappable(cmap=colormap, norm=Normalize(vmin=0, vmax=1))
+        sm = ScalarMappable(cmap=colormap, norm=Normalize(vmin=0, vmax=1))
         sm.set_array([])
         cbar = fig.colorbar(sm, ax=ax, fraction=0.02, pad=0.02)
         cbar.set_label("Feature value", rotation=270, labelpad=15)
@@ -550,7 +551,7 @@ def plot_hierarchy_tree(
     ax.spines["right"].set_visible(False)
     ax.spines["bottom"].set_visible(False)
 
-    sm = plt.cm.ScalarMappable(cmap=cmap_obj, norm=plt.Normalize(vmin=min_imp, vmax=max_imp))
+    sm = ScalarMappable(cmap=cmap_obj, norm=plt.Normalize(vmin=min_imp, vmax=max_imp))
     sm.set_array([])
     cbar = fig.colorbar(sm, ax=ax, orientation="vertical", fraction=0.02, pad=0.02)
     cbar.set_label("Importance")
