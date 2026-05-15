@@ -118,9 +118,7 @@ class HierarchicalResult:
         """
         return self.importance_by_level[level][cohort][feature]
 
-    def get_top_features(
-        self, level: str, cohort: str, n: int = 10
-    ) -> list[tuple[str, float]]:
+    def get_top_features(self, level: str, cohort: str, n: int = 10) -> list[tuple[str, float]]:
         """Get top N features by importance for a specific cohort.
 
         Args:
@@ -135,9 +133,7 @@ class HierarchicalResult:
         sorted_features = sorted(cohort_imp.items(), key=lambda x: x[1], reverse=True)
         return sorted_features[:n]
 
-    def get_raw_values(
-        self, level: str, cohort: str
-    ) -> NDArray[np.floating[Any]] | None:
+    def get_raw_values(self, level: str, cohort: str) -> NDArray[np.floating[Any]] | None:
         """Get raw SHAP/importance values for a cohort (for distribution plots).
 
         Args:
@@ -177,9 +173,7 @@ class HierarchicalResult:
         """Return string representation."""
         n_levels = len(self.levels)
         n_features = len(self.features)
-        total_cohorts = sum(
-            len(cohorts) for cohorts in self.importance_by_level.values()
-        )
+        total_cohorts = sum(len(cohorts) for cohorts in self.importance_by_level.values())
         return (
             f"HierarchicalResult(levels={n_levels}, features={n_features}, "
             f"total_cohorts={total_cohorts}, method='{self.method}')"

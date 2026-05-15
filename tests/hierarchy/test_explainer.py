@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from typing import Any
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
 import numpy as np
 import pandas as pd
@@ -49,9 +49,7 @@ class TestHierarchicalExplainerInit:
     def test_init_with_shap_explainer(self) -> None:
         """Test initialization with SHAP explainer."""
         mock_explainer = MockSHAPExplainer(["f1", "f2"])
-        hierarchy = HierarchyDefinition(
-            levels=["group"], columns=["group_id"]
-        )
+        hierarchy = HierarchyDefinition(levels=["group"], columns=["group_id"])
 
         explainer = HierarchicalExplainer(mock_explainer, hierarchy)
 
@@ -63,9 +61,7 @@ class TestHierarchicalExplainerInit:
         """Test that permutation explainer type is detected."""
         mock_explainer = MagicMock()
         mock_explainer.__class__.__name__ = "ConditionalPermutationImportance"
-        hierarchy = HierarchyDefinition(
-            levels=["group"], columns=["group_id"]
-        )
+        hierarchy = HierarchyDefinition(levels=["group"], columns=["group_id"])
 
         explainer = HierarchicalExplainer(mock_explainer, hierarchy)
 
@@ -178,9 +174,7 @@ class TestHierarchicalExplainerExplainLevel:
     def mock_shap_explainer(self) -> MockSHAPExplainer:
         """Create mock SHAP explainer."""
         explainer = MockSHAPExplainer(["f1", "f2"])
-        explainer.set_shap_values(
-            np.array([[0.1, 0.2], [0.15, 0.25], [0.5, 0.3], [0.55, 0.35]])
-        )
+        explainer.set_shap_values(np.array([[0.1, 0.2], [0.15, 0.25], [0.5, 0.3], [0.55, 0.35]]))
         return explainer
 
     def test_explain_level_returns_dataframe(
@@ -285,9 +279,7 @@ class TestHierarchicalExplainerCompare:
     ) -> None:
         """Test feature ranking stability analysis."""
         explainer = HierarchicalExplainer(mock_shap_explainer, hierarchy)
-        stability = explainer.feature_ranking_stability(
-            test_data, level="group", top_n=3
-        )
+        stability = explainer.feature_ranking_stability(test_data, level="group", top_n=3)
 
         assert isinstance(stability, pd.DataFrame)
         assert "mean_rank" in stability.columns
@@ -302,9 +294,7 @@ class TestHierarchicalExplainerRepr:
     def test_repr(self) -> None:
         """Test repr format."""
         mock_explainer = MockSHAPExplainer(["f1"])
-        hierarchy = HierarchyDefinition(
-            levels=["state", "store"], columns=["state_id", "store_id"]
-        )
+        hierarchy = HierarchyDefinition(levels=["state", "store"], columns=["state_id", "store_id"])
         explainer = HierarchicalExplainer(mock_explainer, hierarchy)
 
         repr_str = repr(explainer)

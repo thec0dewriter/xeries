@@ -84,9 +84,7 @@ class TestHierarchicalResult:
         assert "f2" in df.columns
         assert "f3" in df.columns
 
-    def test_get_level_df_invalid_raises(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_get_level_df_invalid_raises(self, sample_result: HierarchicalResult) -> None:
         """Test that invalid level raises KeyError."""
         with pytest.raises(KeyError, match="not found"):
             sample_result.get_level_df("invalid")
@@ -199,8 +197,7 @@ class TestHierarchicalResultEdgeCases:
         """Test result with many cohorts."""
         n_cohorts = 100
         cohort_data = {
-            f"cohort_{i}": {"f1": i / n_cohorts, "f2": 1 - i / n_cohorts}
-            for i in range(n_cohorts)
+            f"cohort_{i}": {"f1": i / n_cohorts, "f2": 1 - i / n_cohorts} for i in range(n_cohorts)
         }
 
         result = HierarchicalResult(

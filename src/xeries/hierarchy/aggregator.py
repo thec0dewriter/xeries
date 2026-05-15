@@ -70,9 +70,9 @@ class HierarchicalAggregator:
             HierarchicalResult with aggregated importance at each level.
         """
         if levels is None:
-            levels = ["global"] + self.hierarchy.levels
+            levels = ["global", *self.hierarchy.levels]
         elif "global" not in levels:
-            levels = ["global"] + levels
+            levels = ["global", *levels]
 
         feature_names = shap_result.feature_names
         shap_values = shap_result.shap_values
@@ -110,9 +110,11 @@ class HierarchicalAggregator:
 
                 if include_raw:
                     raw_values_by_level[level][cohort_name] = cohort_shap
-                    cohort_data = data.loc[indices, feature_names].values if all(
-                        f in data.columns for f in feature_names
-                    ) else None
+                    cohort_data = (
+                        data.loc[indices, feature_names].values
+                        if all(f in data.columns for f in feature_names)
+                        else None
+                    )
                     if cohort_data is not None:
                         feature_values_by_level[level][cohort_name] = cohort_data
 
@@ -121,7 +123,9 @@ class HierarchicalAggregator:
             features=feature_names,
             importance_by_level=importance_by_level,
             raw_values_by_level=raw_values_by_level if include_raw else None,
-            feature_values_by_level=feature_values_by_level if include_raw and feature_values_by_level else None,
+            feature_values_by_level=(
+                feature_values_by_level if include_raw and feature_values_by_level else None
+            ),
             method="shap",
             _cohort_sizes=cohort_sizes,
         )
@@ -155,9 +159,9 @@ class HierarchicalAggregator:
             HierarchicalResult with aggregated importance at each level.
         """
         if levels is None:
-            levels = ["global"] + self.hierarchy.levels
+            levels = ["global", *self.hierarchy.levels]
         elif "global" not in levels:
-            levels = ["global"] + levels
+            levels = ["global", *levels]
 
         feature_names = importance_result.feature_names
         importances = importance_result.importances
@@ -165,9 +169,7 @@ class HierarchicalAggregator:
         importance_by_level: dict[str, dict[str, dict[str, float]]] = {}
         cohort_sizes: dict[str, dict[str, int]] = {}
 
-        importance_by_level["global"] = {
-            "all": dict(zip(feature_names, importances, strict=True))
-        }
+        importance_by_level["global"] = {"all": dict(zip(feature_names, importances, strict=True))}
         cohort_sizes["global"] = {"all": len(data)}
 
         for level in levels:
@@ -246,9 +248,9 @@ class HierarchicalAggregator:
             HierarchicalResult with aggregated importance.
         """
         if levels is None:
-            levels = ["global"] + self.hierarchy.levels
+            levels = ["global", *self.hierarchy.levels]
         elif "global" not in levels:
-            levels = ["global"] + levels
+            levels = ["global", *levels]
 
         if not per_series_results:
             raise ValueError("per_series_results cannot be empty")
@@ -268,9 +270,7 @@ class HierarchicalAggregator:
 
         all_imps = np.array(list(all_importances.values()))
         global_mean = all_imps.mean(axis=0)
-        importance_by_level["global"]["all"] = dict(
-            zip(feature_names, global_mean, strict=True)
-        )
+        importance_by_level["global"]["all"] = dict(zip(feature_names, global_mean, strict=True))
         cohort_sizes["global"]["all"] = len(per_series_results)
 
         for level in levels:
@@ -290,7 +290,7 @@ class HierarchicalAggregator:
                     series_to_cohort[str(sid)] = cohort_name
 
             cohort_importances: dict[str, list[NDArray[np.floating[Any]]]] = {
-                name: [] for name in cohorts.keys()
+                name: [] for name in cohorts
             }
 
             for series_id, imps in all_importances.items():

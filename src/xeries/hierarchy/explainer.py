@@ -14,7 +14,7 @@ from xeries.hierarchy.definition import HierarchyDefinition
 from xeries.hierarchy.types import HierarchicalResult
 
 if TYPE_CHECKING:
-    from numpy.typing import NDArray
+    pass
 
 
 class HierarchicalExplainer:
@@ -48,7 +48,8 @@ class HierarchicalExplainer:
         >>> print(result.get_level_df("state"))
 
     Attributes:
-        base_explainer: The underlying explainer (ConditionalSHAP, ConditionalPermutationImportance).
+        base_explainer: The underlying explainer (e.g. ``ConditionalSHAP``
+            or ``ConditionalPermutationImportance``).
         hierarchy: HierarchyDefinition specifying the hierarchical structure.
     """
 
@@ -115,23 +116,18 @@ class HierarchicalExplainer:
         if self._explainer_type == "shap":
             base_result = self.base_explainer.explain(X, **kwargs)
             if not isinstance(base_result, SHAPResult):
-                raise TypeError(
-                    f"Expected SHAPResult from base explainer, got {type(base_result)}"
-                )
+                raise TypeError(f"Expected SHAPResult from base explainer, got {type(base_result)}")
             return self._aggregator.aggregate_shap(
                 base_result, X, levels=levels, include_raw=include_raw
             )
 
         elif self._explainer_type == "permutation":
             if y is None:
-                raise ValueError(
-                    "y (target values) must be provided for permutation importance"
-                )
+                raise ValueError("y (target values) must be provided for permutation importance")
             base_result = self.base_explainer.explain(X, y, **kwargs)
             if not isinstance(base_result, FeatureImportanceResult):
                 raise TypeError(
-                    f"Expected FeatureImportanceResult from base explainer, "
-                    f"got {type(base_result)}"
+                    f"Expected FeatureImportanceResult from base explainer, got {type(base_result)}"
                 )
             return self._aggregator.aggregate_importance(
                 base_result,
@@ -152,9 +148,7 @@ class HierarchicalExplainer:
             elif isinstance(base_result, FeatureImportanceResult):
                 if y is None:
                     raise ValueError("y must be provided for importance aggregation")
-                return self._aggregator.aggregate_importance(
-                    base_result, X, y, levels=levels
-                )
+                return self._aggregator.aggregate_importance(base_result, X, y, levels=levels)
             else:
                 raise TypeError(
                     f"Base explainer returned unsupported result type: {type(base_result)}"
@@ -189,8 +183,7 @@ class HierarchicalExplainer:
         if cohort is not None:
             if cohort not in df.index:
                 raise KeyError(
-                    f"Cohort '{cohort}' not found at level '{level}'. "
-                    f"Available: {list(df.index)}"
+                    f"Cohort '{cohort}' not found at level '{level}'. Available: {list(df.index)}"
                 )
             return df.loc[[cohort]]
 
@@ -219,7 +212,7 @@ class HierarchicalExplainer:
         """
         cohorts = self.hierarchy.get_cohorts(X, level)
         level_idx = self.hierarchy.levels.index(level)
-        sub_levels = self.hierarchy.levels[level_idx + 1:]
+        sub_levels = self.hierarchy.levels[level_idx + 1 :]
 
         results = {}
         for cohort_name, indices in cohorts.items():
@@ -233,7 +226,7 @@ class HierarchicalExplainer:
             result = self.explain(
                 cohort_X,
                 y=cohort_y,
-                levels=["global"] + sub_levels if sub_levels else ["global"],
+                levels=["global", *sub_levels] if sub_levels else ["global"],
                 **kwargs,
             )
             results[cohort_name] = result

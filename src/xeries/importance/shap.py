@@ -118,8 +118,7 @@ class ConditionalSHAP(AttributionExplainer):
             self._shap = shap
         except ImportError as e:
             raise ImportError(
-                "shap package is required for ConditionalSHAP. "
-                "Install it with: pip install shap"
+                "shap package is required for ConditionalSHAP. Install it with: pip install shap"
             ) from e
 
         if self._external_explainer is not None:
@@ -194,9 +193,7 @@ class ConditionalSHAP(AttributionExplainer):
     def _check_batch_capable(self, explainer: Any) -> bool:
         """Check if an explainer supports batch computation."""
         explainer_name = type(explainer).__name__.lower()
-        return any(
-            t in explainer_name for t in ["tree", "linear", "deep", "gradient"]
-        )
+        return any(t in explainer_name for t in ["tree", "linear", "deep", "gradient"])
 
     def _create_batch_explainer(self, explainer_type: ExplainerType) -> Any:
         """Create a SHAP explainer for batch computation."""
@@ -206,10 +203,12 @@ class ConditionalSHAP(AttributionExplainer):
             return shap.TreeExplainer(self.model)
         elif explainer_type == "linear":
             bg = self._get_global_background()
-            return shap.LinearExplainer(self.model, bg)
+            feature_cols = self._infer_feature_names(bg)
+            return shap.LinearExplainer(self.model, bg[feature_cols])
         elif explainer_type == "deep":
             bg = self._get_global_background()
-            return shap.DeepExplainer(self.model, bg.values)
+            feature_cols = self._infer_feature_names(bg)
+            return shap.DeepExplainer(self.model, bg[feature_cols].values)
         else:
             raise ValueError(f"Unsupported batch explainer type: {explainer_type}")
 
@@ -261,9 +260,7 @@ class ConditionalSHAP(AttributionExplainer):
         if self.series_col == "level" and "_level_skforecast" in X.columns:
             return X["_level_skforecast"]
 
-        raise KeyError(
-            f"Series column '{self.series_col}' not found in DataFrame columns or index"
-        )
+        raise KeyError(f"Series column '{self.series_col}' not found in DataFrame columns or index")
 
     def _infer_feature_names(self, X: pd.DataFrame) -> list[str]:
         """Infer feature names from DataFrame, excluding non-numeric and series columns."""
@@ -428,9 +425,7 @@ class ConditionalSHAP(AttributionExplainer):
 
         return np.asarray(values, dtype=np.float64)
 
-    def _extract_base_values(
-        self, explanation: Any, n_samples: int
-    ) -> NDArray[np.floating[Any]]:
+    def _extract_base_values(self, explanation: Any, n_samples: int) -> NDArray[np.floating[Any]]:
         """Extract base values from explanation object."""
         base_values = explanation.base_values
 
@@ -521,9 +516,7 @@ class ConditionalSHAP(AttributionExplainer):
             if self._is_batch_capable:
                 result = self._explain_series_batch(X_series, feature_names, series_id)
             else:
-                result = self._explain_series_conditional(
-                    X_series, feature_names, series_id
-                )
+                result = self._explain_series_conditional(X_series, feature_names, series_id)
 
             results[series_id] = result
 

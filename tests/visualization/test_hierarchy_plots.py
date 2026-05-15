@@ -136,9 +136,7 @@ class TestPlotHierarchyBar:
         assert fig is not None
         assert len(ax.patches) == 3
 
-    def test_plot_invalid_level_raises(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_invalid_level_raises(self, sample_result: HierarchicalResult) -> None:
         """Test that invalid level raises KeyError."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_bar
@@ -146,9 +144,7 @@ class TestPlotHierarchyBar:
         with pytest.raises(KeyError):
             plot_hierarchy_bar(sample_result, level="invalid")
 
-    def test_plot_invalid_cohort_raises(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_invalid_cohort_raises(self, sample_result: HierarchicalResult) -> None:
         """Test that invalid cohort raises KeyError."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_bar
@@ -175,13 +171,11 @@ class TestPlotHierarchyViolin:
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_violin
 
-        fig, ax = plot_hierarchy_violin(sample_result, level="state", cohort="TX")
+        fig, _ax = plot_hierarchy_violin(sample_result, level="state", cohort="TX")
 
         assert fig is not None
 
-    def test_plot_violin_no_raw_raises(
-        self, sample_result_no_raw: HierarchicalResult
-    ) -> None:
+    def test_plot_violin_no_raw_raises(self, sample_result_no_raw: HierarchicalResult) -> None:
         """Test that missing raw values raises ValueError."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_violin
@@ -203,29 +197,21 @@ class TestPlotHierarchyComparison:
         assert fig is not None
         assert ax is not None
 
-    def test_plot_comparison_specific_feature(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_comparison_specific_feature(self, sample_result: HierarchicalResult) -> None:
         """Test plotting comparison for specific feature."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_comparison
 
-        fig, ax = plot_hierarchy_comparison(
-            sample_result, level="state", feature="lag_1"
-        )
+        fig, _ax = plot_hierarchy_comparison(sample_result, level="state", feature="lag_1")
 
         assert fig is not None
 
-    def test_plot_comparison_normalized(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_comparison_normalized(self, sample_result: HierarchicalResult) -> None:
         """Test plotting normalized comparison."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_comparison
 
-        fig, ax = plot_hierarchy_comparison(
-            sample_result, level="store", normalize=True
-        )
+        fig, _ax = plot_hierarchy_comparison(sample_result, level="store", normalize=True)
 
         assert fig is not None
 
@@ -233,9 +219,7 @@ class TestPlotHierarchyComparison:
 class TestPlotHierarchySummary:
     """Tests for plot_hierarchy_summary function."""
 
-    def test_plot_summary_all_levels(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_summary_all_levels(self, sample_result: HierarchicalResult) -> None:
         """Test plotting summary for all levels with grid layout."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_summary
@@ -257,16 +241,12 @@ class TestPlotHierarchySummary:
         assert visible_per_row[1] == 2
         assert visible_per_row[2] == 4
 
-    def test_plot_summary_specific_levels(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_summary_specific_levels(self, sample_result: HierarchicalResult) -> None:
         """Test plotting summary for specific levels."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_summary
 
-        fig, axes = plot_hierarchy_summary(
-            sample_result, levels=["global", "state"]
-        )
+        fig, axes = plot_hierarchy_summary(sample_result, levels=["global", "state"])
 
         assert fig is not None
         assert axes.ndim == 2
@@ -287,9 +267,7 @@ class TestPlotHierarchyTree:
         assert fig is not None
         assert ax is not None
 
-    def test_plot_tree_invalid_feature_raises(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_tree_invalid_feature_raises(self, sample_result: HierarchicalResult) -> None:
         """Test that invalid feature raises KeyError."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_tree
@@ -316,19 +294,15 @@ class TestPlotHierarchyHeatmap:
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_heatmap
 
-        fig, ax = plot_hierarchy_heatmap(sample_result, level="store", top_n=3)
+        fig, _ax = plot_hierarchy_heatmap(sample_result, level="store", top_n=3)
 
         assert fig is not None
 
-    def test_plot_heatmap_no_annotation(
-        self, sample_result: HierarchicalResult
-    ) -> None:
+    def test_plot_heatmap_no_annotation(self, sample_result: HierarchicalResult) -> None:
         """Test plotting heatmap without annotations."""
         pytest.importorskip("matplotlib")
         from xeries.visualization.hierarchy_plots import plot_hierarchy_heatmap
 
-        fig, ax = plot_hierarchy_heatmap(
-            sample_result, level="state", annot=False
-        )
+        fig, _ax = plot_hierarchy_heatmap(sample_result, level="state", annot=False)
 
         assert fig is not None

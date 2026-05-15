@@ -180,10 +180,7 @@ def plot_hierarchy_violin(
     shap_values = raw_values[:, feature_indices]
 
     feature_data = None
-    if (
-        result.feature_values_by_level is not None
-        and level in result.feature_values_by_level
-    ):
+    if result.feature_values_by_level is not None and level in result.feature_values_by_level:
         cohort_features = result.feature_values_by_level[level].get(cohort_name)
         if cohort_features is not None:
             feature_data = cohort_features[:, feature_indices]
@@ -341,7 +338,7 @@ def plot_hierarchy_comparison(
     x = np.arange(n_features)
     bar_width = 0.8 / max(n_cohorts, 1)
 
-    colors = plt.cm.tab10(np.linspace(0, 1, n_cohorts))
+    colors = plt.colormaps["tab10"](np.linspace(0, 1, n_cohorts))
 
     for idx, (cohort, row) in enumerate(plot_data.iterrows()):
         offset = (idx - (n_cohorts - 1) / 2) * bar_width
@@ -492,7 +489,7 @@ def plot_hierarchy_tree(
 
     all_importances = []
     for level in levels:
-        for cohort, feat_imp in result.importance_by_level[level].items():
+        for _cohort, feat_imp in result.importance_by_level[level].items():
             all_importances.append(feat_imp.get(feature, 0))
 
     if all_importances:
@@ -501,7 +498,7 @@ def plot_hierarchy_tree(
     else:
         min_imp, max_imp, norm_range = 0, 1, 1
 
-    cmap_obj = plt.cm.get_cmap(cmap)
+    cmap_obj = plt.get_cmap(cmap)
 
     level_y = {}
     level_cohorts = {}

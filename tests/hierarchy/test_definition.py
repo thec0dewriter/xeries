@@ -2,7 +2,6 @@
 
 from __future__ import annotations
 
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -158,9 +157,7 @@ class TestHierarchyDefinitionColumnBased:
         """Test successful data validation."""
         assert column_hierarchy.validate_data(hierarchical_data) is True
 
-    def test_validate_data_missing_column(
-        self, column_hierarchy: HierarchyDefinition
-    ) -> None:
+    def test_validate_data_missing_column(self, column_hierarchy: HierarchyDefinition) -> None:
         """Test data validation with missing column."""
         data = pd.DataFrame({"state_id": ["TX"], "other": [1]})
         with pytest.raises(ValueError, match="Missing required columns"):
@@ -222,9 +219,7 @@ class TestHierarchyDefinitionParseBased:
         assert len(cohorts["TX"]) == 3
         assert len(cohorts["WI"]) == 2
 
-    def test_invalid_series_id_raises(
-        self, parse_hierarchy: HierarchyDefinition
-    ) -> None:
+    def test_invalid_series_id_raises(self, parse_hierarchy: HierarchyDefinition) -> None:
         """Test that invalid series_id raises ValueError."""
         with pytest.raises(ValueError, match="does not match pattern"):
             parse_hierarchy.get_level_value("INVALID", "state")
@@ -267,9 +262,7 @@ class TestHierarchyDefinitionExplicitMapping:
             }
         )
 
-    def test_get_level_value_explicit(
-        self, explicit_hierarchy: HierarchyDefinition
-    ) -> None:
+    def test_get_level_value_explicit(self, explicit_hierarchy: HierarchyDefinition) -> None:
         """Test extracting level value from explicit mapping."""
         assert explicit_hierarchy.get_level_value("A", "region") == "North"
         assert explicit_hierarchy.get_level_value("C", "channel") == "Online"
@@ -299,22 +292,16 @@ class TestHierarchyDefinitionRepr:
 
     def test_repr_column_strategy(self) -> None:
         """Test repr with column strategy."""
-        hierarchy = HierarchyDefinition(
-            levels=["a", "b"], columns=["col_a", "col_b"]
-        )
+        hierarchy = HierarchyDefinition(levels=["a", "b"], columns=["col_a", "col_b"])
         assert "columns" in repr(hierarchy)
         assert "['a', 'b']" in repr(hierarchy)
 
     def test_repr_parse_strategy(self) -> None:
         """Test repr with parse strategy."""
-        hierarchy = HierarchyDefinition(
-            levels=["a", "b"], parse_pattern=r"(?P<a>\w+)_(?P<b>\w+)"
-        )
+        hierarchy = HierarchyDefinition(levels=["a", "b"], parse_pattern=r"(?P<a>\w+)_(?P<b>\w+)")
         assert "parse" in repr(hierarchy)
 
     def test_repr_explicit_strategy(self) -> None:
         """Test repr with explicit strategy."""
-        hierarchy = HierarchyDefinition(
-            levels=["a"], explicit_mapping={"x": {"a": "1"}}
-        )
+        hierarchy = HierarchyDefinition(levels=["a"], explicit_mapping={"x": {"a": "1"}})
         assert "explicit" in repr(hierarchy)

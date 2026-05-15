@@ -120,9 +120,7 @@ class TestHierarchicalAggregatorSHAP:
     ) -> None:
         """Test aggregation with specific levels only."""
         aggregator = HierarchicalAggregator(hierarchy)
-        result = aggregator.aggregate_shap(
-            shap_result, test_data, levels=["state"]
-        )
+        result = aggregator.aggregate_shap(shap_result, test_data, levels=["state"])
 
         assert "global" in result.levels
         assert "state" in result.levels
@@ -136,9 +134,7 @@ class TestHierarchicalAggregatorSHAP:
     ) -> None:
         """Test that raw values are stored when include_raw=True."""
         aggregator = HierarchicalAggregator(hierarchy)
-        result = aggregator.aggregate_shap(
-            shap_result, test_data, include_raw=True
-        )
+        result = aggregator.aggregate_shap(shap_result, test_data, include_raw=True)
 
         assert result.raw_values_by_level is not None
         raw_global = result.get_raw_values("global", "all")
@@ -153,9 +149,7 @@ class TestHierarchicalAggregatorSHAP:
     ) -> None:
         """Test that raw values are not stored when include_raw=False."""
         aggregator = HierarchicalAggregator(hierarchy)
-        result = aggregator.aggregate_shap(
-            shap_result, test_data, include_raw=False
-        )
+        result = aggregator.aggregate_shap(shap_result, test_data, include_raw=False)
 
         assert result.raw_values_by_level is None
 
@@ -165,9 +159,7 @@ class TestHierarchicalAggregatorSHAP:
         shap_result: SHAPResult,
     ) -> None:
         """Test that mismatched data length raises ValueError."""
-        short_data = pd.DataFrame(
-            {"state_id": ["TX"], "store_id": ["S1"], "feature_1": [1.0]}
-        )
+        short_data = pd.DataFrame({"state_id": ["TX"], "store_id": ["S1"], "feature_1": [1.0]})
         aggregator = HierarchicalAggregator(hierarchy)
 
         with pytest.raises(ValueError, match="Data length"):
@@ -217,9 +209,7 @@ class TestHierarchicalAggregatorImportance:
         X, y = test_data
         aggregator = HierarchicalAggregator(hierarchy)
 
-        result = aggregator.aggregate_importance(
-            importance_result, X, y, model=None
-        )
+        result = aggregator.aggregate_importance(importance_result, X, y, model=None)
 
         assert isinstance(result, HierarchicalResult)
         assert "global" in result.levels
@@ -275,9 +265,7 @@ class TestHierarchicalAggregatorPerSeries:
     ) -> None:
         """Test aggregating pre-computed per-series results."""
         aggregator = HierarchicalAggregator(hierarchy)
-        result = aggregator.aggregate_from_per_series(
-            per_series_results, test_data
-        )
+        result = aggregator.aggregate_from_per_series(per_series_results, test_data)
 
         assert isinstance(result, HierarchicalResult)
         assert "global" in result.levels

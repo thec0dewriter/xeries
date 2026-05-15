@@ -6,7 +6,6 @@ import re
 from dataclasses import dataclass, field
 from typing import Any
 
-import numpy as np
 import pandas as pd
 
 
@@ -67,9 +66,7 @@ class HierarchyDefinition:
             self.explicit_mapping is not None,
         ]
         if sum(strategies) == 0:
-            raise ValueError(
-                "Must provide one of: columns, parse_pattern, or explicit_mapping"
-            )
+            raise ValueError("Must provide one of: columns, parse_pattern, or explicit_mapping")
         if sum(strategies) > 1:
             raise ValueError(
                 "Only one of columns, parse_pattern, or explicit_mapping can be provided"
@@ -87,8 +84,7 @@ class HierarchyDefinition:
             missing = set(self.levels) - set(groups)
             if missing:
                 raise ValueError(
-                    f"Parse pattern must have named groups for all levels. "
-                    f"Missing: {missing}"
+                    f"Parse pattern must have named groups for all levels. Missing: {missing}"
                 )
 
         if self.explicit_mapping is not None:
@@ -99,9 +95,7 @@ class HierarchyDefinition:
                         f"Explicit mapping for '{series_id}' is missing levels: {missing}"
                     )
 
-    def get_cohorts(
-        self, data: pd.DataFrame, level: str
-    ) -> dict[str, pd.Index]:
+    def get_cohorts(self, data: pd.DataFrame, level: str) -> dict[str, pd.Index]:
         """Get cohort assignments for a given hierarchy level.
 
         Groups rows by the specified level and all levels above it in the hierarchy.
@@ -138,10 +132,7 @@ class HierarchyDefinition:
 
         cohorts: dict[str, pd.Index] = {}
         for name, group in data.groupby(group_cols, observed=True):
-            if isinstance(name, tuple):
-                cohort_name = "_".join(str(v) for v in name)
-            else:
-                cohort_name = str(name)
+            cohort_name = "_".join(str(v) for v in name) if isinstance(name, tuple) else str(name)
             cohorts[cohort_name] = group.index
 
         return cohorts
@@ -157,10 +148,7 @@ class HierarchyDefinition:
 
         cohorts: dict[str, pd.Index] = {}
         for name, group in parsed_df.groupby(grouping_levels, observed=True):
-            if isinstance(name, tuple):
-                cohort_name = "_".join(str(v) for v in name)
-            else:
-                cohort_name = str(name)
+            cohort_name = "_".join(str(v) for v in name) if isinstance(name, tuple) else str(name)
             cohorts[cohort_name] = group.index
 
         return cohorts
@@ -174,9 +162,7 @@ class HierarchyDefinition:
         level_values = []
         for sid in series_ids:
             if sid not in self.explicit_mapping:  # type: ignore[operator]
-                raise KeyError(
-                    f"Series '{sid}' not found in explicit_mapping"
-                )
+                raise KeyError(f"Series '{sid}' not found in explicit_mapping")
             mapping = self.explicit_mapping[sid]  # type: ignore[index]
             level_values.append({lv: mapping[lv] for lv in grouping_levels})
 
@@ -184,10 +170,7 @@ class HierarchyDefinition:
 
         cohorts: dict[str, pd.Index] = {}
         for name, group in parsed_df.groupby(grouping_levels, observed=True):
-            if isinstance(name, tuple):
-                cohort_name = "_".join(str(v) for v in name)
-            else:
-                cohort_name = str(name)
+            cohort_name = "_".join(str(v) for v in name) if isinstance(name, tuple) else str(name)
             cohorts[cohort_name] = group.index
 
         return cohorts
@@ -217,9 +200,7 @@ class HierarchyDefinition:
                 raise KeyError(f"Series '{series_id}' not in explicit_mapping")
             return str(self.explicit_mapping[series_id][level])
         else:
-            raise ValueError(
-                "get_level_value requires parse_pattern or explicit_mapping strategy"
-            )
+            raise ValueError("get_level_value requires parse_pattern or explicit_mapping strategy")
 
     def get_ancestors(self, series_id: str) -> dict[str, str]:
         """Get all ancestor values for a series (full hierarchy path).
@@ -237,9 +218,7 @@ class HierarchyDefinition:
                 raise KeyError(f"Series '{series_id}' not in explicit_mapping")
             return {lv: str(self.explicit_mapping[series_id][lv]) for lv in self.levels}
         else:
-            raise ValueError(
-                "get_ancestors requires parse_pattern or explicit_mapping strategy"
-            )
+            raise ValueError("get_ancestors requires parse_pattern or explicit_mapping strategy")
 
     def _parse_series_id(self, series_id: str) -> dict[str, Any]:
         """Parse a series_id using the compiled regex pattern."""
@@ -264,13 +243,9 @@ class HierarchyDefinition:
         if self.series_col == "series_id" and "_level_skforecast" in data.columns:
             return data["_level_skforecast"].astype(str)
 
-        raise KeyError(
-            f"Series column '{self.series_col}' not found in DataFrame columns or index"
-        )
+        raise KeyError(f"Series column '{self.series_col}' not found in DataFrame columns or index")
 
-    def get_all_levels_for_data(
-        self, data: pd.DataFrame
-    ) -> dict[str, dict[str, pd.Index]]:
+    def get_all_levels_for_data(self, data: pd.DataFrame) -> dict[str, dict[str, pd.Index]]:
         """Get cohorts for all hierarchy levels.
 
         Args:
@@ -286,9 +261,7 @@ class HierarchyDefinition:
 
         return result
 
-    def add_hierarchy_columns(
-        self, data: pd.DataFrame, inplace: bool = False
-    ) -> pd.DataFrame:
+    def add_hierarchy_columns(self, data: pd.DataFrame, inplace: bool = False) -> pd.DataFrame:
         """Add hierarchy level columns to the DataFrame.
 
         Useful for data preparation when using parse or explicit mapping strategies.
@@ -346,9 +319,7 @@ class HierarchyDefinition:
 
         return True
 
-    def get_unique_values_at_level(
-        self, data: pd.DataFrame, level: str
-    ) -> list[Any]:
+    def get_unique_values_at_level(self, data: pd.DataFrame, level: str) -> list[Any]:
         """Get unique values at a specific hierarchy level.
 
         Args:
@@ -371,7 +342,7 @@ class HierarchyDefinition:
             return list(cohorts.keys())
 
         values = set()
-        for cohort_name in cohorts.keys():
+        for cohort_name in cohorts:
             parts = cohort_name.split("_")
             level_idx = self.levels.index(level)
             if level_idx < len(parts):

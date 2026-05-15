@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from typing import Any
-
 import numpy as np
 import pandas as pd
 import pytest
@@ -72,9 +70,7 @@ class TestConditionalSHAPInit:
     ) -> None:
         """Test explicit kernel explainer type."""
         X, model = sample_data
-        explainer = ConditionalSHAP(
-            model, X, series_col="level", explainer_type="kernel"
-        )
+        explainer = ConditionalSHAP(model, X, series_col="level", explainer_type="kernel")
 
         assert explainer._is_batch_capable is False
         assert len(explainer._series_backgrounds) == 3
@@ -84,9 +80,7 @@ class TestConditionalSHAPInit:
     ) -> None:
         """Test global background strategy."""
         X, model = sample_data
-        explainer = ConditionalSHAP(
-            model, X, series_col="level", background_strategy="global"
-        )
+        explainer = ConditionalSHAP(model, X, series_col="level", background_strategy="global")
 
         assert explainer.background_strategy == "global"
 
@@ -228,7 +222,7 @@ class TestConditionalSHAPExplainPerSeries:
         explainer, X = explainer_and_data
         results = explainer.explain_per_series(X)
 
-        for series_id, result in results.items():
+        for _series_id, result in results.items():
             assert isinstance(result, SHAPResult)
 
     def test_explain_per_series_correct_samples(
@@ -238,7 +232,7 @@ class TestConditionalSHAPExplainPerSeries:
         explainer, X = explainer_and_data
         results = explainer.explain_per_series(X)
 
-        for series_id, result in results.items():
+        for _series_id, result in results.items():
             assert result.shap_values.shape[0] == 20
 
     def test_explain_per_series_min_samples(
