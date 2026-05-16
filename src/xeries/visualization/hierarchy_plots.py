@@ -10,11 +10,10 @@ matching the plots from the hierarchical demand forecasting article:
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 import numpy as np
 import pandas as pd
-from matplotlib.cm import ScalarMappable
 
 if TYPE_CHECKING:
     from matplotlib.axes import Axes
@@ -86,7 +85,7 @@ def plot_hierarchy_bar(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = cast("Figure", ax.get_figure())
+        fig = ax.get_figure()
 
     y_pos = np.arange(len(df))
     ax.barh(y_pos, df["importance"].values, color=color, alpha=0.8)
@@ -146,6 +145,7 @@ def plot_hierarchy_violin(
     """
     try:
         import matplotlib.pyplot as plt
+        from matplotlib.cm import ScalarMappable
         from matplotlib.colors import Normalize
     except ImportError as e:
         raise ImportError(
@@ -193,7 +193,7 @@ def plot_hierarchy_violin(
             if ax is None:
                 fig, ax = plt.subplots(figsize=figsize)
             else:
-                fig = cast("Figure", ax.get_figure())
+                fig = ax.get_figure()
 
             plt.sca(ax)
             shap.summary_plot(
@@ -220,7 +220,7 @@ def plot_hierarchy_violin(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = cast("Figure", ax.get_figure())
+        fig = ax.get_figure()
 
     colormap = plt.get_cmap(cmap)
     n_features = len(features)
@@ -332,7 +332,7 @@ def plot_hierarchy_comparison(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = cast("Figure", ax.get_figure())
+        fig = ax.get_figure()
 
     n_cohorts = len(plot_data)
     n_features = len(plot_data.columns)
@@ -474,6 +474,7 @@ def plot_hierarchy_tree(
     """
     try:
         import matplotlib.pyplot as plt
+        from matplotlib.cm import ScalarMappable
         from matplotlib.patches import FancyBboxPatch
     except ImportError as e:
         raise ImportError(
@@ -606,7 +607,7 @@ def plot_hierarchy_heatmap(
     if ax is None:
         fig, ax = plt.subplots(figsize=figsize)
     else:
-        fig = cast("Figure", ax.get_figure())
+        fig = ax.get_figure()
 
     im = ax.imshow(df.values, cmap=cmap, aspect="auto")
 
